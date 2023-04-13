@@ -1,0 +1,34 @@
+# https://www.nano-editor.org/dist/latest/nano.html
+
+# syntax highlighting directories
+include /usr/share/nano/*.nanorc
+include /usr/share/nano/extra/*.nanorc
+include /usr/share/nano-syntax-highlighting/*.nanorc
+
+# enabling features
+set tabsize 4
+set autoindent
+set linenumbers
+#set softwrap
+
+# colour configurations
+set keycolor #000,#F40
+set functioncolor #F40
+set numbercolor #F40
+set errorcolor #000,#F00
+set promptcolor #F40
+set selectedcolor #000,#FFF
+set spotlightcolor #000,#0F0
+set statuscolor #F40
+set titlecolor #F40
+
+# unknown colors
+set scrollercolor #0f0,#f0f
+
+# feature-colour pairs
+set stripecolor #FFF,#666
+#set guidestripe 20
+
+set minicolor #F40
+#set minibar
+
