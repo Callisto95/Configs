@@ -40,7 +40,7 @@ alias statc='cls && git status'
 alias glog='git log --graph'
 
 # git
-br() {
+get_branch() {
 	branch=$(git rev-parse --abbrev-ref HEAD 2> /dev/null)
 	if [[ $? -eq 0 ]]; then
 		echo $branch
@@ -64,10 +64,12 @@ ga() {
 		fi
 	done
 }
-gpu() { git push origin $(br) }
-gpl() {	git pull origin $(br) }
+gpu() { git push origin $(get_branch) }
+gpl() {	git pull origin $(get_branch) }
 alias sc="clear && git status"
 alias s="git status"
 alias gf="git fetch origin"
 alias gd="git diff"
 alias diff="git diff"
+alias ck="git checkout"
+alias br="git checkout -b"
