@@ -36,10 +36,10 @@ export DEBUG=""
 
 # aliases
 alias cls='clear'
-alias statc='cls && git status'
-alias glog='git log --graph'
 
 # git
+alias statc='clear && git status'
+alias glog='git log --graph'
 get_branch() {
 	branch=$(git rev-parse --abbrev-ref HEAD 2> /dev/null)
 	if [[ $? -eq 0 ]]; then
@@ -49,7 +49,6 @@ get_branch() {
 		return 1
 	fi
 }
-
 gcm() {
 	git commit -m "'$*'"
 }
