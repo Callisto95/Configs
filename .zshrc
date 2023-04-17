@@ -50,7 +50,7 @@ get_branch() {
 	fi
 }
 gcm() {
-	git commit -m "'$*'"
+	git commit -m "$*"
 }
 alias gck="git checkout"
 ga() {
