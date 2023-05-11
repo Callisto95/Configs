@@ -5,7 +5,6 @@ if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]
   source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
 
-
 # enable Oh-My-Zsh
 source $HOME/.oh-my-zshrc
 
@@ -38,7 +37,7 @@ export DEBUG=""
 alias cls='clear'
 
 # git
-alias statc='clear && git status'
+alias statc='cls && git status'
 alias glog='git log --graph'
 get_branch() {
 	branch=$(git rev-parse --abbrev-ref HEAD 2> /dev/null)
@@ -49,9 +48,7 @@ get_branch() {
 		return 1
 	fi
 }
-gcm() {
-	git commit -m "$*"
-}
+gcm() { git commit -m "$*" }
 alias gck="git checkout"
 ga() {
 	git add .
@@ -63,8 +60,20 @@ ga() {
 		fi
 	done
 }
-gpu() { git push origin $(get_branch) }
-gpl() {	git pull origin $(get_branch) }
+gpu() {
+	if [[ $1 != "" ]]; then
+		git push origin $1
+	else
+		git push origin $(get_branch)
+	fi
+}
+gpl() {
+	if [[ $1 != "" ]]; then
+		git pull origin $1
+	else
+		git pull origin $(get_branch)
+	fi
+}
 alias sc="clear && git status"
 alias s="git status"
 alias gf="git fetch origin"
@@ -72,3 +81,7 @@ alias gd="git diff"
 alias diff="git diff"
 alias ck="git checkout"
 alias br="git checkout -b"
+alias gr="git reset"
+
+# python
+alias act="source ./venv/bin/activate"
