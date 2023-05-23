@@ -1,0 +1,31 @@
+[Force Fullscreen]
+Description=Force Fullscreen
+ignoregeometry=true
+maximizehoriz=true
+maximizehorizrule=3
+maximizevert=true
+maximizevertrule=3
+noborder=true
+position=0,0
+size=1920,1046
+title=Picture-in-Picture
+windowrole=pictureinpicture
+wmclass=(Konsole|Whatsdesk|firefox)
+wmclassmatch=3
+
+[remember all]
+Description=remember all
+ignoregeometry=true
+ignoregeometryrule=2
+maximizehoriz=true
+maximizehorizrule=4
+maximizevert=true
+maximizevertrule=4
+noborder=true
+position=0,0
+positionrule=4
+size=1920,1046
+sizerule=4
+title=Picture-in-Picture
+types=1
+windowrole=pictureinpicture
