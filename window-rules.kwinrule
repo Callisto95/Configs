@@ -20,20 +20,3 @@ title=Picture-in-Picture
 windowrole=pictureinpicture
 wmclass=(org.kde.konsole|systemsettings|Whatsdesk|firefox)
 wmclassmatch=3
-
-[Remember All]
-Description=Remember All
-ignoregeometry=true
-ignoregeometryrule=2
-maximizehoriz=true
-maximizehorizrule=4
-maximizevert=true
-maximizevertrule=4
-noborder=true
-position=0,0
-positionrule=4
-size=1920,1046
-sizerule=4
-title=Picture-in-Picture
-types=1
-windowrole=pictureinpicture
