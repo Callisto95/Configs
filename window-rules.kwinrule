@@ -1,3 +1,11 @@
+[Firefox no navbar]
+Description=Firefox no navbar
+noborder=true
+noborderrule=2
+types=1
+wmclass=firefox
+wmclassmatch=1
+
 [Force Fullscreen]
 Description=Force Fullscreen
 ignoregeometry=true
@@ -10,7 +18,7 @@ position=0,0
 size=1920,1046
 title=Picture-in-Picture
 windowrole=pictureinpicture
-wmclass=(Konsole|Whatsdesk|firefox)
+wmclass=(konsole|whatsdesk|firefox)
 wmclassmatch=3
 
 [remember all]
@@ -22,7 +30,7 @@ maximizehorizrule=4
 maximizevert=true
 maximizevertrule=4
 noborder=true
-position=0,0
+position=1920,0
 positionrule=4
 size=1920,1046
 sizerule=4
