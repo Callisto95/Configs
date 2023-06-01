@@ -37,8 +37,6 @@ export DEBUG=""
 alias cls='clear'
 
 # git
-alias statc='cls && git status'
-alias glog='git log --graph'
 get_branch() {
 	branch=$(git rev-parse --abbrev-ref HEAD 2> /dev/null)
 	if [[ $? -eq 0 ]]; then
@@ -49,9 +47,26 @@ get_branch() {
 	fi
 }
 gcm() { git commit -m "$*" }
-alias gck="git checkout"
 ga() {
-	git add .
+	if [[ $# == 0 ]]; then
+		git add .
+		return 0
+	fi
+
+	for file in $*; do
+		if [[ -f $file ]]; then
+			git add $file
+		else
+			echo "'$file' is not a file"
+		fi
+	done
+}
+grst() {
+	if [[ $# -eq 0 ]]; then
+		echo "no file given"
+		return 1
+	fi
+
 	for file in $*; do
 		if [[ -f $file ]]; then
 			git restore --staged $file
@@ -77,11 +92,11 @@ gpl() {
 alias sc="clear && git status"
 alias s="git status"
 alias gf="git fetch origin"
-alias gd="git diff"
-alias diff="git diff"
-alias ck="git checkout"
-alias br="git checkout -b"
+alias gdf="git diff"
+alias gbr="git checkout -b"
 alias gr="git reset"
+alias gck="git checkout"
+alias glog='git log --graph'
 
 # python
 alias act="source ./venv/bin/activate"
