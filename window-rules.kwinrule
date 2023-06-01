@@ -1,22 +1,23 @@
 [Firefox No Navbar]
 Description=Firefox No Navbar
+maximizehoriz=true
+maximizevert=true
 noborder=true
 noborderrule=2
+title=Picture-in-Picture
 types=1
+windowrole=pictureinpicture
 wmclass=firefox
 wmclassmatch=1
 
 [Force Fullscreen on]
 Description=Force Fullscreen on
-ignoregeometry=true
 maximizehoriz=true
 maximizehorizrule=3
 maximizevert=true
 maximizevertrule=3
-noborder=true
-position=300,137
-size=1020,729
 title=Picture-in-Picture
+types=1
 windowrole=pictureinpicture
-wmclass=(org.kde.konsole|systemsettings|Whatsdesk|firefox)
+wmclass=(org.kde.konsole|systemsettings|whatsdesk|firefox)
 wmclassmatch=3
