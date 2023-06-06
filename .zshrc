@@ -47,6 +47,13 @@ get_branch() {
 	fi
 }
 gcm() { git commit -m "$*" }
+gacm() {
+	if [[ $# == 0 ]]; then
+		git commit --amend -m `git log --format=%B -n 1 HEAD`
+	else
+		git commit --amend -m "$*"
+	fi
+}
 ga() {
 	if [[ $# == 0 ]]; then
 		git add .
