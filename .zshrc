@@ -61,7 +61,7 @@ ga() {
 	fi
 
 	for file in $*; do
-		if [[ -f $file ]]; then
+		if [[ -f $file || -d $file ]]; then
 			git add $file
 		else
 			echo "'$file' is not a file"
