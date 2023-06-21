@@ -71,8 +71,8 @@ ga() {
 }
 grst() {
 	if [[ $# -eq 0 ]]; then
-		echo "no file given"
-		return 1
+		git reset --staged .
+		return 0
 	fi
 
 	for file in $*; do
