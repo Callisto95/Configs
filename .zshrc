@@ -49,7 +49,7 @@ get_branch() {
 gcm() { git commit -m "$*" }
 gacm() {
 	if [[ $# == 0 ]]; then
-		git commit --amend -m `git log --format=%B -n 1 HEAD`
+		git commit --amend -m "$(git log --format=%B -n 1 HEAD)"
 	else
 		git commit --amend -m "$*"
 	fi
@@ -61,8 +61,9 @@ ga() {
 	fi
 
 	for file in $*; do
-		if [[ -f $file || -d $file ]]; then
-			git add $file
+		if [[ -f "$file" || -d "$file" || "$file" =~ ".*[*]{1}.*" ]]; then
+			# alt: "$file" == *\**
+			git add "$file"
 		else
 			echo "'$file' is not a file"
 		fi
