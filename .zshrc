@@ -61,7 +61,7 @@ ga() {
 	fi
 
 	for file in $*; do
-		if [[ -f "$file" || -d "$file" || "$file" =~ ".*[*]{1}.*" ]]; then
+		if [[ -f "$file" ]] || [[ -d "$file" ]] || [[ "$file" == *\** ]]; then
 			# alt: "$file" == *\**
 			git add "$file"
 		else
@@ -76,7 +76,7 @@ grst() {
 	fi
 
 	for file in $*; do
-		if [[ -f $file ]]; then
+		if [[ -f $file ]] || [[ -d $file ]] || [[ "$file" == *\** ]]; then
 			git restore --staged $file
 		else
 			echo "'$file' is not a file"
