@@ -1,8 +1,18 @@
+[CoreCtrl maximized by default]
+Description=CoreCtrl maximized by default
+maximizehoriz=true
+maximizehorizrule=3
+maximizevert=true
+maximizevertrule=3
+wmclass=corectrl corectrl
+wmclasscomplete=true
+wmclassmatch=1
+
 [Firefox no Navbar]
 Description=Firefox no Navbar
 noborder=true
 noborderrule=3
-wmclass=navigator firefox
+wmclass=firefox firefox
 wmclasscomplete=true
 wmclassmatch=1
 
@@ -14,3 +24,11 @@ maximizevert=true
 maximizevertrule=3
 wmclass=(org.kde.konsole|systemsettings|whatsdesk|firefox|discord)
 wmclassmatch=3
+
+[keep yakuake above all]
+Description=keep yakuake above all
+above=true
+aboverule=2
+wmclass=yakuake org.kde.yakuake
+wmclasscomplete=true
+wmclassmatch=1

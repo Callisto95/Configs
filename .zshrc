@@ -10,13 +10,13 @@ source $HOME/.oh-my-zshrc
 
 # Use powerline
 USE_POWERLINE="true"
-# Source manjaro-zsh-configuration
-if [[ -e /usr/share/zsh/manjaro-zsh-config ]]; then
-  source /usr/share/zsh/manjaro-zsh-config
+# Source zsh-configuration
+if [[ -e $HOME/.zsh/zsh-config ]]; then
+  source $HOME/.zsh/zsh-config
 fi
 # Use manjaro zsh prompt
-if [[ -e /usr/share/zsh/manjaro-zsh-prompt ]]; then
-  source /usr/share/zsh/manjaro-zsh-prompt
+if [[ -e $HOME/.zsh/zsh-prompt ]]; then
+  source $HOME/.zsh/zsh-prompt
 fi
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
@@ -35,6 +35,18 @@ export DEBUG=""
 
 # aliases
 alias cls='clear'
+alias ex="exit"
+
+# pacman
+# Q -> F for remote packages
+# +q for names only
+alias pacFilesOfPackage="pacman -Ql"
+alias pacPackageOfFile="pacman -Qo"
+alias pacFullRm="pacman -Rsn"
+alias pacAllOrphans="pacman -Qdt"
+
+# yt-dlp
+YTDLP_PLAYLIST='-o "%(playlist)s/%(playlist_index)s-%(uploader)s-%(title)s.%(ext)s"'
 
 # git
 get_branch() {
@@ -55,13 +67,13 @@ gacm() {
 	fi
 }
 ga() {
-	if [[ $# == 0 ]]; then
+	if [[ $# -eq 0 ]]; then
 		git add .
 		return 0
 	fi
 
 	for file in $*; do
-		if [[ -f "$file" || -d "$file" || "$file" =~ ".*[*]{1}.*" ]]; then
+		if [[ -f "$file" ]] || [[ -d "$file" ]] || [[ "$file" == *\** ]]; then
 			# alt: "$file" == *\**
 			git add "$file"
 		else
@@ -76,7 +88,7 @@ grst() {
 	fi
 
 	for file in $*; do
-		if [[ -f $file ]]; then
+		if [[ -f "$file" ]] || [[ -d "$file" ]] || [[ "$file" == *\** ]]; then
 			git restore --staged $file
 		else
 			echo "'$file' is not a file"
@@ -97,14 +109,21 @@ gpl() {
 		git pull origin $(get_branch)
 	fi
 }
+gbr() {
+	if [[ $1 != "" ]]; then
+		git checkout -b "$1"
+	else
+		git branch -a
+	fi
+}
 alias sc="clear && git status"
 alias s="git status"
 alias gf="git fetch origin"
 alias gdf="git diff"
-alias gbr="git checkout -b"
 alias gr="git reset"
 alias gck="git checkout"
 alias glog='git log --graph'
 
 # python
 alias act="source ./venv/bin/activate"
+alias nvenv="python -m venv venv"
