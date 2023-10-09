@@ -2,7 +2,7 @@
 # Initialization code that may require console input (password prompts, [y/n]
 # confirmations, etc.) must go above this block; everything else may go below.
 if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
-  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
+	source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
 
 # enable Oh-My-Zsh
@@ -12,15 +12,17 @@ source $HOME/.oh-my-zshrc
 USE_POWERLINE="true"
 # Source zsh-configuration
 if [[ -e $HOME/.zsh/zsh-config ]]; then
-  source $HOME/.zsh/zsh-config
+	source $HOME/.zsh/zsh-config
 fi
 # Use manjaro zsh prompt
 if [[ -e $HOME/.zsh/zsh-prompt ]]; then
-  source $HOME/.zsh/zsh-prompt
+	source $HOME/.zsh/zsh-prompt
 fi
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
-[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+if [[ -f ~/.p10k.zsh ]]; then
+	source ~/.p10k.zsh
+fi
 
 # change ENV vars
 
@@ -28,9 +30,6 @@ export LS_COLORS='rs=0:fi=38;5;2:di=01;34:ln=01;38;2;255;255;0:mh=00:pi=40;33:so
 
 export PATH="/home/luca_s/custom_commands:/home/luca_s/.cargo/bin:${PATH}"
 
-export LATITUDE_MAC="78:2b:cb:cf:dd:4e"
-export LATITUDE_IP="192.168.5.199"
-export LATITUDE_USER="ls"
 export DEBUG=""
 
 # aliases
