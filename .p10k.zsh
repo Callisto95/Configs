@@ -936,7 +936,7 @@
   typeset -g POWERLEVEL9K_VIRTUALENV_{LEFT,RIGHT}_DELIMITER=
   # Custom icon.
   typeset -g POWERLEVEL9K_VIRTUALENV_VISUAL_IDENTIFIER_EXPANSION=
-  # typeset -g POWERLEVEL9K_VIRTUALENV_CONTENT_EXPANSION=
+  typeset -g POWERLEVEL9K_VIRTUALENV_CONTENT_EXPANSION='${P9K_CONTENT%% *}'
 
   #####################[ anaconda: conda environment (https://conda.io/) ]######################
   # Anaconda environment color.
