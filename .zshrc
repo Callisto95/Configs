@@ -108,3 +108,21 @@ alias glog='git log --graph'
 
 # python
 alias act="source ./venv/bin/activate"
+
+# other
+rmcr() {
+	if [[ "$1" == "" ]]; then
+		echo "folder or file required";
+		return 1;
+	fi
+
+	if [[ -d "$1" ]]; then
+		for file in $(find "$1" -type f); do
+			dos2unix "$file";
+		done
+	fi
+
+	if [[ -f "$1" ]]; then
+		dos2unix "$1";
+	fi
+}
