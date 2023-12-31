@@ -11,10 +11,10 @@ wmclassmatch=1
 [Firefox no Navbar]
 Description=Firefox no Navbar
 noborder=true
-noborderrule=3
-wmclass=firefox firefox
+noborderrule=2
+wmclass=(firefox|navigator) (firefox|firefoxdeveloperedition)
 wmclasscomplete=true
-wmclassmatch=1
+wmclassmatch=3
 
 [Force Fullscreen on]
 Description=Force Fullscreen on
