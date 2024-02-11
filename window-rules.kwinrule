@@ -22,7 +22,7 @@ maximizehoriz=true
 maximizehorizrule=3
 maximizevert=true
 maximizevertrule=3
-wmclass=(org.kde.konsole|systemsettings|whatsdesk|firefox|discord)
+wmclass=(konsole|systemsettings|whatsdesk|firefox|discord)
 wmclassmatch=3
 
 [keep yakuake above all]
