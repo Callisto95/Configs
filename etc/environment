@@ -4,4 +4,5 @@
 # Syntax: simple "KEY=VAL" pairs on separate lines
 #
 
-GRUB_TOP_LEVEL=/boot/vmlinuz-linux
+# sets default GRUB boot entry (entry 0)
+GRUB_TOP_LEVEL=/boot/vmlinuz-linux-zen
