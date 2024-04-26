@@ -1,0 +1,11 @@
+[Trigger]
+Type = Path
+Operation = Install
+Operation = Upgrade
+Target = usr/share/icons/*
+
+[Action]
+Description = Sync icons between /usr and $HOME
+When = PostTransaction
+Exec = /usr/bin/cp -r /usr/share/icons/. /home/luca_s/.icons/
+NeedsTargets
