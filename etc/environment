@@ -5,4 +5,5 @@
 #
 
 # sets default GRUB boot entry (entry 0)
+# this effectively loads whatever is put here by default
 GRUB_TOP_LEVEL=/boot/vmlinuz-linux-zen
