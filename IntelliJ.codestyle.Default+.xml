@@ -9,7 +9,6 @@
   <JavaCodeStyleSettings>
     <option name="GENERATE_FINAL_LOCALS" value="true" />
     <option name="GENERATE_FINAL_PARAMETERS" value="true" />
-    <option name="REPLACE_NULL_CHECK" value="false" />
     <option name="ENUM_FIELD_ANNOTATION_WRAP" value="2" />
     <option name="BLANK_LINES_AROUND_INITIALIZER" value="0" />
     <option name="NEW_LINE_WHEN_BODY_IS_PRESENTED" value="true" />
@@ -47,7 +46,7 @@
     </indentOptions>
   </codeStyleSettings>
   <codeStyleSettings language="JAVA">
-    <option name="RIGHT_MARGIN" value="120" />
+    <option name="RIGHT_MARGIN" value="999" />
     <option name="LINE_COMMENT_AT_FIRST_COLUMN" value="false" />
     <option name="BLOCK_COMMENT_AT_FIRST_COLUMN" value="false" />
     <option name="LINE_COMMENT_ADD_SPACE" value="true" />
@@ -73,7 +72,7 @@
     <option name="RESOURCE_LIST_WRAP" value="5" />
     <option name="EXTENDS_KEYWORD_WRAP" value="1" />
     <option name="THROWS_KEYWORD_WRAP" value="1" />
-    <option name="METHOD_CALL_CHAIN_WRAP" value="5" />
+    <option name="METHOD_CALL_CHAIN_WRAP" value="2" />
     <option name="TERNARY_OPERATION_WRAP" value="5" />
     <option name="TERNARY_OPERATION_SIGNS_ON_NEXT_LINE" value="true" />
     <option name="KEEP_SIMPLE_METHODS_IN_ONE_LINE" value="true" />
