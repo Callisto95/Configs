@@ -1,0 +1,2 @@
+<!DOCTYPE KRename>
+<KRename version="1.0"><FindReplaceList rows="1"><Row num="0"><RegularExpression>2</RegularExpression><Find>upscayl_([1-9]{1})x_.*</Find><ReplaceWith>x\1</ReplaceWith><ProcessTokens>2</ProcessTokens></Row></FindReplaceList></KRename>
