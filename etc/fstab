@@ -2,17 +2,17 @@
 # See fstab(5) for details.
 
 # <file system> <dir> <type> <options> <dump> <pass>
+# /dev/nvme0n1p2
+UUID=CDE8-4D41								/boot						vfat	rw,relatime,fmask=0022,dmask=0022,codepage=437,iocharset=ascii,shortname=mixed,utf8,errors=remount-ro	0 2
+
 # /dev/nvme0n1p5
-UUID=574d792a-bad6-4562-9041-b2253bf90656	/         	ext4      	rw,relatime	0 1
+UUID=574d792a-bad6-4562-9041-b2253bf90656	/							ext4	rw,relatime		0 1
 
 # /dev/nvme0n1p7 LABEL=Homes
-UUID=0625b48e-f05d-46e2-bcc4-5ae59670d3d6	/home     	ext4      	rw,relatime	0 2
-
-# /dev/nvme0n1p2
-UUID=CDE8-4D41      	/boot     	vfat      	rw,relatime,fmask=0022,dmask=0022,codepage=437,iocharset=ascii,shortname=mixed,utf8,errors=remount-ro	0 2
+UUID=0625b48e-f05d-46e2-bcc4-5ae59670d3d6	/home						ext4	rw,relatime		0 2
 
 # /dev/nvme0n1p6
-UUID=5d2e80ec-e19b-4faf-abc6-8c9f66374a8f	none      	swap      	defaults  	0 0
+UUID=5d2e80ec-e19b-4faf-abc6-8c9f66374a8f	none						swap	defaults		0 0
 
-# UUID=aefed4cc-520f-43cb-91fe-f9e8530ba1b4
-/dev/sda1           	/run/media/luca_s/Data-2TB ext4 defaults 0 2
+# /dev/sda1
+UUID=aefed4cc-520f-43cb-91fe-f9e8530ba1b4	/run/media/luca_s/Data-2TB	ext4	nofail,defaults	0 2
