@@ -21,9 +21,11 @@ The amdgpu driver seems to be quite bad when it comes to stability when undervol
 Some notes about my undervolting experience (I have a XFX Speedster 6900XT, your settings may vary):
 
 - undervolting at -25 mV seems fine (@ 170W)
-- -75 mV (@ 147W) - meta-stable: very few crashes (at least one)
-- current: -70 mV
+- -75 mV (@ 147W), -70: meta-stable: very few crashes, but crashes nonetheless
+- current: -65 mV
 - unstable: -90 mV
+
+Maybe having other GPU accelerated apps open causes instability? FireFox and YouTube while playing seems to crash more, however this may just be pure speculation.
 
 ### Flatpak's use wrong cursor
 
