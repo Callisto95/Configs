@@ -1,15 +1,18 @@
-INTERVAL=2
-# FCTEMPS=/sys/devices/platform/nct6775.656/hwmon/[[:print:]]*/pwm1=/sys/devices/pci0000:00/0000:00:18.3/hwmon/[[:print:]]*/temp1_input /sys/devices/platform/nct6775.656/hwmon/[[:print:]]*/pwm2=/sys/devices/pci0000:00/0000:00:18.3/hwmon/[[:print:]]*/temp1_input /sys/devices/platform/nct6775.656/hwmon/[[:print:]]*/pwm3=/sys/devices/pci0000:00/0000:00:18.3/hwmon/[[:print:]]*/temp1_input
-FCTEMPS=/sys/devices/platform/nct6775.656/hwmon/[[:print:]]*/pwm1=/sys/devices/platform/nct6775.656/hwmon/[[:print:]]*/temp2_input /sys/devices/platform/nct6775.656/hwmon/[[:print:]]*/pwm2=/sys/devices/platform/nct6775.656/hwmon/[[:print:]]*/temp2_input /sys/devices/platform/nct6775.656/hwmon/[[:print:]]*/pwm3=/sys/devices/platform/nct6775.656/hwmon/[[:print:]]*/temp2_input
-FCFANS=/sys/devices/platform/nct6775.656/hwmon/[[:print:]]*/pwm1=/sys/devices/platform/nct6775.656/hwmon/[[:print:]]*/fan1_input /sys/devices/platform/nct6775.656/hwmon/[[:print:]]*/pwm2=/sys/devices/platform/nct6775.656/hwmon/[[:print:]]*/fan2_input /sys/devices/platform/nct6775.656/hwmon/[[:print:]]*/pwm3=/sys/devices/platform/nct6775.656/hwmon/[[:print:]]*/fan3_input
-MINTEMP=/sys/devices/platform/nct6775.656/hwmon/[[:print:]]*/pwm1=40	/sys/devices/platform/nct6775.656/hwmon/[[:print:]]*/pwm2=40	/sys/devices/platform/nct6775.656/hwmon/[[:print:]]*/pwm3=40
-MAXTEMP=/sys/devices/platform/nct6775.656/hwmon/[[:print:]]*/pwm1=70	/sys/devices/platform/nct6775.656/hwmon/[[:print:]]*/pwm2=70	/sys/devices/platform/nct6775.656/hwmon/[[:print:]]*/pwm3=70
-MINSTART=/sys/devices/platform/nct6775.656/hwmon/[[:print:]]*/pwm1=64	/sys/devices/platform/nct6775.656/hwmon/[[:print:]]*/pwm2=64	/sys/devices/platform/nct6775.656/hwmon/[[:print:]]*/pwm3=100
-MINSTOP=/sys/devices/platform/nct6775.656/hwmon/[[:print:]]*/pwm1=64	/sys/devices/platform/nct6775.656/hwmon/[[:print:]]*/pwm2=64	/sys/devices/platform/nct6775.656/hwmon/[[:print:]]*/pwm3=100
-MINPWM=/sys/devices/platform/nct6775.656/hwmon/[[:print:]]*/pwm1=0		/sys/devices/platform/nct6775.656/hwmon/[[:print:]]*/pwm2=0		/sys/devices/platform/nct6775.656/hwmon/[[:print:]]*/pwm3=100
-MAXPWM=/sys/devices/platform/nct6775.656/hwmon/[[:print:]]*/pwm1=160	/sys/devices/platform/nct6775.656/hwmon/[[:print:]]*/pwm2=255	/sys/devices/platform/nct6775.656/hwmon/[[:print:]]*/pwm3=255
-AVERAGE=/sys/devices/platform/nct6775.656/hwmon/[[:print:]]*/pwm1=2		/sys/devices/platform/nct6775.656/hwmon/[[:print:]]*/pwm2=2		/sys/devices/platform/nct6775.656/hwmon/[[:print:]]*/pwm3=2
+INTERVAL=1
+FCTEMPS=/sys/devices/platform/nct6775.656/hwmon/[[:print:]]*/pwm5=/sys/devices/platform/nct6775.656/hwmon/[[:print:]]*/temp2_input /sys/devices/platform/nct6775.656/hwmon/[[:print:]]*/pwm2=/sys/devices/platform/nct6775.656/hwmon/[[:print:]]*/temp2_input /sys/devices/platform/nct6775.656/hwmon/[[:print:]]*/pwm3=/sys/devices/platform/nct6775.656/hwmon/[[:print:]]*/temp2_input /sys/devices/platform/nct6775.656/hwmon/[[:print:]]*/pwm7=/sys/devices/platform/nct6775.656/hwmon/[[:print:]]*/temp2_input /sys/devices/platform/nct6775.656/hwmon/[[:print:]]*/pwm6=/sys/devices/platform/nct6775.656/hwmon/[[:print:]]*/temp2_input
+FCFANS=/sys/devices/platform/nct6775.656/hwmon/[[:print:]]*/pwm5=/sys/devices/platform/nct6775.656/hwmon/[[:print:]]*/fan5_input /sys/devices/platform/nct6775.656/hwmon/[[:print:]]*/pwm2=/sys/devices/platform/nct6775.656/hwmon/[[:print:]]*/fan2_input /sys/devices/platform/nct6775.656/hwmon/[[:print:]]*/pwm3=/sys/devices/platform/nct6775.656/hwmon/[[:print:]]*/fan3_input /sys/devices/platform/nct6775.656/hwmon/[[:print:]]*/pwm7=/sys/devices/platform/nct6775.656/hwmon/[[:print:]]*/fan1_input /sys/devices/platform/nct6775.656/hwmon/[[:print:]]*/pwm6=/sys/devices/platform/nct6775.656/hwmon/[[:print:]]*/fan1_input
+MINTEMP=/sys/devices/platform/nct6775.656/hwmon/[[:print:]]*/pwm2=40	/sys/devices/platform/nct6775.656/hwmon/[[:print:]]*/pwm3=40	/sys/devices/platform/nct6775.656/hwmon/[[:print:]]*/pwm5=40	/sys/devices/platform/nct6775.656/hwmon/[[:print:]]*/pwm6=0		/sys/devices/platform/nct6775.656/hwmon/[[:print:]]*/pwm7=40
+MAXTEMP=/sys/devices/platform/nct6775.656/hwmon/[[:print:]]*/pwm2=70	/sys/devices/platform/nct6775.656/hwmon/[[:print:]]*/pwm3=70	/sys/devices/platform/nct6775.656/hwmon/[[:print:]]*/pwm5=70	/sys/devices/platform/nct6775.656/hwmon/[[:print:]]*/pwm6=1		/sys/devices/platform/nct6775.656/hwmon/[[:print:]]*/pwm7=70
+MINSTART=/sys/devices/platform/nct6775.656/hwmon/[[:print:]]*/pwm2=64	/sys/devices/platform/nct6775.656/hwmon/[[:print:]]*/pwm3=100	/sys/devices/platform/nct6775.656/hwmon/[[:print:]]*/pwm5=64	/sys/devices/platform/nct6775.656/hwmon/[[:print:]]*/pwm6=32	/sys/devices/platform/nct6775.656/hwmon/[[:print:]]*/pwm7=32
+MINSTOP=/sys/devices/platform/nct6775.656/hwmon/[[:print:]]*/pwm2=32	/sys/devices/platform/nct6775.656/hwmon/[[:print:]]*/pwm3=100	/sys/devices/platform/nct6775.656/hwmon/[[:print:]]*/pwm5=32	/sys/devices/platform/nct6775.656/hwmon/[[:print:]]*/pwm6=31	/sys/devices/platform/nct6775.656/hwmon/[[:print:]]*/pwm7=32
+MINPWM=/sys/devices/platform/nct6775.656/hwmon/[[:print:]]*/pwm2=0		/sys/devices/platform/nct6775.656/hwmon/[[:print:]]*/pwm3=100	/sys/devices/platform/nct6775.656/hwmon/[[:print:]]*/pwm5=0		/sys/devices/platform/nct6775.656/hwmon/[[:print:]]*/pwm6=31	/sys/devices/platform/nct6775.656/hwmon/[[:print:]]*/pwm7=0
+MAXPWM=/sys/devices/platform/nct6775.656/hwmon/[[:print:]]*/pwm2=255	/sys/devices/platform/nct6775.656/hwmon/[[:print:]]*/pwm3=255	/sys/devices/platform/nct6775.656/hwmon/[[:print:]]*/pwm5=255	/sys/devices/platform/nct6775.656/hwmon/[[:print:]]*/pwm6=32	/sys/devices/platform/nct6775.656/hwmon/[[:print:]]*/pwm7=255
+AVERAGE=/sys/devices/platform/nct6775.656/hwmon/[[:print:]]*/pwm2=3		/sys/devices/platform/nct6775.656/hwmon/[[:print:]]*/pwm3=3		/sys/devices/platform/nct6775.656/hwmon/[[:print:]]*/pwm5=3		/sys/devices/platform/nct6775.656/hwmon/[[:print:]]*/pwm6=1		/sys/devices/platform/nct6775.656/hwmon/[[:print:]]*/pwm7=3
 
-# PWM1: case fans	FAN 1
-# PWM2: CPU fans	FAN 2
-# PWM3: water pump	FAN 3
+# Notes
+# PWM2: CPU fans
+# PWM3: water pump
+# PWM5: case fans
+# PWM6: chipset
+# PWM7: light
+# 160 as middle (128-256)
