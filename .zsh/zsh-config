@@ -55,12 +55,6 @@ bindkey '^[[1;5C' forward-word                                  #
 bindkey '^H' backward-kill-word                                 # delete previous word with ctrl+backspace
 bindkey '^[[Z' undo                                             # Shift+tab undo last action
 
-## Alias section
-# alias cp="cp -i"                                                # Confirm before overwriting something
-alias df='df -h'                                                # Human-readable sizes
-alias free='free -m'                                            # Show sizes in MB
-# alias gitu='git add . && git commit && git push'
-
 # Theming section  
 autoload -U compinit colors zcalc
 compinit -d
@@ -86,7 +80,7 @@ source /usr/share/zsh/plugins/zsh-history-substring-search/zsh-history-substring
 zmodload zsh/terminfo
 bindkey "$terminfo[kcuu1]" history-substring-search-up
 bindkey "$terminfo[kcud1]" history-substring-search-down
-bindkey '^[[A' history-substring-search-up			
+bindkey '^[[A' history-substring-search-up
 bindkey '^[[B' history-substring-search-down
 
 # Set terminal window and tab/icon title
@@ -293,8 +287,3 @@ function mzc_termsupport_cwd {
 # i.e. when a script or function changes directory without `cd -q`, chpwd
 # will be called the output may be swallowed by the script or function.
 add-zsh-hook precmd mzc_termsupport_cwd
-
-# File and Dir colors for ls and other outputs
-export LS_OPTIONS='--color=auto'
-eval "$(dircolors -b)"
-alias ls='ls $LS_OPTIONS'

@@ -61,8 +61,8 @@ ZSH_THEME="powerlevel10k/powerlevel10k"
 # or set a custom format using the strftime function format specifications,
 # see 'man strftime' for details.
 # HIST_STAMPS="mm/dd/yyyy"
-HIST_STAMPS=""
-HISTTIMEFORMAT=""
+#HIST_STAMPS=""
+#HISTTIMEFORMAT=""
 
 # Would you like to use another custom folder than $ZSH/custom?
 # ZSH_CUSTOM=/path/to/new-custom-folder
@@ -72,7 +72,11 @@ HISTTIMEFORMAT=""
 # Custom plugins may be added to $ZSH_CUSTOM/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=()
+plugins=(
+	zsh-autosuggestions
+	zsh-history-substring-search
+	zsh-syntax-highlighting
+)
 
 source $ZSH/oh-my-zsh.sh
 
