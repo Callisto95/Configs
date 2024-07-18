@@ -40,6 +40,8 @@ restartPlasma() {
 }
 alias listZip="zipinfo -i"
 alias zipContent="zipinfo"
+alias dmesg="sudo dmesg --color=always | less -R"
+alias cjxl="cjxl -q 100 -e 7"
 
 
 # pacman
@@ -74,7 +76,7 @@ gcm() {
 }
 gacm() {
 	if [[ $# == 0 ]]; then
-		git commit --amend -m "$(git log --format=%B -n 1 HEAD)"
+		git commit --amend --no-edit
 	else
 		git commit --amend -m "$*"
 	fi
