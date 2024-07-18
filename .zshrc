@@ -41,7 +41,11 @@ restartPlasma() {
 alias listZip="zipinfo -i"
 alias zipContent="zipinfo"
 alias dmesg="sudo dmesg --color=always | less -R"
-alias cjxl="cjxl -q 100 -e 7"
+cjxl() {
+	for file in $@; do
+		/usr/bin/cjxl -q 100 -e 7 "$file" "${file%.*}.jxl"
+	done
+}
 
 
 # pacman
