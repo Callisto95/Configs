@@ -1,8 +1,0 @@
-Eclipse:
-disable italic:
-Java > Editor > Syntax Coloring >> <any>
-
-or
-
-(in Project Root)
-.metadata\.plugins\org.eclipse.core.runtime\.settings\org.eclipse.ui.workbench.prefs

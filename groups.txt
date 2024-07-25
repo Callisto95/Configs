@@ -1,1 +1,0 @@
-sys network power vboxusers vboxsf plugdev users uucp lp input wheel $USER
