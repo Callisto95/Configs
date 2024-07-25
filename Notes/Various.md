@@ -26,3 +26,12 @@ As a workaround it's possible to give all apps access to `$HOME/.icons/` and cop
 ## P10K: Python virtualenv shows name and version
 
 I don't like the default way P10K shows the venv version (name *and* version). Thanks to Romkatv (creator of P10K) with the modified `POWERLEVEL9K_VIRTUALENV_CONTENT_EXPANSION` this is no longer the case (just the version).
+
+## Eclipse Italic Highlights
+
+`Java > Editor > Syntax Colouring`; then uncheck `italic`
+
+Alternatively:
+\[Project Root\]/.metadata/.plugins/org.eclipse.core.runtime/.settings/org.eclipse.ui.workbench.prefs
+
+(this seems off, I haven't used Eclipse in quite some time though)
