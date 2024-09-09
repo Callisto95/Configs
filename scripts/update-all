@@ -1,0 +1,60 @@
+#!/bin/bash
+
+set -e
+
+kernel_hash="$(sha512sum '/boot/vmlinuz-linux-zen')"
+image_hash="$(sha512sum '/boot/initramfs-linux-zen.img')"
+
+
+echo "pacman..."
+sudo pacman -Syu
+echo ""
+
+
+echo "yay..."
+yay -Syua
+echo ""
+
+
+echo "flatpak..."
+flatpak update
+echo ""
+
+
+echo "updates done, checking for packages to remove:"
+
+
+echo "pacman: debug..."
+if [[ $(pacman -Qqs -- '-debug') ]]; then
+	sudo pacman -Rns $(pacman -Qqs -- '-debug')
+else
+	echo "no debug packages"
+fi
+echo ""
+
+
+echo "pacman: orphans..."
+if [[ $(pacman -Qqdt) ]]; then
+	sudo pacman -Rns $(pacman -Qqdt)
+else
+	echo "no orphans"
+fi
+echo ""
+
+
+echo "flatpak..."
+flatpak uninstall --unused
+
+
+new_kernel_hash="$(sha512sum '/boot/vmlinuz-linux-zen')"
+new_image_hash="$(sha512sum '/boot/initramfs-linux-zen.img')"
+
+if [[ "$kernel_hash" != "$new_kernel_hash" || "$image_hash" != "$new_image_hash" ]]; then
+	echo ""
+	printf "\u001B[33mKernel has been updated, reboot?\u001B[0m [Y/n] "
+	
+	read answer
+	if [[ "$answer" == "" ]] || [[ "$answer" == "Y" ]] || [[ "$answer" == "y" ]]; then
+		systemctl reboot
+	fi
+fi
