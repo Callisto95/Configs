@@ -1,6 +1,6 @@
 [ActivityManager][Global Shortcuts]
 switch-to-activity-878ad608-d6fc-4c12-abc9-846ba3d5b223=
-switch-to-activity-e8134c48-dc9a-4104-96ff-af21ad44d180=Meta+1
+switch-to-activity-e8134c48-dc9a-4104-96ff-af21ad44d180=
 
 [KDE Keyboard Layout Switcher][Global Shortcuts]
 Switch keyboard layout to English (US, euro on 5)=
@@ -9,25 +9,25 @@ Switch keyboard layout to English (US, intl., AltGr Unicode combining, alt.)=
 Switch keyboard layout to English (US, intl., with dead keys)=
 Switch keyboard layout to English (intl., with AltGr dead keys)=
 Switch keyboard layout to German=
-Switch to Last-Used Keyboard Layout=Meta+Alt+L
+Switch to Last-Used Keyboard Layout=
 Switch to Next Keyboard Layout=
 
 [StandardShortcuts]
 AboutApp=
 AboutKDE=
-Activate Next Tab=Ctrl+]; Ctrl+PgDown
-Activate Previous Tab=Ctrl+[; Ctrl+PgUp
+Activate Next Tab=Ctrl+PgDown; Ctrl+]
+Activate Previous Tab=Ctrl+PgUp; Ctrl+[
 ActualSize=Ctrl+0
 AddBookmark=Ctrl+B
-Back=Back; Alt+Left
+Back=Alt+Left; Back
 BackwardWord=Ctrl+Left
 Begin=Ctrl+Home
 BeginningOfLine=Home
 Clear=
-Close=Ctrl+W; Ctrl+Esc
+Close=Ctrl+Esc; Ctrl+W
 ConfigureNotifications=
 ConfigureToolbars=
-Copy=Ctrl+Ins; Ctrl+C
+Copy=Ctrl+C; Ctrl+Ins
 CreateFolder=Ctrl+Shift+N
 Cut=Shift+Del; Ctrl+X
 DeleteFile=Shift+Del
@@ -73,7 +73,7 @@ PrintPreview=
 Prior=PgUp
 Quit=Ctrl+Q
 Redo=Ctrl+Shift+Z
-Reload=F5; Refresh
+Reload=Refresh; F5
 RenameFile=F2
 Replace=Ctrl+R
 ReportBug=
@@ -83,7 +83,7 @@ RotateUp=Up
 Save=Ctrl+S
 SaveAs=Ctrl+Shift+S
 SelectAll=Ctrl+A
-ShowHideHiddenFiles=Alt+.; Ctrl+H
+ShowHideHiddenFiles=Ctrl+H; Alt+.
 ShowMenubar=Ctrl+M
 ShowStatusbar=
 ShowToolbar=
@@ -133,18 +133,18 @@ Toggle Touchpad=Touchpad Toggle
 {d03619b6-9b3c-48cc-9d9c-a2aadb485550}=
 
 [kmix][Global Shortcuts]
-decrease_microphone_volume=Microphone Volume Down
+decrease_microphone_volume=Microphone Volume Down; Alt+Volume Down
 decrease_volume=Volume Down
-decrease_volume_small=Shift+Volume Down
-increase_microphone_volume=Microphone Volume Up
+decrease_volume_small=
+increase_microphone_volume=Microphone Volume Up; Alt+Volume Up
 increase_volume=Volume Up
-increase_volume_small=Shift+Volume Up
-mic_mute=Microphone Mute; Meta+Volume Mute
+increase_volume_small=
+mic_mute=Alt+Volume Mute; Microphone Mute
 mute=Volume Mute
 
 [ksmserver][Global Shortcuts]
 Halt Without Confirmation=
-Lock Session=Meta+L; Screensaver; Ctrl+Alt+L
+Lock Session=Screensaver
 Log Out=
 Log Out Without Confirmation=
 LogOut=
@@ -337,10 +337,10 @@ _launch=Meta+K
 
 [org.kde.krunner.desktop][Global Shortcuts]
 RunClipboard=Alt+F1
-_launch=Alt+Space; Search; Alt+F2
+_launch=Alt+Space; Search
 
 [org.kde.kscreen.desktop][Global Shortcuts]
-ShowOSD=Meta+P; Display
+ShowOSD=Display
 
 [org.kde.plasma-systemmonitor.desktop][Global Shortcuts]
 _launch=Meta+Esc
@@ -373,11 +373,11 @@ PowerOff=Power Off
 Sleep=Sleep
 Toggle Keyboard Backlight=Keyboard Light On/Off
 Turn Off Screen=
-powerProfile=Meta+B; Battery
+powerProfile=Battery
 
 [plasmaengineexplorer][Global Shortcuts]
 clear-history=
-clipboard_action=Meta+Ctrl+X
+clipboard_action=
 cycleNextAction=
 cyclePrevAction=
 edit_clipboard=
@@ -417,7 +417,7 @@ cycle-panels=
 cycleNextAction=
 cyclePrevAction=
 edit_clipboard=Meta+,
-manage activities=Meta+Q
+manage activities=
 next activity=Meta+A
 previous activity=Meta+Shift+A
 repeat_action=Ctrl+Alt+C
