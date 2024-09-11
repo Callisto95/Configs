@@ -26,3 +26,9 @@ As a workaround it's possible to give all apps access to `$HOME/.icons/` and cop
 ## P10K: Python virtualenv shows name and version
 
 I don't like the default way P10K shows the venv version (name *and* version). Thanks to Romkatv (creator of P10K) with the modified `POWERLEVEL9K_VIRTUALENV_CONTENT_EXPANSION` this is no longer the case (just the version).
+
+## OS Error 24: Too many open files
+
+`ulimit -n [amount]` changes the amount of allowed open files within the **current** shell. The values can be seen via `ulimit -Hn` (hard limit) and `ulimit -Sn` (soft limit).
+
+Changing it permanently can be done in `/etc/security/limits.conf`: `* hard nofile [amount]`.
