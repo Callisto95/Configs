@@ -14,6 +14,12 @@ Instead make the package (just `makepgk`, not `makepgk -i` / `makepgk -si`), ext
 
 Then the glfw overwrite must be enabled. Check your launcher for details. I recommend Prismlauncher for this.
 
+## Borderless Mods
+
+(At least) the mod (Borderless Fullscreen)[https://modrinth.com/mod/borderless-fullscreen] breaks GLFW stuff. Completely unusable.
+
+(Cubes Without Borders)[https://modrinth.com/mod/cubes-without-borders] works fine.
+
 ## Create and Shaders
 
 **This is about the Fabric version, not the Forge one!**
