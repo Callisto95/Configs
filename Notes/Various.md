@@ -32,3 +32,9 @@ I don't like the default way P10K shows the venv version (name *and* version). T
 `ulimit -n [amount]` changes the amount of allowed open files within the **current** shell. The values can be seen via `ulimit -Hn` (hard limit) and `ulimit -Sn` (soft limit).
 
 Changing it permanently can be done in `/etc/security/limits.conf`: `* hard nofile [amount]`.
+
+## Feral Interactive Gamemode
+
+Run `gamemoded -t` to test gamemode. If you get errors renicing threads, you have to change `/etc/security/limits.d/10-gamemode.conf` (create the file if needed).
+
+It's required to change the limits of the gamemode group. Add `@gamemode - nice -20` (or any max nice value) and reboot.
