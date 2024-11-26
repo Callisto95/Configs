@@ -2,8 +2,11 @@
 
 set -e
 
-kernel_hash="$(sha512sum '/boot/vmlinuz-linux-zen')"
-image_hash="$(sha512sum '/boot/initramfs-linux-zen.img')"
+kernel="/boot/vmlinuz-linux-zen"
+image="/boot/initramfs-linux-zen.img"
+
+kernel_hash="$(sha512sum "$kernel")"
+image_hash="$(sha512sum "$image")"
 
 
 echo "pacman..."
@@ -46,15 +49,10 @@ echo "flatpak..."
 flatpak uninstall --unused
 
 
-new_kernel_hash="$(sha512sum '/boot/vmlinuz-linux-zen')"
-new_image_hash="$(sha512sum '/boot/initramfs-linux-zen.img')"
+new_kernel_hash="$(sha512sum "$kernel")"
+new_image_hash="$(sha512sum "$image")"
 
 if [[ "$kernel_hash" != "$new_kernel_hash" || "$image_hash" != "$new_image_hash" ]]; then
 	echo ""
-	printf "\u001B[33mKernel has been updated, reboot?\u001B[0m [Y/n] "
-	
-	read answer
-	if [[ "$answer" == "" ]] || [[ "$answer" == "Y" ]] || [[ "$answer" == "y" ]]; then
-		systemctl reboot
-	fi
+	printf "\u001B[33mKernel has been updated!\u001B[0m"
 fi
