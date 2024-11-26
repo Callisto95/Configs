@@ -40,6 +40,7 @@ alias ls="eza"
 alias df="df -h" # human readable
 alias cat="bat"
 alias optipng="optipng -preserve -fix"
+alias oxipng="oxipng --opt=3 --preserve --filters 0-9 --fix"
 alias jpegoptim="jpegoptim --preserve"
 alias bandcamp-dl="bandcamp-dl --base-dir ."
 alias removeRating="setfattr -x user.baloo.rating"
