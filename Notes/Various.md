@@ -38,3 +38,8 @@ Changing it permanently can be done in `/etc/security/limits.conf`: `* hard nofi
 Run `gamemoded -t` to test gamemode. If you get errors renicing threads, you have to change `/etc/security/limits.d/10-gamemode.conf` (create the file if needed).
 
 It's required to change the limits of the gamemode group. Add `@gamemode - nice -20` (or any max nice value) and reboot.
+
+
+## Font rendering in KDE
+
+Use full hinting. Everything else leads to worse rendering. (May be different on 4K screens)
