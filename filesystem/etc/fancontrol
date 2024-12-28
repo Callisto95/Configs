@@ -17,11 +17,11 @@ MINTEMP=/sys/devices/platform/nct6775.656/hwmon/[[:print:]]*/pwm2=60	/sys/device
 
 MAXTEMP=/sys/devices/platform/nct6775.656/hwmon/[[:print:]]*/pwm2=85	/sys/devices/platform/nct6775.656/hwmon/[[:print:]]*/pwm3=89	/sys/devices/platform/nct6775.656/hwmon/[[:print:]]*/pwm5=85	/sys/devices/platform/nct6775.656/hwmon/[[:print:]]*/pwm6=1		/sys/devices/platform/nct6775.656/hwmon/[[:print:]]*/pwm7=85
 
-MINSTART=/sys/devices/platform/nct6775.656/hwmon/[[:print:]]*/pwm2=32	/sys/devices/platform/nct6775.656/hwmon/[[:print:]]*/pwm3=128	/sys/devices/platform/nct6775.656/hwmon/[[:print:]]*/pwm5=32	/sys/devices/platform/nct6775.656/hwmon/[[:print:]]*/pwm6=0		/sys/devices/platform/nct6775.656/hwmon/[[:print:]]*/pwm7=32
+MINSTART=/sys/devices/platform/nct6775.656/hwmon/[[:print:]]*/pwm2=32	/sys/devices/platform/nct6775.656/hwmon/[[:print:]]*/pwm3=92	/sys/devices/platform/nct6775.656/hwmon/[[:print:]]*/pwm5=32	/sys/devices/platform/nct6775.656/hwmon/[[:print:]]*/pwm6=92	/sys/devices/platform/nct6775.656/hwmon/[[:print:]]*/pwm7=32
 
-MINSTOP=/sys/devices/platform/nct6775.656/hwmon/[[:print:]]*/pwm2=32	/sys/devices/platform/nct6775.656/hwmon/[[:print:]]*/pwm3=128	/sys/devices/platform/nct6775.656/hwmon/[[:print:]]*/pwm5=32	/sys/devices/platform/nct6775.656/hwmon/[[:print:]]*/pwm6=0		/sys/devices/platform/nct6775.656/hwmon/[[:print:]]*/pwm7=32
+MINSTOP=/sys/devices/platform/nct6775.656/hwmon/[[:print:]]*/pwm2=32	/sys/devices/platform/nct6775.656/hwmon/[[:print:]]*/pwm3=92	/sys/devices/platform/nct6775.656/hwmon/[[:print:]]*/pwm5=32	/sys/devices/platform/nct6775.656/hwmon/[[:print:]]*/pwm6=63	/sys/devices/platform/nct6775.656/hwmon/[[:print:]]*/pwm7=32
 
-MINPWM=/sys/devices/platform/nct6775.656/hwmon/[[:print:]]*/pwm2=32		/sys/devices/platform/nct6775.656/hwmon/[[:print:]]*/pwm3=128	/sys/devices/platform/nct6775.656/hwmon/[[:print:]]*/pwm5=32	/sys/devices/platform/nct6775.656/hwmon/[[:print:]]*/pwm6=0		/sys/devices/platform/nct6775.656/hwmon/[[:print:]]*/pwm7=32
+MINPWM=/sys/devices/platform/nct6775.656/hwmon/[[:print:]]*/pwm2=32		/sys/devices/platform/nct6775.656/hwmon/[[:print:]]*/pwm3=92	/sys/devices/platform/nct6775.656/hwmon/[[:print:]]*/pwm5=32	/sys/devices/platform/nct6775.656/hwmon/[[:print:]]*/pwm6=63	/sys/devices/platform/nct6775.656/hwmon/[[:print:]]*/pwm7=32
 
 MAXPWM=/sys/devices/platform/nct6775.656/hwmon/[[:print:]]*/pwm2=96		/sys/devices/platform/nct6775.656/hwmon/[[:print:]]*/pwm3=160	/sys/devices/platform/nct6775.656/hwmon/[[:print:]]*/pwm5=96	/sys/devices/platform/nct6775.656/hwmon/[[:print:]]*/pwm6=64	/sys/devices/platform/nct6775.656/hwmon/[[:print:]]*/pwm7=255
 
