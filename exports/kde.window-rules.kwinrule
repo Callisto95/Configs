@@ -63,6 +63,30 @@ wmclass=java java
 wmclasscomplete=true
 wmclassmatch=1
 
+[Window settings for Picture-in-Picture]
+Description=Window settings for Picture-in-Picture
+above=true
+aboverule=3
+desktops=\\0
+desktopsrule=3
+maximizehorizrule=3
+maximizevertrule=3
+position=1280,0
+positionrule=3
+size=640,360
+sizerule=3
+skippager=true
+skippagerrule=3
+skipswitcher=true
+skipswitcherrule=3
+skiptaskbar=true
+skiptaskbarrule=3
+title=Picture-in-Picture
+titlematch=1
+wmclass=firefox firefox
+wmclasscomplete=true
+wmclassmatch=1
+
 [keep properties window from maximising]
 Description=keep properties window from maximising
 maximizehorizrule=3
