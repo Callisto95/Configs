@@ -2,55 +2,91 @@
 
 from __future__ import annotations
 
-import os
 import shutil
-from abc import ABC, abstractmethod
-from argparse import ArgumentParser
+from argparse import ArgumentParser, Namespace
 from concurrent.futures import Future, ThreadPoolExecutor
+from dataclasses import dataclass, field
+from enum import Enum
 from multiprocessing import cpu_count
-from os import listdir
-from os.path import abspath, basename, expanduser, getsize, join
+from os import listdir, utime
+from os.path import basename, getmtime, getsize
+from pathlib import Path
 from shutil import which
 from subprocess import CompletedProcess, DEVNULL, run
 from time import sleep
-from typing import Any, Callable
+from typing import Callable
 
 from colorama import Fore, Style
 from progress.bar import Bar, IncrementalBar
 from progress.spinner import PixelSpinner, Spinner
 
+EXECUTOR: ThreadPoolExecutor | None = None
 MINIMUM_PROGRESS_BAR_WIDTH: int = 30
 STDOUT_TO_DEVNULL: dict[str, int] = { "stdout": DEVNULL, "stderr": DEVNULL }
+DELETED_IMAGE_FOLDER: Path = Path("./deleted-images/").expanduser().resolve().absolute()
 
 
 class FileFilter:
 	@staticmethod
-	def jpeg(path: str) -> bool:
-		return path.endswith((".jpg", ".jpeg"))
+	def jpeg(path: Path) -> bool:
+		return path.suffix in (".jpg", ".jpeg")
+	
+	# jxl and png: using '==' for safety
+	# -> prevent weird 'character is in string' testing behaviour
+	@staticmethod
+	def jxl(path: Path) -> bool:
+		return path.suffix == ".jxl"
 	
 	@staticmethod
-	def jxl(path: str) -> bool:
-		return path.endswith(".jxl")
+	def png(path: Path) -> bool:
+		return path.suffix == ".png"
 	
 	@staticmethod
-	def png(path: str) -> bool:
-		return path.endswith(".png")
-	
-	@staticmethod
-	def any(path: str) -> bool:
+	def any(path: Path) -> bool:
 		# .jxl files are considered optimized
-		return path.endswith((".jpg", ".jpeg", ".png"))
+		return path.suffix in (".jpg", ".jpeg", ".png")
 
 
-class Executable(ABC):
-	def __init__(self, binary_name: str, image_filter: Callable[[str], bool]):
-		self.binary: str = binary_name
-		self.available: bool = self.executable_is_available(binary_name)
-		self.filter: Callable[[str], bool] = image_filter
+def exec_oxipng(image: Path) -> tuple[CompletedProcess, Path]:
+	return run(
+		["oxipng", "--opt=2", "--preserve", "--filters", "0-9", "--fix", "--threads=1", image],
+		**STDOUT_TO_DEVNULL
+	), image
+
+
+def exec_jpegoptim(image: Path) -> tuple[CompletedProcess, Path]:
+	return run(["jpegoptim", "--preserve", image], **STDOUT_TO_DEVNULL), image
+
+
+def exec_cjxl(image: Path) -> tuple[CompletedProcess, Path]:
+	target: Path = replace_file_type(image, "jxl")
+	return (
+		run(["cjxl", "-q", "100", "-e", "7", image, target], **STDOUT_TO_DEVNULL),
+		target
+	)
+
+
+def exec_jpeg2png(image: Path) -> tuple[CompletedProcess, Path]:
+	target: Path = replace_file_type(image, "png")
 	
-	@abstractmethod
-	def _execute(self, image: str) -> tuple[CompletedProcess, str]:
-		pass
+	if InternalFeatures.USE_16_BIT.enabled:
+		return run(
+			["jpeg2png", "--threads", "1", "--16-bits-png", "--iterations", "150", image, "--output", target],
+			**STDOUT_TO_DEVNULL
+		), target
+	else:
+		return run(["jpeg2png", "--threads", "1", image, "--output", target], **STDOUT_TO_DEVNULL), target
+
+
+@dataclass
+class Executable:
+	binary: str
+	filter: Callable[[Path], bool]
+	execute: Callable[[Path], tuple[CompletedProcess, Path]]
+	available: bool = field(init=False)
+	
+	def __post_init__(self):
+		self.available = self.executable_is_available(self.binary)
 	
 	@staticmethod
 	def executable_is_available(command: str) -> bool:
@@ -60,7 +96,8 @@ class Executable(ABC):
 			return False
 		return True
 	
-	def run(self, image: str, previous_result: CompletedProcess | None = None) -> tuple[CompletedProcess | None, str]:
+	def run(self, image: Path, previous_result: CompletedProcess | None = None) -> tuple[CompletedProcess | None,
+	Path]:
 		"""Run the associated program on the given image
 		:param image: The image to optimize (either visual clarity or size)
 		:param previous_result: Convenience: If either the filter or the program is not available, return this.
@@ -68,7 +105,7 @@ class Executable(ABC):
 		image path.
 		"""
 		if self.available and self.filter(image):
-			result, image = self._execute(image)
+			result, image = self.execute(image)
 			if result is None:
 				result = previous_result
 			return result, image
@@ -76,62 +113,19 @@ class Executable(ABC):
 		return previous_result, image
 
 
-class OxiPng(Executable):
-	def __init__(self):
-		super().__init__("oxipng", FileFilter.png)
-	
-	def _execute(self, image: str) -> tuple[CompletedProcess, str]:
-		return (
-			run(
-				["oxipng", "--opt=2", "--preserve", "--filters", "0-9", "--fix", "--threads=1", image],
-				**STDOUT_TO_DEVNULL
-			),
-			image
-		)
+class Executables(Executable, Enum):
+	OXIPNG = "oxipng", FileFilter.png, exec_oxipng
+	JPEGOPTIM = "jpegoptim", FileFilter.jpeg, exec_jpegoptim
+	CJXL = "cjxl", FileFilter.any, exec_cjxl
+	JPEG2PNG = "jpeg2png", FileFilter.jpeg, exec_jpeg2png
 
 
-class JpegOptim(Executable):
-	def __init__(self):
-		super().__init__("jpegoptim", FileFilter.jpeg)
-	
-	def _execute(self, image: str) -> tuple[CompletedProcess, str]:
-		return run(["jpegoptim", "--preserve", image], **STDOUT_TO_DEVNULL), image
-
-
-class CJXL(Executable):
-	def __init__(self):
-		super().__init__("cjxl", FileFilter.any)
-	
-	def _execute(self, image: str) -> tuple[CompletedProcess, str]:
-		target: str = replace_file_type(image, "jxl")
-		return (
-			run(["cjxl", "-q", "100", "-e", "7", image, target], **STDOUT_TO_DEVNULL),
-			target
-		)
-
-
-class Jpeg2Png(Executable):
-	def __init__(self):
-		super().__init__("jpeg2png", FileFilter.jpeg)
-	
-	def _execute(self, image: str) -> tuple[CompletedProcess, str]:
-		target: str = replace_file_type(image, "png")
-		return run(["jpeg2png", image, "-o", target], **STDOUT_TO_DEVNULL), target
-
-
-class Executables:
-	OXIPNG: Executable = OxiPng()
-	JPEGOPTIM: Executable = JpegOptim()
-	CJXL: Executable = CJXL()
-	JPEG2PNG: Executable = Jpeg2Png()
-
-
+@dataclass
 class Feature:
-	def __init__(self, name: str, display_name: str, requirement: Executable | None = None):
-		self.name: str = name
-		self.display_name: str = display_name if display_name is not None else name
-		self.enabled: bool = False
-		self.requirement: Executable = requirement
+	name_: str  # name is used by Enum
+	display_name: str
+	requirement: Executable | None = None
+	enabled: bool = field(init=False, default=False)
 	
 	def enable(self) -> None:
 		if self.requirement is not None and not self.requirement.available:
@@ -142,48 +136,87 @@ class Feature:
 	
 	def __eq__(self, other):
 		if isinstance(other, Feature):
-			return self.name == other.name
+			return self.name_ == other.name_
 		if isinstance(other, str):
-			return self.name == other
+			return self.name_ == other
 		return False
 	
 	def __str__(self) -> str:
-		return f"{self.name} ({self.display_name})"
+		return f"{self.name_} ({self.display_name})"
 
 
-class Features:
-	JXL_ENCODE: Feature = Feature("cjxl", "encode to JXL", Executables.CJXL)
-	DELETE_ORIGINAL: Feature = Feature("rm", "remove original")
-	JPEG_BETTER_DECODE: Feature = Feature("j2p", "better jpeg decoding", Executables.JPEG2PNG)
-	FIX_IMAGES: Feature = Feature("fix", "try to fix bad image extensions")
-	META_ENABLE_ALL: Feature = Feature("all", "meta: enable all features")
-	
-	@classmethod
-	def all(cls) -> list[Feature]:
-		return [cls.JXL_ENCODE, cls.DELETE_ORIGINAL, cls.JPEG_BETTER_DECODE, cls.FIX_IMAGES, cls.META_ENABLE_ALL]
+class Features(Feature, Enum):
+	JXL_ENCODE = "cjxl", "encode to JXL", Executables.CJXL
+	DELETE_ORIGINAL = "rm", "remove original"
+	JPEG_BETTER_DECODE = "j2p", "better jpeg decoding", Executables.JPEG2PNG
+	FIX_IMAGES = "fix", "try to fix bad image extensions"
 	
 	@classmethod
 	def get(cls, name: str) -> Feature | None:
-		for f in cls.all():
-			if f.name == name:
+		for f in cls:
+			if f.name_ == name:
 				return f
 		return None
 	
 	@classmethod
 	def enable_all(cls) -> None:
-		for feature in cls.all():
-			feature.enable()
+		for f in cls:
+			f.enable()
 	
 	@classmethod
-	def get_all_filtered(cls, enabled: bool) -> list[Feature]:
-		return [f for f in cls.all() if f.enabled == enabled]
+	def filter(cls, enabled: bool) -> list[Feature]:
+		return list(filter(lambda f: f.enabled == enabled, cls))
+	
+	# fuck python
+	def __str__(self):
+		return str(self.value)
 
 
-def filter_tasks(maybe: list[Future[Any]]) -> int:
-	return len([t for t in maybe if t.done()])
+class InternalFeatures(Feature, Enum):
+	USE_16_BIT = "16-bit", "if 16-bit colour depth should be used"
+	
+	def __str__(self) -> str:
+		return str(self.value)
 
 
-def get_size_of_files(images: list[str]) -> int:
+@dataclass
+class FeatureSet:
+	name_: str
+	description: str
+	features: list[Feature]
+	
+	def enable_set(self) -> None:
+		for feature in self.features:
+			feature.enable()
+	
+	def __str__(self) -> str:
+		return f"{self.name_} ({self.description}: {",".join([f.name_ for f in self.features])})"
+
+
+class FeatureSets(FeatureSet, Enum):
+	ALL = "all", "enable all features", [f for f in Features]
+	GENERAL_PICTURE = "general", "general image improvements", [
+		Features.DELETE_ORIGINAL, Features.JPEG_BETTER_DECODE, Features.FIX_IMAGES
+	]  # delete original is fine, because it only deletes the image if jpeg better decode ran
+	safe = "safe", "general, non-destructive image improvements", [Features.FIX_IMAGES]
+	
+	def __str__(self) -> str:
+		return str(self.value)
+	
+	@classmethod
+	def get(cls, name: str) -> FeatureSet | None:
+		for feature_set in cls:
+			if feature_set.name_ == name:
+				return feature_set
+		
+		return None
+
+
+def filter_tasks(tasks: list[Future]) -> int:
+	return len(list(filter(lambda task: task.done(), tasks)))
+
+
+def get_size_of_files(images: list[Path]) -> int:
 	return sum(getsize(image) for image in images)
 
 
@@ -202,24 +235,25 @@ def pretty_print_bytes(byte_amount: int) -> str:
 	return f"{byte_amount:.1f} {units[unit_index]}"
 
 
-def replace_file_type(file: str, target: str) -> str:
-	return f"{file[:file.rfind(".")]}.{target}"
+def replace_file_type(file: Path, target: str) -> Path:
+	return file.with_suffix(f".{target}")
 
 
-class FileHeaders:
+class FileHeaders(bytes, Enum):
 	# https://en.wikipedia.org/wiki/List_of_file_signatures
-	JPEG: bytes = b"\xFF\xD8\xFF"
-	PNG: bytes = b"\x89\x50\x4E\x47"
-	
-	
-MAX_LENGTH: int = max(len(FileHeaders.JPEG), len(FileHeaders.PNG))
+	JPEG = b"\xFF\xD8\xFF"
+	PNG = b"\x89\x50\x4E\x47"
 
 
-def fix_image(image: str) -> str:
-	original: str = image
+# second entry is sometimes skipped? explicit naming
+MAX_HEADER_LENGTH: int = max(len(FileHeaders.JPEG), len(FileHeaders.PNG))
+
+
+def fix_image(image: Path) -> Path:
+	original: Path = image
 	
-	with open(image, "rb") as file:
-		header: bytes = file.read(MAX_LENGTH)
+	with image.open("rb") as file:
+		header: bytes = file.read(MAX_HEADER_LENGTH)
 	
 	if header.startswith(FileHeaders.JPEG) and FileFilter.png(image):
 		image = replace_file_type(image, "jpg")
@@ -228,13 +262,18 @@ def fix_image(image: str) -> str:
 	
 	if original != image:
 		print(f"\r\u001B[0JFound bad file extension: {original} -> {image}")
-		shutil.move(original, image)
+		original.rename(image)
+	# shutil.move(original, image)
 	
 	return image
 
 
-def run_wrapper(image: str) -> tuple[CompletedProcess, str | None]:
-	original: str = image
+def delete_image(image: Path) -> None:
+	image.replace(DELETED_IMAGE_FOLDER / image.name)
+
+
+def run_wrapper(image: Path) -> tuple[CompletedProcess, Path]:
+	original: Path = Path(image)
 	result: CompletedProcess | None = None
 	
 	if Features.FIX_IMAGES.enabled:
@@ -243,27 +282,33 @@ def run_wrapper(image: str) -> tuple[CompletedProcess, str | None]:
 		original = image
 	
 	if Features.JPEG_BETTER_DECODE.enabled:
+		# preserve modification time
+		modification_time: float = getmtime(image)
+		
 		result, image = Executables.JPEG2PNG.run(image)
+		
+		# (access time, modification time) - just set both to modification_time
+		utime(image, (modification_time, modification_time))
 	
 	result, image = Executables.OXIPNG.run(image, result)
 	result, image = Executables.JPEGOPTIM.run(image, result)
 	
 	if Features.JXL_ENCODE.enabled:
-		tmp: str = image
+		tmp: Path = image
 		result, image = Executables.CJXL.run(image, result)
 		
 		# remove intermediary png from jpeg2png
 		if Features.JPEG_BETTER_DECODE.enabled and FileFilter.jpeg(original):
-			os.remove(tmp)
+			delete_image(tmp)
 	
 	if Features.DELETE_ORIGINAL.enabled and original != image:
-		os.remove(original)
+		delete_image(original)
 	
 	return result, image
 
 
-def do_optimize(files: list[str], filter: Callable[[str], bool]) -> tuple[list[str], list[Future], int]:
-	images: list[str] = [file for file in files if filter(file)]
+def do_optimize(files: list[Path], file_filter: Callable[[Path], bool]) -> tuple[list[Path], list[Future], int]:
+	images: list[Path] = [file for file in files if file_filter(file)]
 	image_size: int = get_size_of_files(images)
 	
 	tasks: list[Future] = []
@@ -275,10 +320,11 @@ def do_optimize(files: list[str], filter: Callable[[str], bool]) -> tuple[list[s
 	return images, tasks, image_size
 
 
-def start_optimizations() -> tuple[list[Future], int]:
-	print(f"using {args.threads} threads for {basename(args.directory)}")
-	files: list[str] = listdir(args.directory)
-	files = [join(args.directory, file) for file in files if FileFilter.any(file)]
+def initialize_optimizations(directory: Path, threads: int) -> tuple[list[Future], int]:
+	print(f"using {threads} threads for {basename(directory)}")
+	
+	files: list[Path] = [Path(path) for path in listdir(directory)]
+	files = [(directory / file) for file in files if FileFilter.any(file)]
 	
 	tasks: list[Future] = []
 	
@@ -315,7 +361,7 @@ def start_optimizations() -> tuple[list[Future], int]:
 	return tasks, image_size
 
 
-def do_progress_bar(tasks: list[Future[tuple[CompletedProcess, str | None]]]) -> None:
+def do_progress_bar(tasks: list[Future[tuple[CompletedProcess, Path]]]) -> None:
 	all_tasks: int = len(tasks)
 	
 	terminal_width: int = shutil.get_terminal_size()[0]
@@ -327,38 +373,133 @@ def do_progress_bar(tasks: list[Future[tuple[CompletedProcess, str | None]]]) ->
 	is_bar: bool = progress_bar_width >= MINIMUM_PROGRESS_BAR_WIDTH
 	
 	if is_bar:
-		bar: Bar = IncrementalBar(
-			"Progress", max=all_tasks, width=progress_bar_width, color='cyan'
-		)
+		bar: Bar = IncrementalBar("Progress", max=all_tasks, width=progress_bar_width, color='cyan')
 	else:
 		bar: Spinner = PixelSpinner("Processing ")
 	
-	done: int = 0
-	counter: int = 0
-	while done != all_tasks:
-		if is_bar:
-			done = filter_tasks(tasks)
-			bar.goto(done)
-			
-			if done == all_tasks:
-				bar.color = "green"
-				bar.update()
-				break
-			
-			sleep(1)
-		else:
-			counter += 1
-			if counter == 10:
+	try:
+		done: int = 0
+		counter: int = 0
+		while done != all_tasks:
+			if is_bar:
 				done = filter_tasks(tasks)
-				counter = 0
-			bar.next()
-			sleep(0.1)
+				bar.goto(done)
+				
+				if done == all_tasks:
+					bar.color = "green"
+					bar.update()
+					break
+				
+				sleep(1)
+			else:
+				counter += 1
+				if counter == 10:
+					done = filter_tasks(tasks)
+					counter = 0
+				bar.next()
+				sleep(0.1)
+		
+		bar.finish()
+	except KeyboardInterrupt as kbe:
+		if is_bar:
+			bar.color = "red"
+		raise kbe
+
+
+def parse_args() -> Namespace:  # NOSONAR
+	parser = ArgumentParser()
+	parser.add_argument(
+		"directory",
+		type=str,
+		default=".",
+		action="store",
+		nargs="?",
+		help="where the images to be optimized are located"
+	)
+	parser.add_argument(
+		"-t",
+		"--threads",
+		dest="threads",
+		type=int,
+		default=cpu_count() - 2,
+		action="store",
+		help="the amount of used threads. Defaults to [all - 2]"
+	)
+	parser.add_argument(
+		"-f",
+		"--features",
+		dest="features",
+		type=str,
+		default="",
+		action="store",
+		help="comma separated list of features to enable. Available features: "
+			 f"{", ".join([str(f) for f in Features])}"
+	)
+	parser.add_argument(
+		"-s",
+		"--feature-set",
+		dest="feature_set",
+		default=None,
+		type=str,
+		action="store",
+		help="name of the feature set to enable. Available feature sets: "
+			 f"{", ".join([str(fs) for fs in FeatureSets])}"
+	)
+	parser.add_argument(
+		"--16",
+		dest="use_16_bit",
+		action="store_true",
+		help="allow jpeg2png to create 16-bit png's (this will create massive png's!)"
+	)
+	args = parser.parse_args()
 	
-	bar.finish()
+	args.directory = Path(args.directory).expanduser().resolve().absolute()
+	
+	if args.threads < 1:
+		print("negative thread amount; using 1")
+		args.threads = 1
+	
+	if args.use_16_bit:
+		InternalFeatures.USE_16_BIT.enable()
+	
+	bad_feature: bool = False
+	for feature in args.features.split(","):
+		if (f := Features.get(feature)) is not None:
+			f.enable()
+		else:
+			if feature != "":
+				print(f"Given feature '{feature}' does not exist!")
+				bad_feature = True
+	
+	if bad_feature:
+		exit(1)
+	
+	if args.feature_set is not None:
+		if (feature_set := FeatureSets.get(args.feature_set)) is not None:
+			feature_set.enable_set()
+		else:
+			print(f"Given feature set '{args.feature_set}' does not exist!")
+			exit(1)
+	
+	if Features.JPEG_BETTER_DECODE.enabled:
+		print(f"{Fore.YELLOW}jpeg2png enabled. This will increase file size of jpeg's!{Style.RESET_ALL}")
+	
+	if Features.DELETE_ORIGINAL.enabled and not (DELETED_IMAGE_FOLDER.exists() and DELETED_IMAGE_FOLDER.is_dir()):
+		DELETED_IMAGE_FOLDER.mkdir()
+	
+	if len((enabled_features := Features.filter(True))) > 0:
+		print(f"enabled features: {", ".join([str(f) for f in enabled_features])}")
+	
+	global EXECUTOR
+	EXECUTOR = ThreadPoolExecutor(args.threads)
+	
+	return args
 
 
 def main() -> None:
-	tasks, original_size = start_optimizations()
+	args: Namespace = parse_args()
+	
+	tasks, original_size = initialize_optimizations(args.directory, args.threads)
 	
 	do_progress_bar(tasks)
 	
@@ -382,62 +523,12 @@ def main() -> None:
 		"->",
 		pretty_print_bytes(current_size),
 		"(",
-		f"{Fore.RED if is_less else Fore.CYAN}{pretty_print_bytes(current_size - original_size)}",
+		f"{f"{Fore.RED}+" if is_less else Fore.CYAN}{pretty_print_bytes(current_size - original_size)}",
 		"|",
 		f"{"+" if is_less else "-"}{size_difference:.2f}%{Style.RESET_ALL}",
 		")"
 	)
 
-
-parser = ArgumentParser()
-parser.add_argument(
-	"directory", type=str, default=".", action="store", nargs="?", help="where the images to be optimized are located"
-)
-parser.add_argument(
-	"-t",
-	"--threads",
-	dest="threads",
-	type=int,
-	default=cpu_count() - 2,
-	action="store",
-	help="the amount of used threads. Defaults to [all - 2]"
-)
-parser.add_argument(
-	"-f",
-	"--features",
-	dest="features",
-	type=str,
-	default="",
-	action="store",
-	help=f"comma separated list of enabled features. Available features: "
-		 f"{",".join([str(f) for f in Features.all()])}"
-)
-args = parser.parse_args()
-
-if args.threads < 1:
-	print("negative thread amount; using 1")
-	args.threads = 1
-
-args.directory = abspath(expanduser(args.directory))
-
-for feature in args.features.split(","):
-	f: Feature | None = Features.get(feature)
-	if f is None:
-		if feature != "":
-			print(f"Given feature '{feature}' does not exist, skipping")
-	else:
-		f.enable()
-
-if Features.META_ENABLE_ALL.enabled:
-	Features.enable_all()
-
-if Features.JPEG_BETTER_DECODE.enabled:
-	print(f"{Fore.YELLOW}jpeg2png enabled. This will most likely increase file size!{Style.RESET_ALL}")
-
-if len((enabled_features := Features.get_all_filtered(True))) > 0:
-	print(f"enabled features: {", ".join([str(f) for f in enabled_features])}")
-
-EXECUTOR: ThreadPoolExecutor = ThreadPoolExecutor(args.threads)
 
 if __name__ == '__main__':
 	try:
