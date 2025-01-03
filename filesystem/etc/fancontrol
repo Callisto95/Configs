@@ -1,11 +1,4 @@
-# CPU (TCTL):	/sys/devices/pci0000:00/0000:00:18.3/hwmon/[[:print:]]*/temp1_input
-# not accurate?		https://bbs.archlinux.org/viewtopic.php?pid=1248225#p1248225
-
-# MB (CPUTIN):	/sys/devices/pci0000:00/0000:00:18.3/hwmon/[[:print:]]*/temp1_input
-# way too low
-
-# SMBUSMASTER 0 is internal CPU measurement
-# SMBUSMASTER 1 is chipset?
+# DO NOT USE THIS WITHOUT MODIFYING!
 
 INTERVAL=0.3
 
@@ -13,19 +6,19 @@ FCTEMPS=/sys/devices/platform/nct6775.656/hwmon/[[:print:]]*/pwm2=/sys/devices/p
 
 FCFANS=/sys/devices/platform/nct6775.656/hwmon/[[:print:]]*/pwm2=/sys/devices/platform/nct6775.656/hwmon/[[:print:]]*/fan2_input /sys/devices/platform/nct6775.656/hwmon/[[:print:]]*/pwm3=/sys/devices/platform/nct6775.656/hwmon/[[:print:]]*/fan3_input /sys/devices/platform/nct6775.656/hwmon/[[:print:]]*/pwm5=/sys/devices/platform/nct6775.656/hwmon/[[:print:]]*/fan5_input
 
-MINTEMP=/sys/devices/platform/nct6775.656/hwmon/[[:print:]]*/pwm2=60	/sys/devices/platform/nct6775.656/hwmon/[[:print:]]*/pwm3=70	/sys/devices/platform/nct6775.656/hwmon/[[:print:]]*/pwm5=60	/sys/devices/platform/nct6775.656/hwmon/[[:print:]]*/pwm6=0		/sys/devices/platform/nct6775.656/hwmon/[[:print:]]*/pwm7=60
+MINTEMP=/sys/devices/platform/nct6775.656/hwmon/[[:print:]]*/pwm2=60	/sys/devices/platform/nct6775.656/hwmon/[[:print:]]*/pwm3=70	/sys/devices/platform/nct6775.656/hwmon/[[:print:]]*/pwm5=60	/sys/devices/platform/nct6775.656/hwmon/[[:print:]]*/pwm6=65	/sys/devices/platform/nct6775.656/hwmon/[[:print:]]*/pwm7=60
 
-MAXTEMP=/sys/devices/platform/nct6775.656/hwmon/[[:print:]]*/pwm2=85	/sys/devices/platform/nct6775.656/hwmon/[[:print:]]*/pwm3=89	/sys/devices/platform/nct6775.656/hwmon/[[:print:]]*/pwm5=85	/sys/devices/platform/nct6775.656/hwmon/[[:print:]]*/pwm6=1		/sys/devices/platform/nct6775.656/hwmon/[[:print:]]*/pwm7=85
+MAXTEMP=/sys/devices/platform/nct6775.656/hwmon/[[:print:]]*/pwm2=85	/sys/devices/platform/nct6775.656/hwmon/[[:print:]]*/pwm3=89	/sys/devices/platform/nct6775.656/hwmon/[[:print:]]*/pwm5=85	/sys/devices/platform/nct6775.656/hwmon/[[:print:]]*/pwm6=75	/sys/devices/platform/nct6775.656/hwmon/[[:print:]]*/pwm7=85
 
 MINSTART=/sys/devices/platform/nct6775.656/hwmon/[[:print:]]*/pwm2=32	/sys/devices/platform/nct6775.656/hwmon/[[:print:]]*/pwm3=92	/sys/devices/platform/nct6775.656/hwmon/[[:print:]]*/pwm5=32	/sys/devices/platform/nct6775.656/hwmon/[[:print:]]*/pwm6=92	/sys/devices/platform/nct6775.656/hwmon/[[:print:]]*/pwm7=32
 
-MINSTOP=/sys/devices/platform/nct6775.656/hwmon/[[:print:]]*/pwm2=32	/sys/devices/platform/nct6775.656/hwmon/[[:print:]]*/pwm3=92	/sys/devices/platform/nct6775.656/hwmon/[[:print:]]*/pwm5=32	/sys/devices/platform/nct6775.656/hwmon/[[:print:]]*/pwm6=63	/sys/devices/platform/nct6775.656/hwmon/[[:print:]]*/pwm7=32
+MINSTOP=/sys/devices/platform/nct6775.656/hwmon/[[:print:]]*/pwm2=32	/sys/devices/platform/nct6775.656/hwmon/[[:print:]]*/pwm3=92	/sys/devices/platform/nct6775.656/hwmon/[[:print:]]*/pwm5=32	/sys/devices/platform/nct6775.656/hwmon/[[:print:]]*/pwm6=64	/sys/devices/platform/nct6775.656/hwmon/[[:print:]]*/pwm7=32
 
-MINPWM=/sys/devices/platform/nct6775.656/hwmon/[[:print:]]*/pwm2=32		/sys/devices/platform/nct6775.656/hwmon/[[:print:]]*/pwm3=92	/sys/devices/platform/nct6775.656/hwmon/[[:print:]]*/pwm5=32	/sys/devices/platform/nct6775.656/hwmon/[[:print:]]*/pwm6=63	/sys/devices/platform/nct6775.656/hwmon/[[:print:]]*/pwm7=32
+MINPWM=/sys/devices/platform/nct6775.656/hwmon/[[:print:]]*/pwm2=32		/sys/devices/platform/nct6775.656/hwmon/[[:print:]]*/pwm3=92	/sys/devices/platform/nct6775.656/hwmon/[[:print:]]*/pwm5=32	/sys/devices/platform/nct6775.656/hwmon/[[:print:]]*/pwm6=0		/sys/devices/platform/nct6775.656/hwmon/[[:print:]]*/pwm7=32
 
-MAXPWM=/sys/devices/platform/nct6775.656/hwmon/[[:print:]]*/pwm2=96		/sys/devices/platform/nct6775.656/hwmon/[[:print:]]*/pwm3=160	/sys/devices/platform/nct6775.656/hwmon/[[:print:]]*/pwm5=96	/sys/devices/platform/nct6775.656/hwmon/[[:print:]]*/pwm6=64	/sys/devices/platform/nct6775.656/hwmon/[[:print:]]*/pwm7=255
+MAXPWM=/sys/devices/platform/nct6775.656/hwmon/[[:print:]]*/pwm2=96		/sys/devices/platform/nct6775.656/hwmon/[[:print:]]*/pwm3=160	/sys/devices/platform/nct6775.656/hwmon/[[:print:]]*/pwm5=96	/sys/devices/platform/nct6775.656/hwmon/[[:print:]]*/pwm6=128	/sys/devices/platform/nct6775.656/hwmon/[[:print:]]*/pwm7=255
 
-AVERAGE=/sys/devices/platform/nct6775.656/hwmon/[[:print:]]*/pwm2=6		/sys/devices/platform/nct6775.656/hwmon/[[:print:]]*/pwm3=6		/sys/devices/platform/nct6775.656/hwmon/[[:print:]]*/pwm5=6		/sys/devices/platform/nct6775.656/hwmon/[[:print:]]*/pwm6=1		/sys/devices/platform/nct6775.656/hwmon/[[:print:]]*/pwm7=6
+AVERAGE=/sys/devices/platform/nct6775.656/hwmon/[[:print:]]*/pwm2=6		/sys/devices/platform/nct6775.656/hwmon/[[:print:]]*/pwm3=6		/sys/devices/platform/nct6775.656/hwmon/[[:print:]]*/pwm5=6		/sys/devices/platform/nct6775.656/hwmon/[[:print:]]*/pwm6=6		/sys/devices/platform/nct6775.656/hwmon/[[:print:]]*/pwm7=6
 
 # Notes:
 # PWM2: CPU fans
