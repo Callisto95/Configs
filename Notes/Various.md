@@ -17,12 +17,6 @@ Maybe having other GPU accelerated apps open causes instability? FireFox and You
 
 Similarly, it seems some kernels are more unstable than others.
 
-## Flatpak's use wrong cursor
-
-Some Flatpak's do not have a theme / theme loader included, which is why a completely different cursor theme us used. Technically, giving these apps access to `/usr/share/icons` would solve this, but the Flatpak team doesn't want that.
-
-As a workaround it's possible to give all apps access to `$HOME/.icons/` and copy everything from `/usr/share/icons` into it. I have created a hook for that (see `etc/pacman.d/hooks/10-icons-sync.hook`).
-
 ## P10K: Python virtualenv shows name and version
 
 I don't like the default way P10K shows the venv version (name *and* version). Thanks to Romkatv (creator of P10K) with the modified `POWERLEVEL9K_VIRTUALENV_CONTENT_EXPANSION` this is no longer the case (just the version).
