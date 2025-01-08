@@ -7,5 +7,5 @@ Target = usr/share/icons/*
 [Action]
 Description = Sync icons between /usr and $HOME
 When = PostTransaction
-Exec = /usr/bin/rsync -au --chmod=777 /usr/share/icons/. /home/luca_s/.icons/
+Exec = /usr/bin/rsync -au --chmod=777 /usr/share/icons/. /home/callisto/.icons/
 NeedsTargets
