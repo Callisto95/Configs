@@ -54,5 +54,5 @@ new_image_hash="$(sha512sum "$image")"
 
 if [[ "$kernel_hash" != "$new_kernel_hash" || "$image_hash" != "$new_image_hash" ]]; then
 	echo ""
-	printf "\u001B[33mKernel has been updated!\u001B[0m"
+	printf "\u001B[33mKernel has been updated!\u001B[0m\n"
 fi
