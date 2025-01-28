@@ -10,7 +10,7 @@ Note: Custom models do exist, but I don't mention them here. These are just the 
 
 ### Upscayl Standard
 
-`upscayl-standard` is a newer model, which can keep a lot of detail. Compared to `high-fidelity` it adds harder edges and some detail is removed.
+`upscayl-standard` is a newer model, which can keep a lot of detail. Compared to `high-fidelity` it adds harder edges and detail is removed.
 
 ### High Fidelity
 
