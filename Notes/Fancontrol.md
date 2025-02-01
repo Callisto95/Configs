@@ -6,9 +6,11 @@ There are temperatures with the same name, but *very* different functions. TSI f
 
 ### CPU
 
-There are some choices:
+I have a Ryzen CPU, which means I should be using whatever `k10temp` shows. Everything else, while maybe more precise, is not what the system uses for speed / boost calculations.
 
-- `Tctl` (temperature control index, not an actual sensor): A temperature index; fluctuates a lot, use averaging. **This one should be used.**
+With that in mind there are these options:
+
+- `Tctl` (temperature control index, not an actual sensor): A temperature index part of `k10temp`; fluctuates a lot, use averaging. **This one should be used.**
 - on-die sensors (e.g. `Tccd1`): fluctuates massively and nearly instantly; not recommended.
 - `CPUTIN`: sensor near the CPU on the motherboard. Lower accuracy, lower fluctuation.
 - `SYSTIN` (system temperature index): In my case always stuck on one temperature. Use `Tctl` instead.
