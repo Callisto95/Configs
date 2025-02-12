@@ -1,0 +1,33 @@
+/*** Hide Tab Close buttons ***/
+.tab-stack > .tab-content > .tab-close-button {
+	/* 	visibility: collapse !important; */
+	display: none !important;
+}
+
+:root {
+	/* colour defaults */
+	--accent-default: #FF4500;
+	--accent-dark: #CD3700;
+	--acent-light: #FF5F23;
+	
+	/* overrides for things themes couldn't do */
+	--color-accent-primary: var(--accent-default) !important;
+	--color-accent-primary-active: var(--accent-dark) !important;
+	--in-content-primary-button-background: var(--accent-default) !important;
+	--in-content-primary-button-background-hover: var(--acent-light) !important;
+	--link-color-hover:var(--acent-light) !important;
+	--urlbarView-highlight-background: var(--accent-default) !important;
+	--newtab-primary-action-background:var(--accent-default) !important;
+}
+
+.urlbarView-row {
+	&[selected] {
+		--urlbarView-highlight-background: var(--accent-default) !important;
+	}
+}
+
+.urlbarView-url {
+	.urlbarView-row:not([selected]) & {
+		color: var(--accent-default) !important;
+	}
+}

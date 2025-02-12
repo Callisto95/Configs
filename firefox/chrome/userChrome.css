@@ -1,5 +1,0 @@
-/*** Hide Tab Close buttons ***/
-.tab-stack > .tab-content > .tab-close-button {
-/* 	visibility: collapse !important; */
-	display: none !important;
-}
