@@ -4,11 +4,11 @@ DIR="$(dirname "$0")"
 
 case "$1" in
 	"start")
-		"$DIR"/scx.sh "start";
+		# "$DIR"/scx.sh "start";
 		notify-send --app-name "GameMode" "GameMode started";
 		;;
 	"end")
-		"$DIR"/scx.sh "stop";
+		# "$DIR"/scx.sh "stop";
 		notify-send --app-name "GameMode" "GameMode ended";
 		;;
 	*)
