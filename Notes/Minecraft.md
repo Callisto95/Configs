@@ -24,4 +24,10 @@ Then the glfw overwrite must be enabled. Check your launcher for details. I reco
 
 **This is about the Fabric version, not the Forge one!**
 
-Water wheel cause immense lag, even when just placed. Install `Iris Flywheel Compat`, run `/flywheel backend instancing`, then restart.
+Water wheel cause immense lag and weird rendering issues, even when just placed. Install `Iris Flywheel Compat`, run `/flywheel backend instancing`, then restart.
+
+## Distant Horizons on Servers
+
+This is not officially supported, but you can link `Distant_Horizons_server_data/[server name]/[level]/DistantHorizons.sqlite` to a local worlds' `DistantHorizons.sqlite`. That way you can generate your own LOD's and load them when on the server.
+
+Obviously modified terrain is not in the LOD's, but is updated when it's loaded on the server.
