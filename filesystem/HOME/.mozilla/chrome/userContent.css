@@ -17,7 +17,8 @@
 	--in-content-primary-button-background-hover: var(--acent-light) !important;
 	--link-color-hover:var(--acent-light) !important;
 	--urlbarView-highlight-background: var(--accent-default) !important;
-	--newtab-primary-action-background:var(--accent-default) !important;
+	--newtab-primary-action-background: var(--accent-default) !important;
+	--toolbar-field-focus-border-color: var(--accent-default) !important;
 }
 
 .urlbarView-row {
