@@ -185,9 +185,14 @@ alias sc="clear && git status"
 alias s="git status"
 alias gf="git fetch origin"
 alias gdf="git diff"
+alias gwdf='git diff --word-diff'
 alias gr="git reset"
 alias gck="git checkout"
-alias glog='git log --graph'
+alias gg='git log --graph --oneline'
+alias glog='git log --oneline'
+# long variants
+alias ggl='git log --graph'
+alias glogl='git log'
 
 # python
 alias act="source ./venv/bin/activate"
