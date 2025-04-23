@@ -16,9 +16,9 @@ Then the glfw overwrite must be enabled. Check your launcher for details. I reco
 
 ## Borderless Mods
 
-(At least) the mod (Borderless Fullscreen)[https://modrinth.com/mod/borderless-fullscreen] breaks GLFW stuff. Completely unusable.
+(At least) the mod [Borderless Fullscreen](https://modrinth.com/mod/borderless-fullscreen) breaks GLFW stuff. Completely unusable.
 
-(Cubes Without Borders)[https://modrinth.com/mod/cubes-without-borders] works fine.
+[Cubes Without Borders](https://modrinth.com/mod/cubes-without-borders) works fine.
 
 ## Create and Shaders
 
@@ -28,6 +28,10 @@ Water wheel cause immense lag and weird rendering issues, even when just placed.
 
 ## Distant Horizons on Servers
 
+Note: DH is now fully supported on servers, this is for when servers don't have DH installed.
+
 This is not officially supported, but you can link `Distant_Horizons_server_data/[server name]/[level]/DistantHorizons.sqlite` to a local worlds' `DistantHorizons.sqlite`. That way you can generate your own LOD's and load them when on the server.
 
 Obviously modified terrain is not in the LOD's, but is updated when it's loaded on the server.
+
+Bobby (using the `bobby-fallback` world) can also be used in the same way.
