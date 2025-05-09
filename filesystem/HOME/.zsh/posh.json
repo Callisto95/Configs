@@ -9,7 +9,7 @@
   "transient_prompt": {
       "background": "transparent",
       "foreground": "#00FF00",
-      "template": "\uF054"
+      "template": "\uF054 "
   },
   "final_space": true,
   "version": 3,
@@ -29,6 +29,18 @@
             "type": "path",
             "style": "full"
           }
+        },
+        {
+          "type": "path",
+          "style": "diamond",
+          "trailing_diamond": "\uE0B0",
+          "foreground": "#FF0000",
+          "background": "#000000",
+          "properties": {
+            "type": "path",
+            "style": "full"
+          },
+          "template": "{{ if .Writable }}{{ else }} \uF023{{ end }}"
         },
         {
           "background": "#4e9a06",
