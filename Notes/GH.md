@@ -6,7 +6,8 @@ Run `gh auth setup-git` to use the GitHub cli as your credential manager (for `g
 
 ## Sign commits with SSH key
 
-This references GitHub's `verified` status for commits.
+> [!NOTE]
+> This references GitHub's `verified` status for commits.
 
 Generate a key with the comment only containing your e-mail. Then use `gh ssh-key add [PUBLIC keyfile] --title "[name in GitHub UI]" --type "signing"`.
 

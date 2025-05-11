@@ -9,7 +9,8 @@ Benutzererkennung: [y Nummer]
 Passwort: [idk]
 ```
 
-This may fail for no reason.
+> [!IMPORTANT]
+> This may fail for no reason. Just retry and it'll work at some point.
 
 ## Manual
 

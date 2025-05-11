@@ -1,6 +1,6 @@
 # PipeWire
 
-## pipewire-media-session to WirePlumber
+## Upgrade from pipewire-media-session to WirePlumber
 
 I just updated from `pipewire-media-session` to WirePlumber.
 

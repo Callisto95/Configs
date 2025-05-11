@@ -6,7 +6,9 @@ There are temperatures with the same name, but *very* different functions. TSI f
 
 ### CPU
 
-I have a Ryzen CPU, which means I should be using whatever `k10temp` shows. Everything else, while maybe more precise, is not what the system uses for speed / boost calculations.
+> [!IMPORTANT]
+> I have a Ryzen CPU, which means I should be using whatever `k10temp` shows.
+> Everything else, while maybe more precise, is not what the system uses for speed / boost calculations.
 
 With that in mind there are these options:
 
