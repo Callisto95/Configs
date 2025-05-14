@@ -41,3 +41,30 @@ It's required to change the limits of the gamemode group. Add `@gamemode - nice 
 ## Font rendering in KDE
 
 Use full hinting. Everything else leads to worse rendering. (May be different on 4K screens)
+
+## Invalid database signature
+
+The CachyOS admin key seems to be problematic (at least for me). I now had two occurences, where it corrupted (or something).
+
+```
+Signature from "X <x@x.com>" is invalid
+error: database 'core' is not valid (invalid or corrupted database (PGP signature))
+```
+
+The easiest way: refresh the mirrorlist, then run `sudo pacman -Syu archlinux-keyring && sudo pacman -Syyu`
+
+I vaguely remember a second way:
+
+```bash
+sudo rm -rf /etc/pacman.d/gnupg/
+sudo gpg --refresh-keys
+sudo pacman-key --init
+sudo pacman-key --populate archlinux
+```
+
+Also from a Reddit thread:
+
+```bash
+sudo rm -rf /var/lib/pacman/sync
+sudo pacman -Syyu
+```
