@@ -1,6 +1,4 @@
-#!/usr/bin/python
-
-from mimetypes import guess_type
+from mimetypes import guess_file_type
 from gi.repository import Gio
 import sys
 import os
@@ -11,11 +9,11 @@ if len(sys.argv) != 2:
 	sys.exit(1)
 
 if os.path.exists(sys.argv[1]):
-	mime = guess_type(sys.argv[1])[1]
+	mime = guess_file_type(sys.argv[1])[1]
 	
 	if mime is None:
 		print("type could not be guessed, falling back to xdg-mime")
-		
+
 		proc = run(["xdg-mime", "query", "filetype", sys.argv[1]], capture_output=True)
 		mime = proc.stdout.decode("UTF-8").strip()
 else:
