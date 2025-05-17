@@ -181,6 +181,7 @@ alias gr="git reset"
 alias gck="git checkout"
 alias gg='git log --graph --oneline'
 alias glog='git log --oneline'
+alias gcln='git clean -fdx'
 # long variants
 alias ggl='git log --graph'
 alias glogl='git log'
