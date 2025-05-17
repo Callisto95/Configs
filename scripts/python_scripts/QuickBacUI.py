@@ -68,6 +68,9 @@ class QuickBackUI(QWidget):
 		self.controls.setSizeConstraint(QLayout.SizeConstraint.SetMinimumSize)
 		self.groupBox = QGroupBox(self)
 		self.groupBox.setObjectName(u"groupBox")
+		group_box_size_policy = QSizePolicy(QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Preferred)
+		group_box_size_policy.setHorizontalStretch(2)
+		self.groupBox.setSizePolicy(group_box_size_policy)
 		self.verticalLayout_2 = QVBoxLayout(self.groupBox)
 		self.verticalLayout_2.setObjectName(u"verticalLayout_2")
 		self.horizontal = QRadioButton(self.groupBox)
@@ -85,6 +88,9 @@ class QuickBackUI(QWidget):
 		
 		self.groupBox_2 = QGroupBox(self)
 		self.groupBox_2.setObjectName(u"groupBox_2")
+		group_box_2_size_policy = QSizePolicy(QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Preferred)
+		group_box_2_size_policy.setHorizontalStretch(2)
+		self.groupBox_2.setSizePolicy(group_box_2_size_policy)
 		self.verticalLayout_3 = QVBoxLayout(self.groupBox_2)
 		self.verticalLayout_3.setObjectName(u"verticalLayout_3")
 		self.crop = QRadioButton(self.groupBox_2)
@@ -206,6 +212,7 @@ class QuickBackUI(QWidget):
 		)
 		
 		self.image.setPixmap(QPixmap.fromImage(scaled_image))
+		self.setWindowTitle(f"QuickBac - {self.finished_image.width()}x{self.finished_image.height()}")
 		self.update_lock.release()
 	
 	def reset(self) -> None:
