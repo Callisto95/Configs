@@ -69,6 +69,7 @@ restartPlasma() {
 alias listZip="zipinfo -1"
 alias zipContent="zipinfo"
 alias dmesg="sudo dmesg --color=always | less -R"
+alias figlett="figlet -d $HOME/.local/share/figlet/figlet-fonts"
 
 
 # pacman
@@ -138,6 +139,23 @@ grst() {
 	done
 }
 gpu() {
+	if [[ -z "$1" ]]; then
+		echo "no remote given"
+		return
+	fi
+	
+	if [[ "$2" == "-f" ]]; then
+		git push "$1" $(get_branch) --force
+	elif [[ -n "$2" ]]; then
+		git push "$1" "$2"
+	else
+		git push "$1" $(get_branch)
+	fi
+
+	# also push tags
+	git push "$1" --tags
+}
+gp() {
 	if [[ "$1" == "-f" ]]; then
 		git push origin $(get_branch) --force
 	elif [[ "$1" != "" ]]; then
@@ -181,7 +199,6 @@ alias gr="git reset"
 alias gck="git checkout"
 alias gg='git log --graph --oneline'
 alias glog='git log --oneline'
-alias gcln='git clean -fdx'
 # long variants
 alias ggl='git log --graph'
 alias glogl='git log'
