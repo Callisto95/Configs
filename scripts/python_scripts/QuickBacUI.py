@@ -1,7 +1,10 @@
+#!/usr/bin/python
+
 import sys
 from multiprocessing import Process
 from pathlib import Path
 from threading import Lock
+from typing import TypeAlias
 
 from PySide6.QtCore import (QCoreApplication, QMetaObject, QPoint, QSize, Qt)
 from PySide6.QtGui import QColor, QDragEnterEvent, QDragMoveEvent, QDropEvent, QImage, QPainter, QPixmap
@@ -14,8 +17,11 @@ from logger import Logger
 LOGGER: Logger = Logger("QuickBacUI")
 # LOGGER.verbose_enabled = True
 
-PC_ASPECT_RATION: float = 3840 / 2160
-PHONE_ASPECT_RATION: float = 1080 / 2400
+PC_ASPECT_RATIO: float = 3840 / 2160
+PHONE_ASPECT_RATIO: float = 1080 / 2400
+
+
+CropResult: TypeAlias = tuple[tuple[int, int], tuple[int, int]]
 
 
 class QuickBackUI(QWidget):
@@ -111,10 +117,10 @@ class QuickBackUI(QWidget):
 		self.buttons = QHBoxLayout()
 		self.buttons.setObjectName(u"buttons")
 		self.buttons.setSizeConstraint(QLayout.SizeConstraint.SetMinimumSize)
-		self.cancel = QPushButton(self)
-		self.cancel.setObjectName(u"cancel")
+		self.center = QPushButton(self)
+		self.center.setObjectName(u"center")
 		
-		self.buttons.addWidget(self.cancel)
+		self.buttons.addWidget(self.center)
 		
 		self.export_2 = QPushButton(self)
 		self.export_2.setObjectName(u"export_2")
@@ -133,7 +139,7 @@ class QuickBackUI(QWidget):
 		self.crop.toggled.connect(self.resize_current_image)
 		self.offset.valueChanged.connect(self.resize_current_image)
 		
-		self.cancel.clicked.connect(self.reset)
+		self.center.clicked.connect(self.reset_offset)
 		self.export_2.clicked.connect(self.export)
 		
 		self.reset()
@@ -147,7 +153,7 @@ class QuickBackUI(QWidget):
 		self.groupBox_2.setTitle(QCoreApplication.translate("mainWidget", u"Mode", None))
 		self.crop.setText(QCoreApplication.translate("mainWidget", u"Crop", None))
 		self.fill.setText(QCoreApplication.translate("mainWidget", u"Fill", None))
-		self.cancel.setText(QCoreApplication.translate("mainWidget", u"Cancel", None))
+		self.center.setText(QCoreApplication.translate("mainWidget", u"Center", None))
 		self.export_2.setText(QCoreApplication.translate("mainWidget", u"Export", None))
 	
 	def export(self) -> None:
@@ -159,8 +165,37 @@ class QuickBackUI(QWidget):
 		
 		if url:
 			LOGGER.info("exporting image as", url.toLocalFile())
-			# self.finished_image.save(url.toLocalFile(), quality=0)
-			Process(target=lambda: self.finished_image.save(url.toLocalFile())).start()
+			# quality 0 compresses the image, causing the UI to freeze
+			# offload to another thread to keep the UI running
+			Process(target=lambda: self.finished_image.save(url.toLocalFile(), quality=0)).start()
+	
+	def horizontal_crop(self, offset_percentage: float) -> CropResult:
+		if self.current_image.width() / self.current_image.height() > PC_ASPECT_RATIO:
+			target_height: int = self.current_image.height()
+			target_width: int = round(target_height * PC_ASPECT_RATIO)
+			x_offset: int = round((target_width - self.current_image.width()) / 2 * offset_percentage)
+			y_offset: int = 0
+		else:
+			target_width: int = self.current_image.width()
+			target_height: int = round(target_width / PC_ASPECT_RATIO)
+			y_offset: int = round((target_height - self.current_image.height()) / 2 * offset_percentage)
+			x_offset: int = 0
+		
+		return (target_width, target_height), (x_offset, y_offset)
+	
+	def vertical_crop(self, offset_percentage: float) -> CropResult:
+		if self.current_image.width() / self.current_image.height() > PHONE_ASPECT_RATIO:
+			target_height: int = self.current_image.height()
+			target_width: int = round(target_height * PHONE_ASPECT_RATIO)
+			x_offset: int = round((target_width - self.current_image.width()) / 2 * offset_percentage)
+			y_offset: int = 0
+		else:
+			target_width: int = self.current_image.width()
+			target_height: int = round(target_width / PHONE_ASPECT_RATIO)
+			y_offset: int = round((target_height - self.current_image.height()) / 2 * offset_percentage)
+			x_offset: int = 0
+		
+		return (target_width, target_height), (x_offset, y_offset)
 	
 	def resize_current_image(self) -> None:
 		if not self.current_image or not self.update_lock.acquire(blocking=False):
@@ -176,23 +211,19 @@ class QuickBackUI(QWidget):
 		
 		if self.horizontal.isChecked():
 			if self.crop.isChecked():
-				target_width: int = self.current_image.width()
-				target_height: int = round(target_width / PC_ASPECT_RATION)
-				y_offset = round((target_height - self.current_image.height()) / 2 * offset_percentage)
+				(target_width, target_height), (x_offset, y_offset) = self.horizontal_crop(offset_percentage)
 			else:
 				colour = self.current_image.pixelColor(QPoint(0, 0))
 				target_height: int = self.current_image.height()
-				target_width: int = round(target_height * PC_ASPECT_RATION)
+				target_width: int = round(target_height * PC_ASPECT_RATIO)
 				x_offset = round((target_width - self.current_image.width()) / 2 * offset_percentage)
 		else:
 			if self.crop.isChecked():
-				target_height: int = self.current_image.height()
-				target_width: int = round(target_height * PHONE_ASPECT_RATION)
-				x_offset = round((target_width - self.current_image.width()) / 2 * offset_percentage)
+				(target_width, target_height), (x_offset, y_offset) = self.vertical_crop(offset_percentage)
 			else:
 				colour = self.current_image.pixelColor(QPoint(0, 0))
 				target_width: int = self.current_image.width()
-				target_height: int = round(target_width / PHONE_ASPECT_RATION)
+				target_height: int = round(target_width / PHONE_ASPECT_RATIO)
 				y_offset = round((target_height - self.current_image.height()) / 2 * offset_percentage)
 		
 		base_image = base_image.scaled(QSize(target_width, target_height))
@@ -214,6 +245,9 @@ class QuickBackUI(QWidget):
 		self.image.setPixmap(QPixmap.fromImage(scaled_image))
 		self.setWindowTitle(f"QuickBac - {self.finished_image.width()}x{self.finished_image.height()}")
 		self.update_lock.release()
+	
+	def reset_offset(self) -> None:
+		self.offset.setValue(100)
 	
 	def reset(self) -> None:
 		self.current_image = None
@@ -249,7 +283,7 @@ class QuickBackUI(QWidget):
 	
 	def dragMoveEvent(self, event: QDragMoveEvent, /) -> None:
 		self._accept_event(event)
-
+	
 
 if __name__ == '__main__':
 	app: QApplication = QApplication(sys.argv)
