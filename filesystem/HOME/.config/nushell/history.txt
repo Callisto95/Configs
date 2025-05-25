@@ -1,0 +1,17 @@
+gdf
+grst
+gdf
+sc
+s
+exit
+sc
+gdf
+git diff
+ga
+grst
+ga TODO.txt
+sc
+gcm add TODO.txt
+ga
+gcm add JetBrains IDE protocol handlers
+gpu
