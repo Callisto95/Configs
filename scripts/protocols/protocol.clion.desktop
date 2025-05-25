@@ -1,0 +1,6 @@
+[Desktop Entry]
+Name=clion:// protocol handler
+Type=Application
+MimeType=x-scheme-handler/clion;
+Exec=/home/callisto/scripts/protocols/clion %u
+NoDisplay=true

@@ -1,0 +1,6 @@
+[Desktop Entry]
+Name=idea:// protocol handler
+Type=Application
+MimeType=x-scheme-handler/idea;
+Exec=/home/callisto/scripts/protocols/idea %u
+NoDisplay=true

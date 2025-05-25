@@ -1,0 +1,6 @@
+[Desktop Entry]
+Name=pycharm:// protocol handler
+Type=Application
+MimeType=x-scheme-handler/pycharm;
+Exec=/home/callisto/scripts/protocols/pycharm %u
+NoDisplay=true

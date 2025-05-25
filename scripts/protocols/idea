@@ -1,0 +1,20 @@
+#!/bin/zsh
+
+pidof idea;
+
+if [[ $? -ne 0 ]]; then
+	exit;
+fi
+
+file=$(echo "$1" | sed -E 's/.*file=([^&]+).*/\1/');
+line=$(echo "$1" | sed -E 's/.*line=([^&]+).*/\1/');
+
+if [[ -z "file" ]]; then
+	exit;
+fi
+
+if [[ "$line" == "$1" ]]; then
+	line="1";
+fi
+
+$HOME/.local/binaries/intellij-idea-community/bin/idea --line "$line" "$file"
