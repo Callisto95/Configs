@@ -48,6 +48,19 @@ $env.config.datetime_format.table = "%Y-%m-%d %H:%M-%S"
 
 $env.config.display_errors.exit_code = true
 
+# use 'keybinds listen'
+# Konsole may do something to keybinds?
+$env.config.keybindings = [
+	# CTRL + backspace
+	{
+		name: delete_word
+		modifier: Control
+		keycode: Char_h
+		mode: emacs
+		event: { edit: BackspaceWord }
+	}
+]
+
 path add $'($nu.home-path)/custom_commands'
 path add $'($nu.home-path)/.cargo/bin'
 path add $'($nu.home-path)/.local/bin'
