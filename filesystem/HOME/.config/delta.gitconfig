@@ -1,0 +1,11 @@
+[core]
+	pager = delta
+[interactive]
+	diffFiler = delta --color-only
+[merge]
+	conflictstyle = zdiff3
+[delta]
+	navigate = true
+	line-numbers = true
+	hyperlinks = true
+	side-by-side = true
