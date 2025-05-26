@@ -54,19 +54,17 @@ def gpu [remote?: string, --force (-f)]: nothing -> nothing {
 	let remote = $remote | default "origin"
 	
 	if $force {
-		git push $remote (get_branch) --force
+		git push $remote (get_branch) --force --tags
 	} else {
-		git push $remote (get_branch)
+		git push $remote (get_branch) --tags
 	}
-	git push $remote --tags
 }
 def gpl [remote?: string, --force (-f)]: nothing -> nothing {
 	let remote = $remote | default "origin"
 	
 	if $force {
-		git pull $remote (get_branch) --force
+		git pull $remote (get_branch) --force --tags
 	} else {
-		git pull $remote (get_branch)
+		git pull $remote (get_branch) --tags
 	}
-	git pull $remote --tags
 }

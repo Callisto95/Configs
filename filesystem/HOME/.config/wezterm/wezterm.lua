@@ -2,6 +2,7 @@ local wezterm = require 'wezterm'
 local config = {}
 
 config.font = wezterm.font "Fira Code Retina"
+config.font_size = 19
 
 config.colors = {
 	foreground = "#FFFFFF",
@@ -32,6 +33,26 @@ config.colors = {
 			bg_color = "#000000",
 			fg_color = "#FFFFFF"
 		}
+	},
+	ansi = {
+		'#000000',
+		'#b21818',
+		'#18b218',
+		'#cece00',
+		'#0066ff',
+		'#b218b2',
+		'#18b2b2',
+		'#b2b2b2'
+	},
+	brights = {
+		'#686868',
+		'#ff5454',
+		'#54ff54',
+		'#ffff54',
+		'#5454ff',
+		'#ff54ff',
+		'#54ffff',
+		'#ffffff'
 	}
 }
 
@@ -65,6 +86,19 @@ config.keys = {
 			act.ClearScrollback 'ScrollbackAndViewport',
 			act.SendKey { key = 'L', mods = 'CTRL' },
 		},
+	},
+	{ key = 'LeftArrow', mods = 'CTRL', action = act.SendString '\x1b\x5b1;5D' },
+	{ key = 'RightArrow', mods = 'CTRL', action = act.SendString '\x1b\x5b1;5C' },
+}
+config.mouse_bindings = {
+	{
+		event = { Up = { streak = 1, button = 'Left' } },
+		mods = 'CTRL',
+		action = act.OpenLinkAtMouseCursor,
+	},
+	{
+		event = { Down = { streak = 1, button = 'Middle' } },
+		action = act.PasteFrom 'Clipboard'
 	}
 }
 
