@@ -1,28 +1,40 @@
+# remount based on /etc/fstab
 alias mount-fstab = mount -a
+# clear screen
 alias cls = clear
+# df, human readable
 alias df = df -h
 alias oxipng = oxipng -preserve -fix
 alias jpegoptim = jpegoptim --preserve
 alias bandcamp-dl-album = bandcamp-dl --template '%{artist}/%{album}/%{title}'
 alias bandcamp-dl-single = bandcamp-dl --template '%{artist}/%{album}/%{artist}-%{title}'
+# remove KDE's rating
 alias removeRating = setfattr -x user.baloo.rating
+# kill, then restart PlasmaShell
 def restartPlasma []: nothing -> nothing {
 	killall plasmashell
 	kstart plasmashell
 }
+# only get files within zip
 alias zipList = zipinfo -1
-alias zipContent = zipinfo
+# dmesg, but colours
 alias dmesg = sudo dmesg --color=always | less -R
 
 # Rust utils
+
+# bat instead of cat
 alias cat = bat
+# RipGrep instead of grep
+alias grep = rg
+
 #alias ls = eza # Nu's ls is a lot different
 #alias find = fd # fd is very different
-alias grep = rg
 #alias curl = xh # XH is too different
 
+# list all files provided by the package
 alias pacFilesOfPackage = pacman -Ql
-def pacPackageOfFile [file]: nothing -> nothing {
+# get the package of the given file
+def pacPackageOfFile [file: string]: nothing -> nothing {
 	if ($file | path exists) {
 		pacman -Qo $"($file)"
 		return
