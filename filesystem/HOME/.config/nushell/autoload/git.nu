@@ -1,19 +1,30 @@
+# clear, then git status
 def sc []: nothing -> nothing {
 	clear
 	git status
 }
+# git status
 alias s = git status
-alias gf = git fetch origin
+# git fetch
+alias gf = git fetch
+# git diff
 alias gdf = git diff
-alias gwdf = git diff --word-diff
+# git word diff
+alias gdfw = git diff --word-diff
+# git reset
 alias gr = git reset
+# git checkout
 alias gck = git checkout
+# git one-line graph
 alias gg = git log --graph --oneline
-alias glog = git log --oneline
-# long variants
+# git graph - long
 alias ggl = git log --graph
+# git log one-line
+alias glog = git log --oneline
+# git log - long
 alias glogl = git log
 
+# get current branch
 def get_branch []: nothing -> string {
 	let result = git rev-parse --abbrev-ref HEAD err> /dev/null | complete
 	
@@ -24,16 +35,25 @@ def get_branch []: nothing -> string {
 	error make { msg: "not a git repository" }
 	return null
 }
+# check if given branch exists
 def branch_exists []: string -> bool {
 	let result = git ls-remote origin $in | complete
 	
 	not ($result.stdout | is-empty)
 }
-def gcm [...messages: string]: nothing -> nothing {
-	let message = $messages | str join " "
-	
-	git commit -m $"($message)" | ignore
+# git commit with message
+def gcm [...message: string]: nothing -> nothing {
+	git commit -m ($message | str join " ")
 }
+# git amend to commit with optional message
+def gacm [...message: string]: nothing -> nothing {
+	if ($message | is-empty) {
+		git commit --amend --no-edit
+	} else {
+		git commit --amend -m ($message | str join "")
+	}
+}
+# git add files or current dir
 def ga [...files: string]: nothing -> nothing {
 	if ($files | is-empty) {
 		git add .
@@ -42,6 +62,7 @@ def ga [...files: string]: nothing -> nothing {
 	
 	$files | each { |file| git add $file } | ignore
 }
+# git restore files or current dir
 def grst [...files: string]: nothing -> nothing {
 	if ($files | is-empty) {
 		git restore --staged .
@@ -50,6 +71,7 @@ def grst [...files: string]: nothing -> nothing {
 	
 	$files | each { |file| git restore --staged $file } | ignore
 }
+# git push
 def gpu [remote?: string, --force (-f)]: nothing -> nothing {
 	let remote = $remote | default "origin"
 	
@@ -59,6 +81,7 @@ def gpu [remote?: string, --force (-f)]: nothing -> nothing {
 		git push $remote (get_branch) --tags
 	}
 }
+# git pull
 def gpl [remote?: string, --force (-f)]: nothing -> nothing {
 	let remote = $remote | default "origin"
 	
@@ -66,5 +89,20 @@ def gpl [remote?: string, --force (-f)]: nothing -> nothing {
 		git pull $remote (get_branch) --force --tags
 	} else {
 		git pull $remote (get_branch) --tags
+	}
+}
+def git_delta_variants [] { [ "file", "vscode", "idea", "pycharm", "clion" ] }
+# git delta change link embed mode
+def gitDeltaMode [mode: string@git_delta_variants]: nothing -> nothing {
+	if $mode == "file" {
+		git config delta.hyperlinks-file-link-format "file://{path}"
+	} else if $mode == "vscode" {
+		git config delta.hyperlinks-file-link-format "vscode://file/{path}:{line}"
+	} else if $mode == "idea" {
+		git config delta.hyperlinks-file-link-format "idea://open?file={path}&line={line}"
+	} else if $mode == "pycharm" {
+		git config delta.hyperlinks-file-link-format "pycharm://open?file={path}&line={line}"
+	} else if $mode == "clion" {
+		git config delta.hyperlinks-file-link-format "clion://open?file={path}&line={line}"
 	}
 }

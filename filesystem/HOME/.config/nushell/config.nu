@@ -73,6 +73,7 @@ mkdir ~/.cache/carapace
 carapace _carapace nushell | save --force ~/.cache/carapace/init.nu
 source ~/.cache/carapace/init.nu
 
+# change git remote from UnknownUser to Callisto
 def updateGitRemote []: nothing -> nothing {
 	let result = git rev-parse --is-inside-work-tree err> /dev/null | complete
 	
