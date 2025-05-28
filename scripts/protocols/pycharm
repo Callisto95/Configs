@@ -3,6 +3,7 @@
 pidof pycharm;
 
 if [[ $? -ne 0 ]]; then
+	notify-send --app-name="pycharm:// handler" --icon="error" "PyCharm is not running, not opening file"
 	exit;
 fi
 

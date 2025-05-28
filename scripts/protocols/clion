@@ -3,6 +3,7 @@
 pidof clion;
 
 if [[ $? -ne 0 ]]; then
+	notify-send --app-name="clion:// handler" --icon="error" "CLion is not running, not opening file"
 	exit;
 fi
 

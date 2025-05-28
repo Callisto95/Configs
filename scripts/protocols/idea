@@ -3,6 +3,7 @@
 pidof idea;
 
 if [[ $? -ne 0 ]]; then
+	notify-send --app-name="idea:// handler" --icon="error" "IDEA is not running, not opening file"
 	exit;
 fi
 
