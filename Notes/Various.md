@@ -68,3 +68,11 @@ Also from a Reddit thread:
 sudo rm -rf /var/lib/pacman/sync
 sudo pacman -Syyu
 ```
+
+## Application overrides
+
+Instead of editing applications in `/usr/share/applications/`, copy the file to `~/.local/share/applications/`, then make your edits.
+
+Your user setting will take priority over the system defaults.
+
+KDE: If you have a shortcut to that application, it is required to remove and set it again. Otherwise the original application is started.
