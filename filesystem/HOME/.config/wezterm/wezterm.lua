@@ -16,18 +16,18 @@ config.colors = {
 -- 	selection_fg = "#FFFFFF",
 	selection_bg = "#360e00",
 	tab_bar = {
-		inactive_tab_edge = "#000000",
--- 		background = "#FF4500"
+		inactive_tab_edge = "#161616",
+		-- background = "#FF4500",
 		active_tab = {
 			bg_color = "#222222",
 			fg_color = "#FF4500",
 		},
 		inactive_tab = {
-			bg_color = "#000000",
+			bg_color = "#050505",
 			fg_color = "#FFFFFF",
 		},
 		inactive_tab_hover = {
-			bg_color = "#222222",
+			bg_color = "#161616",
 			fg_color = "#FFFFFF",
 		},
 		new_tab = {
