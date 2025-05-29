@@ -7,6 +7,8 @@ config.hyperlink_rules = wezterm.default_hyperlink_rules()
 config.font = wezterm.font "Fira Code Retina"
 config.font_size = 19
 
+config.mouse_wheel_scrolls_tabs = true
+
 config.colors = {
 	foreground = "#FFFFFF",
 	background = "#222222",
@@ -18,23 +20,23 @@ config.colors = {
 -- 		background = "#FF4500"
 		active_tab = {
 			bg_color = "#222222",
-			fg_color = "#FF4500"
+			fg_color = "#FF4500",
 		},
 		inactive_tab = {
 			bg_color = "#000000",
-			fg_color = "#FFFFFF"
+			fg_color = "#FFFFFF",
 		},
 		inactive_tab_hover = {
 			bg_color = "#222222",
-			fg_color = "#FFFFFF"
+			fg_color = "#FFFFFF",
 		},
 		new_tab = {
-			bg_color = "#000000",
-			fg_color = "#FF4500"
+			bg_color = "#444444",
+			fg_color = "#FF4500",
 		},
 		new_tab_hover = {
-			bg_color = "#000000",
-			fg_color = "#FFFFFF"
+			bg_color = "#444444",
+			fg_color = "#FFFFFF",
 		}
 	},
 	ansi = {
@@ -45,7 +47,7 @@ config.colors = {
 		'#0066ff',
 		'#b218b2',
 		'#18b2b2',
-		'#b2b2b2'
+		'#b2b2b2',
 	},
 	brights = {
 		'#686868',
@@ -55,13 +57,14 @@ config.colors = {
 		'#5454ff',
 		'#ff54ff',
 		'#54ffff',
-		'#ffffff'
+		'#ffffff',
 	}
 }
 
 config.window_frame = {
 	font = wezterm.font "Fira Code Retina",
-	active_titlebar_bg = "#000000",
+	active_titlebar_bg = "#444444",
+	inactive_titlebar_bg = "#444444",
 }
 
 -- config.window_background_image = ""
@@ -102,7 +105,7 @@ config.mouse_bindings = {
 	{
 		event = { Down = { streak = 1, button = 'Middle' } },
 		action = act.PasteFrom 'Clipboard'
-	}
+	},
 }
 
 for i = 1, 8 do

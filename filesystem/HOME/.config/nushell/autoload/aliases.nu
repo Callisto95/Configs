@@ -4,7 +4,7 @@ alias mount-fstab = mount -a
 alias cls = clear
 # df, human readable
 alias df = df -h
-alias oxipng = oxipng -preserve -fix
+alias oxipng = oxipng --preserve --fix
 alias jpegoptim = jpegoptim --preserve
 alias bandcamp-dl-album = bandcamp-dl --template '%{artist}/%{album}/%{title}'
 alias bandcamp-dl-single = bandcamp-dl --template '%{artist}/%{album}/%{artist}-%{title}'
