@@ -7,7 +7,8 @@ config.hyperlink_rules = wezterm.default_hyperlink_rules()
 config.font = wezterm.font "Fira Code Retina"
 config.font_size = 19
 
-config.mouse_wheel_scrolls_tabs = true
+-- this scrolls tabs *anywhere*
+-- config.mouse_wheel_scrolls_tabs = true
 
 config.colors = {
 	foreground = "#FFFFFF",
