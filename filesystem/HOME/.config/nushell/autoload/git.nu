@@ -13,8 +13,6 @@ alias gdf = git diff
 alias gdfw = git diff --word-diff
 # git reset
 alias gr = git reset
-# git checkout
-alias gck = git checkout
 # git one-line graph
 alias gg = git log --graph --oneline
 # git graph - long
@@ -40,6 +38,14 @@ def branch_exists []: string -> bool {
 	let result = git ls-remote origin $in | complete
 	
 	not ($result.stdout | is-empty)
+}
+# git checkout or create new branch
+def gck [branch:string]: nothing -> nothing {
+	if ($branch | branch_exists) {
+		git checkout $branch
+	} else {
+		git checkout -b $branch
+	}
 }
 # git commit with message
 def gcm [...message: string]: nothing -> nothing {
