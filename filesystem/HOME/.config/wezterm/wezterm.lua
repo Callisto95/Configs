@@ -134,4 +134,20 @@ end
 -- config.initial_cols = 190
 -- config.initial_rows = 50
 
+-- Equivalent to POSIX basename(3)
+-- Given "/foo/bar" returns "bar"
+-- Given "c:\\foo\\bar" returns "bar"
+function basename(s)
+	return string.gsub(s, '(.*[/])(.*)', '%2')
+end
+
+wezterm.on('format-tab-title', function(tab, tabs, panes, config, hover, max_width)
+	local pane = tab.active_pane
+	
+	local ppath = basename(pane.current_working_dir.file_path)
+	local process = basename(pane.foreground_process_name)
+	
+	return { { Text = pane.pane_id + 1 .. ': ' .. ppath .. '> ' .. process } }
+end)
+
 return config
