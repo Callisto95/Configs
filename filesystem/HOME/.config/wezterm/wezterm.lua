@@ -1,4 +1,5 @@
 local wezterm = require 'wezterm'
+local os = require 'os'
 local config = {}
 
 -- https://wezterm.org/config/lua/config/hyperlink_rules.html
@@ -141,13 +142,19 @@ function basename(s)
 	return string.gsub(s, '(.*[/])(.*)', '%2')
 end
 
+local user_name = os.getenv('USER')
 wezterm.on('format-tab-title', function(tab, tabs, panes, config, hover, max_width)
 	local pane = tab.active_pane
 	
-	local ppath = basename(pane.current_working_dir.file_path)
+	local path = basename(pane.current_working_dir.file_path)
+	
+	if path == user_name then
+		path = '~ '
+	end
+	
 	local process = basename(pane.foreground_process_name)
 	
-	return { { Text = pane.pane_id + 1 .. ': ' .. ppath .. '> ' .. process } }
+	return { { Text = pane.pane_id + 1 .. ': ' .. path .. '> ' .. process } }
 end)
 
 return config
