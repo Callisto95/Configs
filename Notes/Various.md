@@ -75,4 +75,4 @@ Instead of editing applications in `/usr/share/applications/`, copy the file to 
 
 Your user setting will take priority over the system defaults.
 
-KDE: If you have a shortcut to that application, it is required to remove and set it again. Otherwise the original application is started.
+KDE: If you have a shortcut to that application, it is required to remove and set it again. Otherwise the original application is started. This is also required if the `.desktop` file is modified. KDE keeps the old version.
