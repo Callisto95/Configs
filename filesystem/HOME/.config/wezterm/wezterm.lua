@@ -146,7 +146,14 @@ local user_name = os.getenv('USER')
 wezterm.on('format-tab-title', function(tab, tabs, panes, config, hover, max_width)
 	local pane = tab.active_pane
 	
-	local path = basename(pane.current_working_dir.file_path)
+	local cwd = pane.current_working_dir
+	
+	local path
+	if cwd == nil then
+		path = "~~"
+	else
+		path = basename(cwd.file_path)
+	end
 	
 	if path == user_name then
 		path = '~ '
