@@ -60,7 +60,8 @@ config.colors = {
 		'#ff54ff',
 		'#54ffff',
 		'#ffffff',
-	}
+	},
+	scrollbar_thumb = '#444444',
 }
 
 config.window_frame = {
@@ -108,7 +109,20 @@ config.mouse_bindings = {
 		event = { Down = { streak = 1, button = 'Middle' } },
 		action = act.PasteFrom 'Clipboard'
 	},
+	{
+		event = { Down = { streak = 1, button = { WheelUp = 1 } } },
+		alt_screen = false,
+		mods = 'NONE',
+		action = act.ScrollByLine(-3),
+	},
+	{
+		event = { Down = { streak = 1, button = { WheelDown = 1 } } },
+		alt_screen = false,
+		mods = 'NONE',
+		action = act.ScrollByLine(3),
+	},
 }
+config.enable_scroll_bar = true
 
 for i = 1, 8 do
 	-- ALT + number to activate that tab
@@ -146,11 +160,13 @@ local user_name = os.getenv('USER')
 wezterm.on('format-tab-title', function(tab, tabs, panes, config, hover, max_width)
 	local pane = tab.active_pane
 	
+	local process = basename(pane.foreground_process_name)
+	
 	local cwd = pane.current_working_dir
 	
 	local path
 	if cwd == nil then
-		path = "~~"
+		return { { Text = '-|-' } }
 	else
 		path = basename(cwd.file_path)
 	end
@@ -158,8 +174,6 @@ wezterm.on('format-tab-title', function(tab, tabs, panes, config, hover, max_wid
 	if path == user_name then
 		path = '~ '
 	end
-	
-	local process = basename(pane.foreground_process_name)
 	
 	return { { Text = pane.pane_id + 1 .. ': ' .. path .. '> ' .. process } }
 end)

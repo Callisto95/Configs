@@ -28,7 +28,6 @@ $env.config.datetime_format.table = "%Y-%m-%d %H:%M-%S"
 $env.config.display_errors.exit_code = true
 
 # use 'keybinds listen'
-# Konsole may do something to keybinds?
 $env.config.keybindings = [
 	# CTRL + backspace
 	{
