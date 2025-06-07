@@ -8,7 +8,11 @@ alias s = git status
 # git fetch
 alias gf = git fetch
 # git diff
-alias gdf = git diff
+def gdf [] {
+	# workaround: force less (delta's pager) to enable alternate screen buffer
+	git diff | delta
+}
+#alias gdf = git diff
 # git word diff
 alias gdfw = git diff --word-diff
 # git reset
