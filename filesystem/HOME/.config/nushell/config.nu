@@ -36,7 +36,7 @@ $env.config.keybindings = [
 		keycode: Char_h
 		mode: emacs
 		event: { edit: BackspaceWord }
-	}
+	},
 ]
 
 path add $'($nu.home-path)/custom_commands'

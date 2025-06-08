@@ -14,7 +14,10 @@ def gdf [] {
 }
 #alias gdf = git diff
 # git word diff
-alias gdfw = git diff --word-diff
+def gdfw [] {
+	git diff --word-diff --color=always | delta
+}
+#alias gdfw = git diff --word-diff
 # git reset
 alias gr = git reset
 # git one-line graph
