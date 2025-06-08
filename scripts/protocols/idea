@@ -1,14 +1,15 @@
 #!/bin/zsh
 
+file=$(echo "$1" | sed -E 's/.*file=([^&]+).*/\1/');
+line=$(echo "$1" | sed -E 's/.*line=([^&]+).*/\1/');
+
 pidof idea;
 
 if [[ $? -ne 0 ]]; then
-	notify-send --app-name="idea:// handler" --icon="error" "IDEA is not running, not opening file"
+	notify-send --app-name="idea:// handler" --icon="open-link" "IDEA is not running opening with default app";
+	xdg-open "$file";
 	exit;
 fi
-
-file=$(echo "$1" | sed -E 's/.*file=([^&]+).*/\1/');
-line=$(echo "$1" | sed -E 's/.*line=([^&]+).*/\1/');
 
 if [[ -z "file" ]]; then
 	exit;
