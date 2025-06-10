@@ -10,13 +10,15 @@ Note: Custom models do exist, but I don't mention them here. These are just the 
 
 ### Upscayl Standard
 
-`upscayl-standard` is a newer model, which can keep a lot of detail. Compared to `high-fidelity` it adds harder edges and detail is removed.
+`upscayl-standard` is a newer model, which can keep a lot of detail. Compared to `high-fidelity` it adds harder edges, does a bit of colour shifts, and a lot of detail is removed.
+
+Sometimes good, but not consistent.
 
 ### High Fidelity
 
-This models is quite similar to `upscayl-standard`, but tries to keep everything as close to source possible. By doing that, it sometimes fails by hallucinating detail, that never existed.
+This models is quite similar to `upscayl-standard`, but tries to keep everything as close to source possible. By doing that, it sometimes fails by hallucinating detail that never existed.
 
-When used in combination with `upscayl-standard`, as in creating a composite, the resulting image is nearly as good as it can get.
+Sometimes "shimmers" can be created. They're bad hallucinations, which are just annoying.
 
 ### Remacri (Non Commercial)
 
@@ -28,7 +30,7 @@ When used in combination with `upscayl-standard`, as in creating a composite, th
 
 Unlike `upscayl-standard` or `high-fidelity` it removes noise, meaning the resulting image may look less detailed. However, It tends to have sharper edges than any of the two.
 
-It effectively is `high-fidelity`, but with much less or no noise, but with sharper edges.
+It effectively is `high-fidelity`, but with much less or no noise, but with sharper edges. This doesn't mean that all noise is removed, however it sometimes removes noise.
 
 ### Ultrasharp (Non Commercial)
 
