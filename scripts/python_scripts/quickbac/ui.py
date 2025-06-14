@@ -5,15 +5,16 @@ from pathlib import Path
 from threading import Lock
 
 from PySide6.QtCore import (QCoreApplication, QMetaObject, QSize, Qt)
-from PySide6.QtGui import QColor, QDragEnterEvent, QDragMoveEvent, QDropEvent, QImage, QPainter, QPixmap
+from PySide6.QtGui import QColor, QDragEnterEvent, QDragMoveEvent, QDropEvent, QImage, QKeyEvent, QPainter, QPixmap
 from PySide6.QtWidgets import (QCheckBox, QFileDialog, QGridLayout, QGroupBox, QHBoxLayout, QLabel,
 	QLayout, QPushButton, QRadioButton, QScrollBar, QSizePolicy, QVBoxLayout, QWidget)
 
 from python_scripts.logger import Logger
-
-from python_scripts.quickbac.data import ImageModifier, ImageProcessorFactory
+from python_scripts.quickbac.data import ImageModifier, ImageProcessorFactory, Offsets, ZOOM_NORMAL
 
 LOGGER: Logger = Logger("QuickBacUI")
+
+
 # LOGGER.verbose_enabled = True
 
 
@@ -31,7 +32,7 @@ class QuickBackUI(QWidget):
 		self.finished_image: QImage | None = None
 		
 		if not self.objectName():
-			self.setObjectName(u"main_widget")
+			self.setObjectName(u"self")
 		self.setEnabled(True)
 		self.resize(1000, 950)
 		self.setMinimumSize(QSize(1000, 0))
@@ -54,14 +55,39 @@ class QuickBackUI(QWidget):
 		
 		self.verticalLayout.addWidget(self.image)
 		
-		self.offset = QScrollBar(self)
-		self.offset.setObjectName(u"offset")
-		self.offset.setMinimum(0)
-		self.offset.setMaximum(200)
-		self.offset.setValue(100)
-		self.offset.setOrientation(Qt.Orientation.Horizontal)
+		self.offsets = QGroupBox(self)
+		self.offsets.setObjectName(u"offsets")
+		self.verticalLayout_4 = QVBoxLayout(self.offsets)
+		self.verticalLayout_4.setObjectName(u"verticalLayout_4")
+		self.primary_offset = QScrollBar(self.offsets)
+		self.primary_offset.setObjectName(u"primary_offset")
+		self.primary_offset.setToolTipDuration(-1)
+		self.primary_offset.setMinimum(0)
+		self.primary_offset.setMaximum(1000)
+		self.primary_offset.setValue(500)
+		self.primary_offset.setOrientation(Qt.Orientation.Horizontal)
 		
-		self.verticalLayout.addWidget(self.offset)
+		self.verticalLayout_4.addWidget(self.primary_offset)
+		
+		self.secondary_offset = QScrollBar(self.offsets)
+		self.secondary_offset.setObjectName(u"secondary_offset")
+		self.secondary_offset.setEnabled(False)
+		self.secondary_offset.setMaximum(1000)
+		self.secondary_offset.setValue(500)
+		self.secondary_offset.setOrientation(Qt.Orientation.Horizontal)
+		
+		self.verticalLayout_4.addWidget(self.secondary_offset)
+		
+		self.zoom = QScrollBar(self.offsets)
+		self.zoom.setObjectName(u"zoom")
+		self.zoom.setMinimum(1)
+		self.zoom.setMaximum(ZOOM_NORMAL * 2)
+		self.zoom.setValue(ZOOM_NORMAL)
+		self.zoom.setOrientation(Qt.Orientation.Horizontal)
+		
+		self.verticalLayout_4.addWidget(self.zoom)
+		
+		self.verticalLayout.addWidget(self.offsets)
 		
 		self.group_controls = QHBoxLayout()
 		self.group_controls.setObjectName(u"group_controls")
@@ -141,10 +167,10 @@ class QuickBackUI(QWidget):
 		self.buttons = QHBoxLayout()
 		self.buttons.setObjectName(u"buttons")
 		self.buttons.setSizeConstraint(QLayout.SizeConstraint.SetMinimumSize)
-		self.button_cancel = QPushButton(self)
-		self.button_cancel.setObjectName(u"button_cancel")
+		self.button_center = QPushButton(self)
+		self.button_center.setObjectName(u"button_center")
 		
-		self.buttons.addWidget(self.button_cancel)
+		self.buttons.addWidget(self.button_center)
 		
 		self.button_export = QPushButton(self)
 		self.button_export.setObjectName(u"button_export")
@@ -157,19 +183,21 @@ class QuickBackUI(QWidget):
 		
 		QMetaObject.connectSlotsByName(self)
 		
-		self.vertical.toggled.connect(self.resize_current_image)
-		self.horizontal.toggled.connect(self.resize_current_image)
-		self.fill.toggled.connect(self.resize_current_image)
-		self.crop.toggled.connect(self.resize_current_image)
-		self.offset.valueChanged.connect(self.resize_current_image)
-		self.vertical_33_percent.checkStateChanged.connect(self.resize_current_image)
-		self.vertical_50_percent.checkStateChanged.connect(self.resize_current_image)
-		self.vertical_66_percent.checkStateChanged.connect(self.resize_current_image)
-		self.horizontal_33_percent.checkStateChanged.connect(self.resize_current_image)
-		self.horizontal_50_percent.checkStateChanged.connect(self.resize_current_image)
-		self.horizontal_66_percent.checkStateChanged.connect(self.resize_current_image)
+		self.vertical.toggled.connect(self.update_current_image)
+		self.horizontal.toggled.connect(self.update_current_image)
+		self.fill.toggled.connect(self.update_current_image)
+		self.crop.toggled.connect(self.update_current_image)
+		self.primary_offset.valueChanged.connect(self.update_current_image)
+		self.secondary_offset.valueChanged.connect(self.update_current_image)
+		self.zoom.valueChanged.connect(self.update_current_image)
+		self.vertical_33_percent.checkStateChanged.connect(self.update_current_image)
+		self.vertical_50_percent.checkStateChanged.connect(self.update_current_image)
+		self.vertical_66_percent.checkStateChanged.connect(self.update_current_image)
+		self.horizontal_33_percent.checkStateChanged.connect(self.update_current_image)
+		self.horizontal_50_percent.checkStateChanged.connect(self.update_current_image)
+		self.horizontal_66_percent.checkStateChanged.connect(self.update_current_image)
 		
-		self.button_cancel.clicked.connect(self.reset_offset)
+		self.button_center.clicked.connect(self.reset_offset)
 		self.button_export.clicked.connect(self.export)
 		
 		self.reset()
@@ -177,6 +205,12 @@ class QuickBackUI(QWidget):
 	def _retranslate_ui(self):
 		self.setWindowTitle(QCoreApplication.translate("main_widget", u"QuickBac", None))
 		self.image.setText(QCoreApplication.translate("main_widget", u"IMAGE HERE", None))
+		self.offsets.setTitle("")
+		self.primary_offset.setToolTip(QCoreApplication.translate("main_widget", u"primary offset", None))
+		self.primary_offset.setStatusTip("")
+		self.primary_offset.setWhatsThis("")
+		self.secondary_offset.setToolTip(QCoreApplication.translate("main_widget", u"secondary offset", None))
+		self.zoom.setToolTip(QCoreApplication.translate("main_widget", u"zoom", None))
 		self.group_wanted.setTitle(QCoreApplication.translate("main_widget", u"Wanted", None))
 		self.horizontal.setText(QCoreApplication.translate("main_widget", u"Horizontal", None))
 		self.vertical.setText(QCoreApplication.translate("main_widget", u"Vertical", None))
@@ -190,8 +224,15 @@ class QuickBackUI(QWidget):
 		self.horizontal_50_percent.setText(QCoreApplication.translate("main_widget", u"h 50%", None))
 		self.vertical_66_percent.setText(QCoreApplication.translate("main_widget", u"v 66%", None))
 		self.horizontal_66_percent.setText(QCoreApplication.translate("main_widget", u"h 66%", None))
-		self.button_cancel.setText(QCoreApplication.translate("main_widget", u"Center", None))
+		self.button_center.setText(QCoreApplication.translate("main_widget", u"Center", None))
 		self.button_export.setText(QCoreApplication.translate("main_widget", u"Export", None))
+	
+	def get_offsets(self) -> Offsets:
+		return Offsets(
+			self.primary_offset.value() / (self.primary_offset.maximum() / 2),
+			self.secondary_offset.value() / (self.secondary_offset.maximum() / 2),
+			self.zoom.value() / ZOOM_NORMAL
+		)
 	
 	def export(self) -> None:
 		if not self.current_image:
@@ -235,12 +276,19 @@ class QuickBackUI(QWidget):
 		
 		painter.end()
 	
-	def resize_current_image(self) -> None:
+	def update_current_image(self) -> None:
 		if not self.current_image or not self.update_lock.acquire(blocking=False):
 			return
 		
+		if self.crop.isChecked():
+			self.zoom.setMaximum(ZOOM_NORMAL)
+		else:
+			self.zoom.setMaximum(ZOOM_NORMAL * 2)
+		
+		self.secondary_offset.setEnabled(self.zoom.value() != ZOOM_NORMAL)
+		
 		modifier: ImageModifier = self.decider.get(self.horizontal.isChecked(), self.crop.isChecked())
-		modified_image: QImage = modifier.modify(self.current_image, self.offset.value() / 100)
+		modified_image: QImage = modifier.modify(self.current_image, self.get_offsets())
 		
 		LOGGER.verbose_log("scaling to", modified_image.size())
 		
@@ -258,7 +306,10 @@ class QuickBackUI(QWidget):
 		self.update_lock.release()
 	
 	def reset_offset(self) -> None:
-		self.offset.setValue(100)
+		self.primary_offset.setValue(round(self.primary_offset.maximum() / 2))
+		self.secondary_offset.setValue(round(self.secondary_offset.maximum() / 2))
+		self.zoom.setValue(ZOOM_NORMAL)
+		self.secondary_offset.setEnabled(False)
 	
 	def reset(self) -> None:
 		self.current_image = None
@@ -266,7 +317,7 @@ class QuickBackUI(QWidget):
 		self.current_image_path = None
 		self.image.setPixmap(QPixmap())
 		
-		self.offset.setValue(100)
+		self.reset_offset()
 		
 		self.vertical_33_percent.setChecked(False)
 		self.vertical_50_percent.setChecked(False)
@@ -276,7 +327,7 @@ class QuickBackUI(QWidget):
 		self.horizontal_66_percent.setChecked(False)
 	
 	def resizeEvent(self, event, /) -> None:
-		self.resize_current_image()
+		self.update_current_image()
 	
 	def dropEvent(self, event: QDropEvent, /) -> None:
 		self.reset()
@@ -287,7 +338,7 @@ class QuickBackUI(QWidget):
 		
 		LOGGER.info(f"new image: {file_path}")
 		
-		self.resize_current_image()
+		self.update_current_image()
 	
 	@staticmethod
 	def _accept_event(event: QDragEnterEvent | QDragMoveEvent) -> None:
@@ -301,3 +352,7 @@ class QuickBackUI(QWidget):
 	
 	def dragMoveEvent(self, event: QDragMoveEvent, /) -> None:
 		self._accept_event(event)
+	
+	def keyPressEvent(self, event: QKeyEvent, /) -> None:
+		if event.modifiers() == Qt.KeyboardModifier.ControlModifier and event.key() == Qt.Key.Key_Q:
+			self.close()
