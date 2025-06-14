@@ -42,7 +42,7 @@ def get_branch []: nothing -> string {
 }
 # check if given branch exists
 def branch_exists []: string -> bool {
-	let result = git ls-remote origin $in | complete
+	let result = git branch --list $in | complete
 	
 	not ($result.stdout | is-empty)
 }
