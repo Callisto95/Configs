@@ -20,6 +20,7 @@
 	--newtab-primary-action-background: var(--accent-default) !important;
 	--toolbar-field-focus-border-color: var(--accent-default) !important;
 	--in-content-primary-button-background-active: var(--accent-dark) !important;
+	--color-accent-primary-hover: var(--accent-light) !important;
 }
 
 .urlbarView-row {
