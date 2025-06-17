@@ -44,7 +44,15 @@ Use full hinting. Everything else leads to worse rendering. (May be different on
 
 ## Invalid database signature
 
-The CachyOS admin key seems to be problematic (at least for me). I now had two occurences, where it corrupted (or something).
+The CachyOS admin key seems to be problematic (at least for me). I now had three occurences, where it corrupted (or something).
+
+I'm not sure what a good fix is. Sometimes one works, sometimes not.
+
+Here's a collection of fixes:
+
+`yay -Sy cachyos-keyring`
+
+Note: not `pacman -Sy`!
 
 ```
 Signature from "X <x@x.com>" is invalid
