@@ -33,3 +33,11 @@
 		color: var(--accent-default) !important;
 	}
 }
+
+h1.logo-and-wordmark-wrapper {
+	display: none;
+}
+
+main.newtab-main {
+	justify-content: end !important;
+}
