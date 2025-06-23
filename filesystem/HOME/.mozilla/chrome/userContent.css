@@ -23,6 +23,10 @@
 	--color-accent-primary-hover: var(--accent-light) !important;
 }
 
+tab.tabbrowser-tab {
+	max-width: 20% !important;
+}
+
 .urlbarView-row {
 	&[selected] {
 		--urlbarView-highlight-background: var(--accent-default) !important;
