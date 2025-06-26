@@ -39,6 +39,7 @@ $env.config.keybindings = [
 	},
 ]
 
+path add $'/usr/lib/ccache/bin'
 path add $'($nu.home-path)/custom_commands'
 path add $'($nu.home-path)/.cargo/bin'
 path add $'($nu.home-path)/.local/bin'
