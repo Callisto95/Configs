@@ -44,35 +44,60 @@ Use full hinting. Everything else leads to worse rendering. (May be different on
 
 ## Invalid database signature
 
+```
+Signature from "X <x@x.com>" is invalid
+error: database 'core' is not valid (invalid or corrupted database (PGP signature))
+```
+
 The CachyOS admin key seems to be problematic (at least for me). I now had three occurences, where it corrupted (or something).
 
 I'm not sure what a good fix is. Sometimes one works, sometimes not.
 
 Here's a collection of fixes:
 
+### 1
+
 `yay -Sy cachyos-keyring`
 
 Note: not `pacman -Sy`!
 
-```
-Signature from "X <x@x.com>" is invalid
-error: database 'core' is not valid (invalid or corrupted database (PGP signature))
-```
+### 3
 
-The easiest way: refresh the mirrorlist, then run `sudo pacman -Syu archlinux-keyring && sudo pacman -Syyu`
+Refresh the mirrorlist, then run `sudo pacman -Syu archlinux-keyring && sudo pacman -Syyu`
 
-I vaguely remember a second way:
+This seems to only work sometimes...
+
+### 4
+
+This has worked quite often
 
 ```bash
 sudo rm -rf /etc/pacman.d/gnupg/
 sudo gpg --refresh-keys
 sudo pacman-key --init
 sudo pacman-key --populate archlinux
+sudo pacman-key --populate cachyos
 ```
+
+### 5
 
 Also from a Reddit thread:
 
 ```bash
+sudo rm -rf /var/lib/pacman/sync
+sudo pacman -Syyu
+```
+
+### 6
+
+The 'just reset it all':
+
+```bash
+sudo rm -rf /etc/pacman.d/gnupg/
+sudo gpg --refresh-keys
+sudo pacman-key --init
+sudo pacman-key --populate archlinux
+sudo pacman-key --populate cachyos
 sudo rm -rf /var/lib/pacman/sync
 sudo pacman -Syyu
 ```
