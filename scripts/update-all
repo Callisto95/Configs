@@ -1,58 +1,58 @@
-#!/bin/bash
+#!/usr/bin/nu
 
-set -e
+let kernel = "/boot/vmlinuz-linux-zen"
+let image = "/boot/initramfs-linux-zen.img"
 
-kernel="/boot/vmlinuz-linux-zen"
-image="/boot/initramfs-linux-zen.img"
-
-kernel_hash="$(sha512sum "$kernel")"
-image_hash="$(sha512sum "$image")"
+let kernel_hash: string = sha512sum $kernel
+let image_hash: string = sha512sum $image
 
 
-echo "pacman..."
+print "pacman..."
 sudo pacman -Syu
-echo ""
+print ""
 
 
-echo "yay..."
+print "yay..."
 yay -Syua --devel
-echo ""
+print ""
 
 
-echo "flatpak..."
+print "flatpak..."
 flatpak update
-echo ""
+print ""
 
 
-echo "updates done, checking for packages to remove:"
+print "updates done, checking for packages to remove:"
 
 
-echo "pacman: debug..."
-if [[ $(pacman -Qqs -- '-debug') ]]; then
-	sudo pacman -Rns $(pacman -Qqs -- '-debug')
-else
-	echo "no debug packages"
-fi
-echo ""
+print "pacman: debug..."
+let debugPackages = pacman -Qqs -- '-debug' | complete
+if ($debugPackages.exit_code == 0) {
+	sudo pacman -Rns $debugPackages
+} else {
+	print "no debug packages"
+}
+print ""
 
 
-echo "pacman: orphans..."
-if [[ $(pacman -Qqdt) ]]; then
-	sudo pacman -Rns $(pacman -Qqdt)
-else
-	echo "no orphans"
-fi
-echo ""
+print "pacman: orphans..."
+let orphanPackages = pacman -Qqdt | complete
+if ($orphanPackages.exit_code == 0) {
+	sudo pacman -Rns $orphanPackages
+} else {
+	print "no orphans"
+}
+print ""
 
 
-echo "flatpak..."
+print "flatpak..."
 flatpak uninstall --unused
 
 
-new_kernel_hash="$(sha512sum "$kernel")"
-new_image_hash="$(sha512sum "$image")"
+let new_kernel_hash: string = sha512sum $kernel
+let new_image_hash: string = sha512sum $image
 
-if [[ "$kernel_hash" != "$new_kernel_hash" || "$image_hash" != "$new_image_hash" ]]; then
-	echo ""
-	printf "\u001B[33mKernel has been updated!\u001B[0m\n"
-fi
+if ($kernel_hash != $new_kernel_hash or $image_hash != $new_image_hash) {
+	print ""
+	print "\e[33mKernel has been updated!\e[0m\n"
+}
