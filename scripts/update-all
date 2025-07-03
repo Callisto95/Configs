@@ -15,7 +15,7 @@ echo ""
 
 
 echo "yay..."
-yay -Syua
+yay -Syua --devel
 echo ""
 
 
