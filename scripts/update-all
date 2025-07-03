@@ -1,7 +1,7 @@
 #!/usr/bin/nu
 
-let kernel = "/boot/vmlinuz-linux-zen"
-let image = "/boot/initramfs-linux-zen.img"
+const kernel = "/boot/vmlinuz-linux-zen"
+const image = "/boot/initramfs-linux-zen.img"
 
 let kernel_hash: string = sha512sum $kernel
 let image_hash: string = sha512sum $image
@@ -28,7 +28,7 @@ print "updates done, checking for packages to remove:"
 print "pacman: debug..."
 let debugPackages = pacman -Qqs -- '-debug' | complete
 if ($debugPackages.exit_code == 0) {
-	sudo pacman -Rns $debugPackages
+	sudo pacman -Rns ...($debugPackages.stdout | str trim | split row " ")
 } else {
 	print "no debug packages"
 }
@@ -38,7 +38,7 @@ print ""
 print "pacman: orphans..."
 let orphanPackages = pacman -Qqdt | complete
 if ($orphanPackages.exit_code == 0) {
-	sudo pacman -Rns $orphanPackages
+	sudo pacman -Rns ...($orphanPackages.stdout | str trim | split row " ")
 } else {
 	print "no orphans"
 }
