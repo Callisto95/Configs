@@ -5,7 +5,7 @@ local config = {}
 -- https://wezterm.org/config/lua/config/hyperlink_rules.html
 config.hyperlink_rules = wezterm.default_hyperlink_rules()
 
-config.font = wezterm.font "Fira Code Retina"
+config.font = wezterm.font("Fira Code Nerd Font")
 config.font_size = 19
 
 -- this scrolls tabs *anywhere*

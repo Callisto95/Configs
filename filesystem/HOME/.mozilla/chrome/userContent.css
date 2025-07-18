@@ -21,6 +21,8 @@
 	--toolbar-field-focus-border-color: var(--accent-default) !important;
 	--in-content-primary-button-background-active: var(--accent-dark) !important;
 	--color-accent-primary-hover: var(--accent-light) !important;
+	--link-color: var(--accent-default) !important;
+	--focus-outline-color: var(--accent-default) !important;
 }
 
 .urlbarView-row {

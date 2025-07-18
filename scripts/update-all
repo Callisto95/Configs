@@ -12,8 +12,8 @@ sudo pacman -Syu
 print ""
 
 
-print "yay..."
-yay -Syua --devel
+print "AUR..."
+paru -Syua --devel
 print ""
 
 
@@ -28,7 +28,7 @@ print "updates done, checking for packages to remove:"
 print "pacman: debug..."
 let debugPackages = pacman -Qqs -- '-debug' | complete
 if ($debugPackages.exit_code == 0) {
-	sudo pacman -Rns ...($debugPackages.stdout | str trim | split row " ")
+	sudo pacman -Rns ...($debugPackages.stdout | split row "\n" | drop 1)
 } else {
 	print "no debug packages"
 }
@@ -38,7 +38,7 @@ print ""
 print "pacman: orphans..."
 let orphanPackages = pacman -Qqdt | complete
 if ($orphanPackages.exit_code == 0) {
-	sudo pacman -Rns ...($orphanPackages.stdout | str trim | split row " ")
+	sudo pacman -Rns ...($orphanPackages.stdout | split row "\n" | drop 1)
 } else {
 	print "no orphans"
 }
