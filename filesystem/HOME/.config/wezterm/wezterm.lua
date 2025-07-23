@@ -175,7 +175,30 @@ wezterm.on('format-tab-title', function(tab, tabs, panes, config, hover, max_wid
 		path = '~ '
 	end
 	
-	return { { Text = pane.pane_id + 1 .. ': ' .. path .. '> ' .. process } }
+	return { { Text = tab.tab_index + 1 .. ': ' .. path .. '> ' .. process } }
 end)
+wezterm.on('format-window-title', function(tab, pane, tabs, panes, config)
+	local pane = tab.active_pane
+	
+	local process = basename(pane.foreground_process_name)
+	
+	local cwd = pane.current_working_dir
+	
+	local path
+	if cwd == nil then
+		return { { Text = '-|-' } }
+	else
+		path = basename(cwd.file_path)
+	end
+	
+	if path == user_name then
+		path = '~ '
+	end
+	
+	return path .. '> ' .. process
+end)
+-- Note to self
+-- pane.current_working_dir returns an URL object
+-- everything after # in URL's are ommitted, meaning file paths may be cut off
 
 return config
