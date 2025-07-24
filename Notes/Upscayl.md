@@ -32,6 +32,8 @@ Unlike `upscayl-standard` or `high-fidelity` it removes noise, meaning the resul
 
 It effectively is `high-fidelity`, but with much less or no noise, but with sharper edges. This doesn't mean that all noise is removed, however it sometimes removes noise.
 
+Surisingly effective and consistent, even though it's an older model.
+
 ### Ultrasharp (Non Commercial)
 
 `ultrasharp` is effectively `ultramix-balanced`, but with much more pronounced edges, but not in a good way. It should only be used when necessary.
@@ -39,3 +41,13 @@ It effectively is `high-fidelity`, but with much less or no noise, but with shar
 ### Digital Art
 
 `digital-art` removes a lot of detail and focuses on simple colours with not a lot of shading. It should only be used when necessary.
+
+### realESRGAN General
+
+Note: I don't know what the difference between the default and WDN is.
+
+Incredibly fast model with little to no noise. Can be used as an alternative to Ultramix.
+
+### 4xLSDIRplusC
+
+Sometimes more effective than Ultramix.
