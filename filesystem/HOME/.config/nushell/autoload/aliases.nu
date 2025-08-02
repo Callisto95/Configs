@@ -50,3 +50,11 @@ def pacPackageOfFile [file: string]: nothing -> nothing {
 		print "command not found"
 	}
 }
+# generate a password with the given length
+def generatePassword [length: int = 64, --no-copy]: nothing -> string {
+	let password = open /dev/urandom | tr -dc '123456789!@#$%abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ' | head $"-c($length)"
+	if not $no_copy {
+		wl-copy -n $password
+	}
+	$password
+}
