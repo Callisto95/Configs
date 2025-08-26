@@ -18,7 +18,9 @@ def restartPlasma []: nothing -> nothing {
 # only get files within zip
 alias zipList = zipinfo -1
 # dmesg, but colours
-alias dmesg = sudo dmesg --color=always | less -R
+def dmesg []: nothing -> nothing {
+	sudo dmesg --color=always | less -R
+}
 
 # Rust utils
 
@@ -52,7 +54,7 @@ def pacPackageOfFile [file: string]: nothing -> nothing {
 }
 # generate a password with the given length
 def generatePassword [length: int = 64, --no-copy]: nothing -> string {
-	let password = open /dev/urandom | tr -dc '123456789!@#$%abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ' | head $"-c($length)"
+	let password: string = open /dev/urandom | tr -dc ";,.\"\'-={}[]()123456789\\\\/!@#$%abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ" | head $"-c($length)"
 	if not $no_copy {
 		wl-copy -n $password
 	}

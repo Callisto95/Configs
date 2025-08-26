@@ -42,6 +42,7 @@ if ($orphanPackages.exit_code == 0) {
 } else {
 	print "no orphans"
 }
+paru -c
 print ""
 
 
