@@ -1,25 +1,29 @@
 #!/usr/bin/nu
 
-const kernel = "/boot/vmlinuz-linux-zen"
-const image = "/boot/initramfs-linux-zen.img"
+const kernel = "/boot/vmlinuz-linux-cachyos"
+const image = "/boot/initramfs-linux-cachyos.img"
+const uki = "/boot/EFI/Linux/arch-linux-cachyos.efi"
 
 let kernel_hash: string = sha512sum $kernel
 let image_hash: string = sha512sum $image
+let uki_hash: string = sha512sum $uki
 
 
-print "pacman..."
-sudo pacman -Syu
-print ""
-
-
-print "AUR..."
-paru -Syua --devel
-print ""
-
-
-print "flatpak..."
-flatpak update
-print ""
+try {
+	print "pacman..."
+	sudo pacman -Syu
+	print ""
+	
+	
+	print "AUR..."
+	yay -Syua --devel --removemake
+	print ""
+	
+	
+	print "flatpak..."
+	flatpak update
+	print ""
+}
 
 
 print "updates done, checking for packages to remove:"
@@ -42,7 +46,6 @@ if ($orphanPackages.exit_code == 0) {
 } else {
 	print "no orphans"
 }
-paru -c
 print ""
 
 
@@ -52,8 +55,9 @@ flatpak uninstall --unused
 
 let new_kernel_hash: string = sha512sum $kernel
 let new_image_hash: string = sha512sum $image
+let new_uki_hash: string = sha512sum $uki
 
-if ($kernel_hash != $new_kernel_hash or $image_hash != $new_image_hash) {
+if ($kernel_hash != $new_kernel_hash or $image_hash != $new_image_hash or $uki_hash != $new_uki_hash) {
 	print ""
 	print "\e[33mKernel has been updated!\e[0m\n"
 }
