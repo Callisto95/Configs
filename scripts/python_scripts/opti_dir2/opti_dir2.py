@@ -6,6 +6,7 @@ from asyncio import Future
 from concurrent.futures.thread import ThreadPoolExecutor
 from dataclasses import dataclass
 from enum import auto, Enum
+from math import floor
 from os import environ, listdir, utime
 from os.path import getmtime, getsize, islink
 from pathlib import Path
@@ -33,14 +34,40 @@ class NotNoneList[_T](list[_T]):
 CAPTURE_OUTPUT: dict[str, int] = { "capture_output": True, "text": True }
 
 
-def get_env(name: str, fallback: str) -> str:
-	value: str = environ.setdefault(name, fallback)
-	LOGGER.verbose_log(f"ENV: {name}: {value}")
-	return value
+# this is made entirely to make verbose logging look good
+class EnvVar:
+	registered_envvars: list[EnvVar] = []
+	
+	@classmethod
+	def print_verbose(cls) -> None:
+		name_length: int = max([len(var.name) for var in cls.registered_envvars])
+		
+		LOGGER.verbose_log("Environment Variables:")
+		for var in cls.registered_envvars:
+			LOGGER.verbose_log(
+				f"\t{var.name:<{name_length}}: {var.value()} ({"from environment" if var.is_set() else "using default"})"
+			)
+	
+	def __init__(self, name: str, default: str):
+		self.name = name
+		self.default = default
+		
+		EnvVar.registered_envvars.append(self)
+	
+	def override(self, new_default: str) -> None:
+		self.default = new_default
+	
+	def is_set(self):
+		return self.name in environ
+	
+	def value(self) -> str:
+		return environ.get(self.name, self.default)
 
 
-OXIPNG_OPTIMIZATION_LEVEL: str = get_env("OXI_OPT_LEVEL", "2")
-JXL_DISTANCE: str = get_env("JXL_DISTANCE", "1")
+OXIPNG_OPTIMIZATION_LEVEL: EnvVar = EnvVar("OXI_OPT_LEVEL", "2")
+JXL_DISTANCE: EnvVar = EnvVar("JXL_DISTANCE", "1")
+THREADS_PER_IMAGE: EnvVar = EnvVar("THREADS_PER_IMAGE", "1")
+
 DELETED_IMAGE_FOLDER: Path = Path("deleted-images")
 
 
@@ -64,8 +91,8 @@ class StepFailed(Exception):
 
 class OptimizationMode(Enum):
 	SAFE = auto()
-	GENERAL = auto()
-	ALL = auto()
+	QUALITY = auto()
+	JXL = auto()
 
 
 @dataclass
@@ -89,11 +116,11 @@ class Oxipng(ImageOptimizer):
 		process: CompletedProcess = run(
 			[
 				"oxipng",
-				f"--opt={OXIPNG_OPTIMIZATION_LEVEL}",
+				f"--opt={OXIPNG_OPTIMIZATION_LEVEL.value()}",
 				"--preserve",
 				"--filters",
 				"0-9", "--fix",
-				"--threads=1",
+				f"--threads={THREADS_PER_IMAGE.value()}",
 				image
 			],
 			**CAPTURE_OUTPUT
@@ -112,7 +139,7 @@ class CJXL(ImageOptimizer):
 	def optimize(self, image: Path) -> OptimizationResult:
 		target: Path = replace_file_type(image, "jxl")
 		
-		process: CompletedProcess = run(["cjxl", "-d", JXL_DISTANCE, "-e", "7", image, target], **CAPTURE_OUTPUT)
+		process: CompletedProcess = run(["cjxl", "-d", JXL_DISTANCE.value(), "-e", "7", image, target], **CAPTURE_OUTPUT)
 		
 		return OptimizationResult(target, image, process)
 
@@ -121,7 +148,10 @@ class Jpeg2Png(ImageOptimizer):
 	def optimize(self, image: Path) -> OptimizationResult:
 		target: Path = replace_file_type(image, "png")
 		
-		process: CompletedProcess = run(["jpeg2png", "--threads", "1", image, "--output", target], **CAPTURE_OUTPUT)
+		process: CompletedProcess = run(
+			["jpeg2png", "--threads", THREADS_PER_IMAGE.value(), image, "--output", target],
+			**CAPTURE_OUTPUT
+		)
 		
 		return OptimizationResult(target, image, process)
 
@@ -177,17 +207,17 @@ class OptimizerFactory:
 	_aliases: dict[str, str] = { }
 	
 	def get_registered_file_types(self) -> set[str]:
-		file_types: list[str | None] = (list(self._preprocessors.keys())
-										+ list(self._processors.keys())
-										+ list(self._postprocessors.keys())
-										+ list(self._aliases.keys()))
+		file_types: set[str | None] = set(
+			list(self._preprocessors.keys())
+			+ list(self._processors.keys())
+			+ list(self._postprocessors.keys())
+			+ list(self._aliases.keys())
+		)
 		
-		exclusive_file_types: set[str | None] = set(file_types)
+		if None in file_types:
+			file_types.remove(None)
 		
-		if None in exclusive_file_types:
-			exclusive_file_types.remove(None)
-		
-		return exclusive_file_types
+		return file_types
 	
 	@staticmethod
 	def _register(file_type: str, target: dict[str | None, list[ImageOptimizer]], processor: ImageOptimizer) -> None:
@@ -206,24 +236,10 @@ class OptimizerFactory:
 		self._register(file_type, self._postprocessors, postprocessor)
 	
 	def _get_processors(self, image: Path, source: dict[str | None, list[ImageOptimizer]]) -> list[ImageOptimizer]:
-		# processors: list[ImageOptimizer] = source.get(None, [])
-		# if None in source:
-		# 	processors: list[ImageOptimizer] = source[None]
-		# else:
-		# 	processors: list[ImageOptimizer] = []
-		
 		file_type: str = image.suffix[1:]
 		file_type: str = self._aliases.get(file_type, file_type)
 		
-		# if file_type in self._aliases:
-		# 	file_type = self._aliases[file_type]
-		
 		return source.get(None, []) + source.get(file_type, [])
-		
-		# if file_type in source:
-		# 	return processors + source[file_type]
-		# else:
-		# 	return processors
 	
 	def get_preprocessors(self, image: Path) -> list[ImageOptimizer]:
 		return self._get_processors(image, self._preprocessors)
@@ -236,6 +252,12 @@ class OptimizerFactory:
 	
 	def register_alias(self, base: str, alias: str) -> None:
 		self._aliases[alias] = base
+	
+	# just for display purposes
+	def get_alias(self, file_type: str) -> str | None:
+		if file_type in self._aliases:
+			return self._aliases[file_type]
+		return None
 
 
 def optimize_image(image: Path, factory: OptimizerFactory) -> Path:
@@ -310,6 +332,46 @@ def show_progress_bar(tasks: list[Future[Path]]) -> None:
 		sleep(1)
 
 
+def optimize_files(
+	images: list[Path],
+	threads: int,
+	factory: OptimizerFactory,
+	do_progress_bar: bool = True
+) -> tuple[int, int]:
+	if len(images) == 0:
+		return 0, 0
+	
+	if not THREADS_PER_IMAGE.is_set() and len(images) < threads:
+		new_threads: int = max(floor(threads / len(images)), 1)
+		if new_threads > 1:
+			THREADS_PER_IMAGE.override(str(new_threads))
+			LOGGER.info(f"override: using {THREADS_PER_IMAGE.value()} threads per image")
+	
+	original_file_size: int = sum(map(getsize, images))
+	
+	executor: ThreadPoolExecutor = ThreadPoolExecutor(threads)
+	
+	try:
+		tasks: list[Future[Path]] = []
+		
+		for image in images:
+			tasks.append(executor.submit(optimize_image, image, factory))
+		
+		executor.shutdown(wait=not do_progress_bar)
+		
+		if do_progress_bar:
+			show_progress_bar(tasks)
+	except KeyboardInterrupt as exc:
+		executor.shutdown(cancel_futures=True)
+		raise exc
+	
+	processed_images: list[Path] = [task.result() for task in tasks]
+	
+	processed_file_size: int = sum(map(getsize, filter(lambda f: f.exists(), processed_images)))
+	
+	return original_file_size, processed_file_size
+
+
 def optimize_directory(
 	directory: Path,
 	threads: int,
@@ -317,29 +379,11 @@ def optimize_directory(
 	do_progress_bar: bool = True
 ) -> tuple[int, int]:
 	images: list[Path] = [
-		Path(directory / f) for f in listdir(directory)
-		if f.endswith(tuple(factory.get_registered_file_types())) and not islink(f)
+		Path(directory / p) for p in
+		filter(
+			lambda f: f.endswith(tuple(factory.get_registered_file_types())) and not islink(f),
+			listdir(directory)
+		)
 	]
 	
-	if len(images) == 0:
-		return 0, 0
-	
-	original_file_size: int = sum(map(getsize, images))
-	
-	executor: ThreadPoolExecutor = ThreadPoolExecutor(threads)
-	
-	tasks: list[Future[Path]] = []
-	
-	for image in images:
-		tasks.append(executor.submit(optimize_image, image, factory))
-	
-	executor.shutdown(wait=not do_progress_bar)
-	
-	if do_progress_bar:
-		show_progress_bar(tasks)
-	
-	processed_images: list[Path] = [task.result() for task in tasks]
-	
-	processed_file_size: int = sum(map(getsize, filter(lambda f: f.exists(), processed_images)))
-	
-	return original_file_size, processed_file_size
+	return optimize_files(images, threads, factory, do_progress_bar)

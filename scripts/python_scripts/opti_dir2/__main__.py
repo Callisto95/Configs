@@ -6,8 +6,8 @@ from colorama import Fore, Style
 
 from python_scripts import pretty_print_bytes
 from python_scripts.logger import Logger
-from python_scripts.opti_dir2.opti_dir2 import (CJXL, DWebp, ImageFixer, Jpeg2Png, JpegOptim, OptimizationMode,
-	optimize_directory, OptimizerFactory, Oxipng)
+from python_scripts.opti_dir2.opti_dir2 import (CJXL, DWebp, EnvVar, ImageFixer, Jpeg2Png, JpegOptim, OptimizationMode,
+	optimize_directory, optimize_files, OptimizerFactory, Oxipng)
 
 LOGGER: Logger = Logger("opti-dir2")
 
@@ -26,10 +26,11 @@ def create_factory(mode: OptimizationMode) -> OptimizerFactory:
 		factory.register_processor("jpeg", Oxipng())
 	factory.register_alias("jpeg", "jpg")
 	
-	factory.register_processor("webp", DWebp())
-	factory.register_processor("webp", Oxipng())
+	if mode != OptimizationMode.SAFE:
+		factory.register_processor("webp", DWebp())
+		factory.register_processor("webp", Oxipng())
 	
-	if mode == OptimizationMode.ALL:
+	if mode == OptimizationMode.JXL:
 		factory.register_postprocessor(None, CJXL())
 	
 	return factory
@@ -57,11 +58,20 @@ def main() -> None:
 		choices=[mode.name.lower() for mode in OptimizationMode],
 		help="The mode controls enabled features"
 	)
+	parser.add_argument(
+		"-s",
+		"--single",
+		action="store_true",
+		dest="single",
+		help="Only work on a single file"
+	)
 	args: Namespace = parser.parse_args()
 	args.directory = Path(args.directory).expanduser().resolve()
 	LOGGER.verbose_enabled = args.verbose
 	
-	if not args.directory.is_dir(follow_symlinks=True):
+	EnvVar.print_verbose()
+	
+	if not args.single and not args.directory.is_dir():
 		LOGGER.info("resolving directory from given file")
 		args.directory = args.directory.parent
 	
@@ -72,10 +82,17 @@ def main() -> None:
 	LOGGER.verbose_log(f"using {args.threads} threads for '{args.directory}'")
 	
 	factory: OptimizerFactory = create_factory(OptimizationMode[args.mode.upper()])  # this is not an issue
-	LOGGER.verbose_log(f"registered file types: {factory.get_registered_file_types()}")
 	
 	if LOGGER.verbose_enabled:
-		for file_type in factory.get_registered_file_types():
+		registered_file_types: set[str] = factory.get_registered_file_types()
+		
+		LOGGER.verbose_log(f"registered file types: {", ".join(registered_file_types)}")
+		
+		LOGGER.verbose_log("aliases:")
+		for file_type in [t for t in registered_file_types if factory.get_alias(t) is not None]:
+			LOGGER.verbose_log(f"\t{file_type} ==> {factory.get_alias(file_type)}")
+		
+		for file_type in [t for t in registered_file_types if factory.get_alias(t) is None]:
 			f: Path = Path(f"a.{file_type}")
 			
 			LOGGER.verbose_log(f"|> {file_type}:")
@@ -83,11 +100,21 @@ def main() -> None:
 			LOGGER.verbose_log(f"\tpro : {[p.__class__.__name__ for p in factory.get_processors(f)]}")
 			LOGGER.verbose_log(f"\tpost: {[p.__class__.__name__ for p in factory.get_postprocessors(f)]}")
 	
-	original_file_size, processed_file_size = optimize_directory(
-		args.directory,
-		args.threads,
-		factory
-	)
+	if args.single:
+		if not args.directory.is_file():
+			LOGGER.error(f"given file '{args.directory}' is not a file")
+			exit(1)
+		if not args.directory.exists():
+			LOGGER.error(f"given file '{args.directory}' does not exist")
+			exit(1)
+		original_file_size, processed_file_size = optimize_files([args.directory], args.threads, factory)
+	else:
+		original_file_size, processed_file_size = optimize_directory(
+			args.directory,
+			args.threads,
+			factory
+		)
+	
 	delta: int = original_file_size - processed_file_size
 	
 	if original_file_size == 0:
