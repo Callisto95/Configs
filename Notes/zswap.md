@@ -2,7 +2,11 @@
 
 The short form is, that zswap is compressed RAM. The linux-zen kernel has it enabled by default, but it uses ZSTD for compression.
 
-ZSTD is fine. LZ4 is faster, while not compressing as much. This is why I use LZ4 instead of ZSTD, except for initcpio images, although there is very little difference between the two (~5MB).
+ZSTD is fine. LZ4 is faster, while not compressing as much.
+
+> [!WARNING]
+> Do not use in conjunction with zram
+> It will work, but it's discouraged
 
 ## Check zswap
 

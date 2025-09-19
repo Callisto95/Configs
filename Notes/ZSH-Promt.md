@@ -1,5 +1,8 @@
 # ZSH Prompt
 
+> [!NOTE]
+> I have moved from Zsh to Nu.
+
 The base for the following is [Oh-My-Zsh](https://ohmyz.sh/)
 
 ## Powerlevel10K

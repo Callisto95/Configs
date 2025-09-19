@@ -2,4 +2,4 @@
 
 ## Pipes
 
-Pipe junctions hate you. Always assume they are diving the flow in a bad way and design around it.
+Pipe junctions **always** divide equally, unless overflow occurs. They're literally splitters for pipes.
