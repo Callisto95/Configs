@@ -1,10 +1,8 @@
 #!/bin/sh
 
-echo "clearing pip cache"
-python -m pip cache purge
-
 echo "clearing pacman and yay cache"
-yes | yay -Sc
+yay -Sc --noconfirm
+# yes | paru -Scd
 
 echo "clearing coredumps"
 sudo rm -r /var/lib/systemd/coredump/
@@ -18,8 +16,8 @@ for dir in $THUMBNAIL_CACHE_DIR/*; do
 	mkdir "$dir"
 done
 
-# for file in `find "$THUMBNAIL_CACHE_DIR" -type f`; do
-# 	rm "$file"
-# done
+echo "clearing cargo cache"
+# requires: cargo install cargo-cache
+cargo cache -a
 
 echo "done"
