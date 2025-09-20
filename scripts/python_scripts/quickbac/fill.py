@@ -2,19 +2,21 @@ from PySide6.QtCore import QRect, QSize
 from PySide6.QtGui import QColor, QImage, QPainter
 
 from python_scripts.quickbac.alpha import get_colour
-from python_scripts.quickbac.data import ImageModifier, Offsets, PC_ASPECT_RATIO, PHONE_ASPECT_RATIO
+from python_scripts.quickbac.data import get_current_pc_ratio, get_current_phone_ratio, ImageModifier, Offsets
 
 
 class HorizontalFiller(ImageModifier):
 	def modify(self, current_image: QImage, offsets: Offsets) -> QImage:
-		if current_image.width() / current_image.height() > PC_ASPECT_RATIO:
+		pc_aspect_ratio: float = get_current_pc_ratio()
+		
+		if current_image.width() / current_image.height() > pc_aspect_ratio:
 			width: int = round(current_image.width() * offsets.zoom)
-			height: int = round(width / PC_ASPECT_RATIO)
+			height: int = round(width / pc_aspect_ratio)
 			y_offset: int = round((height - current_image.height()) / 2 * offsets.primary)
 			x_offset: int = round((width - current_image.width()) / 2 * offsets.secondary)
 		else:
 			height: int = round(current_image.height() * offsets.zoom)
-			width: int = round(height * PC_ASPECT_RATIO)
+			width: int = round(height * pc_aspect_ratio)
 			x_offset: int = round((width - current_image.width()) / 2 * offsets.primary)
 			y_offset: int = round((height - current_image.height()) / 2 * offsets.secondary)
 		
@@ -37,14 +39,16 @@ class HorizontalFiller(ImageModifier):
 
 class VerticalFiller(ImageModifier):
 	def modify(self, current_image: QImage, offsets: Offsets) -> QImage:
-		if current_image.width() / current_image.height() > PHONE_ASPECT_RATIO:
+		phone_aspect_ratio: float = get_current_phone_ratio()
+		
+		if current_image.width() / current_image.height() > phone_aspect_ratio:
 			width: int = round(current_image.width() * offsets.zoom)
-			height: int = round(width / PHONE_ASPECT_RATIO)
+			height: int = round(width / phone_aspect_ratio)
 			y_offset: int = round((height - current_image.height()) / 2 * offsets.primary)
 			x_offset: int = round((width - current_image.width()) / 2 * offsets.secondary)
 		else:
 			height: int = round(current_image.height() * offsets.zoom)
-			width: int = round(height * PHONE_ASPECT_RATIO)
+			width: int = round(height * phone_aspect_ratio)
 			x_offset: int = round((width - current_image.width()) / 2 * offsets.primary)
 			y_offset: int = round((height - current_image.height()) / 2 * offsets.secondary)
 		

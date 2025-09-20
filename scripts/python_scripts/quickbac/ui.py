@@ -5,12 +5,16 @@ from pathlib import Path
 from threading import Lock
 
 from PySide6.QtCore import (QCoreApplication, QMetaObject, QSize, Qt)
-from PySide6.QtGui import QColor, QDragEnterEvent, QDragMoveEvent, QDropEvent, QImage, QKeyEvent, QPainter, QPixmap
+from PySide6.QtGui import (QColor, QDragEnterEvent, QDragMoveEvent, QDropEvent, QImage, QKeyEvent, QMouseEvent,
+	QPainter,
+	QPixmap)
 from PySide6.QtWidgets import (QCheckBox, QFileDialog, QGridLayout, QGroupBox, QHBoxLayout, QLabel,
 	QLayout, QPushButton, QRadioButton, QScrollBar, QSizePolicy, QVBoxLayout, QWidget)
 
 from python_scripts.logger import Logger
-from python_scripts.quickbac.data import ImageModifier, ImageProcessorFactory, Offsets, ZOOM_NORMAL
+from python_scripts.quickbac.data import (ImageModifier, ImageProcessorFactory, next_pc_ratio, next_phone_ratio,
+	Offsets,
+	ZOOM_NORMAL)
 
 LOGGER: Logger = Logger("QuickBacUI")
 
@@ -200,7 +204,12 @@ class QuickBackUI(QWidget):
 		self.button_center.clicked.connect(self.reset_offset)
 		self.button_export.clicked.connect(self.export)
 		
+		self.horizontal.mouseDoubleClickEvent = self.rotate_horizontal_ratio
+		self.vertical.mouseDoubleClickEvent = self.rotate_vertical_ratio
+		
 		self.reset()
+		self.rotate_horizontal_ratio()
+		self.rotate_vertical_ratio()
 	
 	def _retranslate_ui(self):
 		self.setWindowTitle(QCoreApplication.translate("main_widget", u"QuickBac", None))
@@ -226,6 +235,16 @@ class QuickBackUI(QWidget):
 		self.horizontal_66_percent.setText(QCoreApplication.translate("main_widget", u"h 66%", None))
 		self.button_center.setText(QCoreApplication.translate("main_widget", u"Center", None))
 		self.button_export.setText(QCoreApplication.translate("main_widget", u"Export", None))
+	
+	def rotate_horizontal_ratio(self, *args) -> None:
+		ratio: tuple[int, int] = next_pc_ratio()
+		self.horizontal.setText(QCoreApplication.translate("main_widget", f"Horizontal {ratio[0]}x{ratio[1]}", None))
+		self.update_current_image()
+	
+	def rotate_vertical_ratio(self, *args) -> None:
+		ratio: tuple[int, int] = next_phone_ratio()
+		self.vertical.setText(QCoreApplication.translate("main_widget", f"Vertical {ratio[0]}x{ratio[1]}", None))
+		self.update_current_image()
 	
 	def get_offsets(self) -> Offsets:
 		return Offsets(
@@ -302,7 +321,7 @@ class QuickBackUI(QWidget):
 		self.draw_guides(scaled_image)
 		
 		self.image.setPixmap(QPixmap.fromImage(scaled_image))
-		self.setWindowTitle(f"QuickBac - {self.finished_image.width()}x{self.finished_image.height()}")
+		self.setWindowTitle(f"{self.current_image_path.name} - {self.finished_image.width()}x{self.finished_image.height()} - QuickBac")
 		self.update_lock.release()
 	
 	def reset_offset(self) -> None:
