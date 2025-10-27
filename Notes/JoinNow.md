@@ -6,7 +6,7 @@ https://books.rz.tu-bs.de/books/wlan/page/joinnow-eduroam-sicher-konfigurieren
 
 ```
 Benutzererkennung: [y Nummer]
-Passwort: [idk]
+Passwort: [tu-connect login]
 ```
 
 > [!IMPORTANT]
