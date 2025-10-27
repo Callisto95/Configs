@@ -105,6 +105,17 @@ class OptimizationResult:
 		return self.process.returncode != 0
 
 
+@dataclass
+class OptimizedImage:
+	image: Path
+	old_size: int
+	new_size: int
+
+	@property
+	def size_delta(self) -> int:
+		return self.new_size - self.old_size
+
+
 class ImageOptimizer(ABC):
 	@abstractmethod
 	def optimize(self, image: Path) -> OptimizationResult:
@@ -260,10 +271,11 @@ class OptimizerFactory:
 		return None
 
 
-def optimize_image(image: Path, factory: OptimizerFactory) -> Path:
+def optimize_image(image: Path, factory: OptimizerFactory) -> OptimizedImage:
 	to_be_deleted_images: NotNoneList[Path] = NotNoneList()
 	
 	mtime: float = getmtime(image)
+	original_size: int = getsize(image)
 	
 	try:
 		# the steps must be separated
@@ -304,10 +316,12 @@ def optimize_image(image: Path, factory: OptimizerFactory) -> Path:
 	except StepFailed as exc:
 		LOGGER.error(exc)
 	
-	return image
+	new_size: int = getsize(image)
+	
+	return OptimizedImage(image, original_size, new_size)
 
 
-def show_progress_bar(tasks: list[Future[Path]]) -> None:
+def show_progress_bar(tasks: list[Future[Any]]) -> None:
 	all_tasks: int = len(tasks)
 	
 	terminal_width: int = shutil.get_terminal_size()[0]
@@ -337,9 +351,9 @@ def optimize_files(
 	threads: int,
 	factory: OptimizerFactory,
 	do_progress_bar: bool = True
-) -> tuple[int, int]:
+) -> list[OptimizedImage]:
 	if len(images) == 0:
-		return 0, 0
+		return []
 	
 	if not THREADS_PER_IMAGE.is_set() and len(images) < threads:
 		new_threads: int = max(floor(threads / len(images)), 1)
@@ -347,12 +361,10 @@ def optimize_files(
 			THREADS_PER_IMAGE.override(str(new_threads))
 			LOGGER.info(f"override: using {THREADS_PER_IMAGE.value()} threads per image")
 	
-	original_file_size: int = sum(map(getsize, images))
-	
 	executor: ThreadPoolExecutor = ThreadPoolExecutor(threads)
 	
 	try:
-		tasks: list[Future[Path]] = []
+		tasks: list[Future[OptimizedImage]] = []
 		
 		for image in images:
 			tasks.append(executor.submit(optimize_image, image, factory))
@@ -365,11 +377,9 @@ def optimize_files(
 		executor.shutdown(cancel_futures=True)
 		raise exc
 	
-	processed_images: list[Path] = [task.result() for task in tasks]
+	processed_images: list[OptimizedImage] = [task.result() for task in tasks]
 	
-	processed_file_size: int = sum(map(getsize, filter(lambda f: f.exists(), processed_images)))
-	
-	return original_file_size, processed_file_size
+	return processed_images
 
 
 def optimize_directory(
@@ -377,7 +387,7 @@ def optimize_directory(
 	threads: int,
 	factory: OptimizerFactory,
 	do_progress_bar: bool = True
-) -> tuple[int, int]:
+) -> list[OptimizedImage]:
 	images: list[Path] = [
 		Path(directory / p) for p in
 		filter(

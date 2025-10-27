@@ -90,7 +90,7 @@ def main() -> None:
 		
 		LOGGER.verbose_log("aliases:")
 		for file_type in [t for t in registered_file_types if factory.get_alias(t) is not None]:
-			LOGGER.verbose_log(f"\t{file_type} ==> {factory.get_alias(file_type)}")
+			LOGGER.verbose_log(f"\t{factory.get_alias(file_type)} ==> {file_type}")
 		
 		for file_type in [t for t in registered_file_types if factory.get_alias(t) is None]:
 			f: Path = Path(f"a.{file_type}")
@@ -107,28 +107,30 @@ def main() -> None:
 		if not args.directory.exists():
 			LOGGER.error(f"given file '{args.directory}' does not exist")
 			exit(1)
-		original_file_size, processed_file_size = optimize_files([args.directory], args.threads, factory)
+		images = optimize_files([args.directory], args.threads, factory)
 	else:
-		original_file_size, processed_file_size = optimize_directory(
+		images = optimize_directory(
 			args.directory,
 			args.threads,
 			factory
 		)
 	
-	delta: int = original_file_size - processed_file_size
-	
-	if original_file_size == 0:
+	if len(images) == 0:
 		LOGGER.info("nothing to optimize")
 		return
 	
-	if delta < 0:
-		delta_percent: float = (-delta / original_file_size) * 100
+	delta: int = sum([i.size_delta for i in images])
+	original_file_size: int = sum([i.old_size for i in images])
+	processed_file_size: int = sum([i.new_size for i in images])
+	
+	if delta > 0:
+		delta_percent: float = (delta / original_file_size) * 100
 		prefix: str = "+"
-		colour: Fore = Fore.RED
+		colour: str = Fore.RED
 	else:
 		delta_percent: float = 100 - ((processed_file_size / original_file_size) * 100)
 		prefix: str = "-"
-		colour: Fore = Fore.CYAN
+		colour: str = Fore.CYAN
 	
 	base_format: str = f"({{colour}}{{prefix}}{{delta_bytes}} | {{prefix}}{{delta_percent:.2f}}%{Style.RESET_ALL})"
 	formatted_size_delta: str = base_format.format(
