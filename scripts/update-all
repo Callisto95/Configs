@@ -29,16 +29,6 @@ try {
 print "updates done, checking for packages to remove:"
 
 
-print "pacman: debug..."
-let debugPackages = pacman -Qqs -- '-debug' | complete
-if ($debugPackages.exit_code == 0) {
-	sudo pacman -Rns ...($debugPackages.stdout | split row "\n" | drop 1)
-} else {
-	print "no debug packages"
-}
-print ""
-
-
 print "pacman: orphans..."
 let orphanPackages = pacman -Qqdt | complete
 if ($orphanPackages.exit_code == 0) {
