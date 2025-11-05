@@ -104,7 +104,8 @@ config.keys = {
 	{ key = 'DownArrow', mods = 'ALT|SHIFT', action = act.ActivatePaneDirection 'Down' },
 	{ key = 'LeftArrow', mods = 'ALT|SHIFT', action = act.ActivatePaneDirection 'Left' },
 	{ key = 'RightArrow', mods = 'ALT|SHIFT', action = act.ActivatePaneDirection 'Right' },
-	{ key = 'X', mods = 'CTRL|SHIFT', action = act.Nop }
+	{ key = 'X', mods = 'CTRL|SHIFT', action = act.Nop },
+	{ key = '0', mods = 'ALT', action = act.ActivateTab(9), }, -- extended later
 }
 
 config.mouse_bindings = {
@@ -132,7 +133,7 @@ config.mouse_bindings = {
 }
 config.enable_scroll_bar = true
 
-for i = 1, 8 do
+for i = 1, 9 do
 	-- ALT + number to activate that tab
 	table.insert(config.keys, {
 		key = tostring(i),
