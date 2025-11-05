@@ -8,9 +8,14 @@ alias s = git status
 # git fetch
 alias gf = git fetch
 # git diff
-def gdf [] {
+def gdf [a: string = ".", b?: string] {
 	# workaround: force less (delta's pager) to enable alternate screen buffer
-	git diff | delta
+	
+	if $b == null {
+		git diff . | delta;
+	} else {
+		git diff $a $b;
+	}
 }
 #alias gdf = git diff
 # git word diff

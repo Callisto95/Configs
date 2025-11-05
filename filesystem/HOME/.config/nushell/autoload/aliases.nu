@@ -6,8 +6,6 @@ alias cls = clear
 alias df = df -h
 alias oxipng = oxipng --preserve --fix
 alias jpegoptim = jpegoptim --preserve
-alias bandcamp-dl-album = bandcamp-dl --template '%{artist}/%{album}/%{title}'
-alias bandcamp-dl-single = bandcamp-dl --template '%{artist}/%{album}/%{artist}-%{title}'
 # remove KDE's rating
 alias removeRating = setfattr -x user.baloo.rating
 # kill, then restart PlasmaShell
@@ -59,4 +57,15 @@ def generatePassword [length: int = 64, --no-copy]: nothing -> string {
 		wl-copy -n $password
 	}
 	$password
+}
+# decode jxl to png
+def ddjxl [file: path] {
+	let target = $file | str replace ".jxl" ".png";
+	djxl $file $target;
+	^oxipng --opt=2 --preserve --filters "0-9" --fix $target;
+}
+def startVPN [] {
+	sudo systemctl restart vpnagentd;
+	sleep 5sec;
+	sudo rm /etc/xdg/autostart/com.cisco.secureclient.gui.desktop;
 }

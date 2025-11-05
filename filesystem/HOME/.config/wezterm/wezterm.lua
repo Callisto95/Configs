@@ -84,10 +84,8 @@ config.window_padding = {
 local act = wezterm.action
 
 config.keys = {
-	{ key = 'LeftArrow', mods = 'CTRL', action = act.ActivateTabRelative(-1) },
-	{ key = 'RightArrow', mods = 'CTRL', action = act.ActivateTabRelative(1) },
-	{ key = 'LeftArrow', mods = 'ALT', action = act.ActivateTabRelative(-1) },
-	{ key = 'RightArrow', mods = 'ALT', action = act.ActivateTabRelative(1) },
+	{ key = 'LeftArrow', mods = 'CTRL|SHIFT', action = act.ActivateTabRelative(-1) },
+	{ key = 'RightArrow', mods = 'CTRL|SHIFT', action = act.ActivateTabRelative(1) },
 	{
 		key = 'K',
 		mods = 'CTRL|SHIFT',
@@ -98,7 +96,17 @@ config.keys = {
 	},
 	{ key = 'LeftArrow', mods = 'CTRL', action = act.SendString '\x1b\x5b1;5D' },
 	{ key = 'RightArrow', mods = 'CTRL', action = act.SendString '\x1b\x5b1;5C' },
+	{ key = 'm', mods = 'CTRL|SHIFT', action = act.Nop },
+	{ key = '{', mods = 'ALT|SHIFT', action = act.SplitVertical({ domain = "CurrentPaneDomain" }) },
+	{ key = '}', mods = 'ALT|SHIFT', action = act.SplitHorizontal({ domain = "CurrentPaneDomain" }) },
+	{ key = 'w', mods = 'ALT|SHIFT', action = act.CloseCurrentPane { confirm = true } },
+	{ key = 'UpArrow', mods = 'ALT|SHIFT', action = act.ActivatePaneDirection 'Up' },
+	{ key = 'DownArrow', mods = 'ALT|SHIFT', action = act.ActivatePaneDirection 'Down' },
+	{ key = 'LeftArrow', mods = 'ALT|SHIFT', action = act.ActivatePaneDirection 'Left' },
+	{ key = 'RightArrow', mods = 'ALT|SHIFT', action = act.ActivatePaneDirection 'Right' },
+	{ key = 'X', mods = 'CTRL|SHIFT', action = act.Nop }
 }
+
 config.mouse_bindings = {
 	{
 		event = { Up = { streak = 1, button = 'Left' } },
