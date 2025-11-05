@@ -51,6 +51,10 @@ error: database 'core' is not valid (invalid or corrupted database (PGP signatur
 
 The CachyOS admin key seems to be problematic (at least for me). I now had three occurences, where it corrupted (or something).
 
+> [!IMPORTANT]
+> This seems to be an issue with their servers.
+> Wait a few minutes and try to update again. Everything should be just work.
+
 I'm not sure what a good fix is. Sometimes one works, sometimes not.
 
 Here's a collection of fixes:
@@ -61,13 +65,13 @@ Here's a collection of fixes:
 
 Note: not `pacman -Sy`!
 
-### 3
+### 2
 
 Refresh the mirrorlist, then run `sudo pacman -Syu archlinux-keyring && sudo pacman -Syyu`
 
 This seems to only work sometimes...
 
-### 4
+### 3
 
 This has worked quite often
 
@@ -79,7 +83,7 @@ sudo pacman-key --populate archlinux
 sudo pacman-key --populate cachyos
 ```
 
-### 5
+### 4
 
 Also from a Reddit thread:
 
@@ -88,7 +92,7 @@ sudo rm -rf /var/lib/pacman/sync
 sudo pacman -Syyu
 ```
 
-### 6
+### 5
 
 The 'just reset it all':
 
@@ -108,4 +112,13 @@ Instead of editing applications in `/usr/share/applications/`, copy the file to 
 
 Your user setting will take priority over the system defaults.
 
-KDE: If you have a shortcut to that application, it is required to remove and set it again. Otherwise the original application is started. This is also required if the `.desktop` file is modified. KDE keeps the old version.
+> [!IMPORTANT]
+> **KDE**: If you have a shortcut to that application, it is required to remove and set it again. Otherwise the original application is started. This is also required if the `.desktop` file is modified. KDE keeps the old version.
+
+## Python
+
+```bash
+python -c "print(chr(sum(range(ord(min(str(not())))))))"
+```
+
+funny symbol :3
