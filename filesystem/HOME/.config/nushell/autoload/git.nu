@@ -68,7 +68,7 @@ def gacm [...message: string]: nothing -> nothing {
 	if ($message | is-empty) {
 		git commit --amend --no-edit
 	} else {
-		git commit --amend -m ($message | str join "")
+		git commit --amend -m ($message | str join " ")
 	}
 }
 # git add files or current dir
