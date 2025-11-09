@@ -23,6 +23,11 @@ try {
 	print "flatpak..."
 	flatpak update
 	print ""
+	
+	
+	print "cargo..."
+	cargo install-update -a
+	print ""
 }
 
 
