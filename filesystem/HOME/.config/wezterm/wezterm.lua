@@ -1,3 +1,7 @@
+-- Notes:
+-- - pane.current_working_dir returns an URL object
+--   everything after # in URL's are ommitted, meaning file paths may be cut off
+
 local wezterm = require 'wezterm'
 local os = require 'os'
 local config = {}
@@ -12,139 +16,133 @@ config.font_size = 19
 -- config.mouse_wheel_scrolls_tabs = true
 
 config.colors = {
-	foreground = "#FFFFFF",
-	background = "#222222",
-	cursor_bg = "#FFFFFF",
+    foreground = "#FFFFFF",
+    background = "#222222",
+    cursor_bg = "#FFFFFF",
 -- 	selection_fg = "#FFFFFF",
-	selection_bg = "#360e00",
-	tab_bar = {
-		inactive_tab_edge = "#161616",
-		-- background = "#FF4500",
-		active_tab = {
-			bg_color = "#222222",
-			fg_color = "#FF4500",
-		},
-		inactive_tab = {
-			bg_color = "#050505",
-			fg_color = "#FFFFFF",
-		},
-		inactive_tab_hover = {
-			bg_color = "#161616",
-			fg_color = "#FFFFFF",
-		},
-		new_tab = {
-			bg_color = "#444444",
-			fg_color = "#FF4500",
-		},
-		new_tab_hover = {
-			bg_color = "#444444",
-			fg_color = "#FFFFFF",
-		}
-	},
-	ansi = {
-		'#000000',
-		'#b21818',
-		'#18b218',
-		'#cece00',
-		'#0066ff',
-		'#b218b2',
-		'#18b2b2',
-		'#b2b2b2',
-	},
-	brights = {
-		'#686868',
-		'#ff5454',
-		'#54ff54',
-		'#ffff54',
-		'#5454ff',
-		'#ff54ff',
-		'#54ffff',
-		'#ffffff',
-	},
-	scrollbar_thumb = '#444444',
+    selection_bg = "#360e00",
+    tab_bar = {
+        inactive_tab_edge = "#161616",
+        -- background = "#FF4500",
+        active_tab = {
+            bg_color = "#222222",
+            fg_color = "#FF4500",
+        },
+        inactive_tab = {
+            bg_color = "#050505",
+            fg_color = "#FFFFFF",
+        },
+        inactive_tab_hover = {
+            bg_color = "#161616",
+            fg_color = "#FFFFFF",
+        },
+        new_tab = {
+            bg_color = "#444444",
+            fg_color = "#FF4500",
+        },
+        new_tab_hover = {
+            bg_color = "#444444",
+            fg_color = "#FFFFFF",
+        }
+    },
+    ansi = {
+        '#000000',
+        '#b21818',
+        '#18b218',
+        '#cece00',
+        '#0066ff',
+        '#b218b2',
+        '#18b2b2',
+        '#b2b2b2',
+    },
+    brights = {
+        '#686868',
+        '#ff5454',
+        '#54ff54',
+        '#ffff54',
+        '#5454ff',
+        '#ff54ff',
+        '#54ffff',
+        '#ffffff',
+    },
+    scrollbar_thumb = '#444444',
 }
 
 config.window_frame = {
-	font = wezterm.font "Fira Code Retina",
-	active_titlebar_bg = "#444444",
-	inactive_titlebar_bg = "#444444",
+    font = wezterm.font "Fira Code Nerd Font Retina",
+    active_titlebar_bg = "#444444",
+    inactive_titlebar_bg = "#444444",
 }
 
--- config.window_background_image = ""
-
+-- would disable in KWin rule anyway
 config.window_decorations = "None"
 
 config.window_padding = {
-	left = 0,
-	right = 0,
-	top = 0,
-	bottom = 0,
+    left = 0,
+    right = 0,
+    top = 0,
+    bottom = 0,
 }
 
 local act = wezterm.action
-
 config.keys = {
-	{ key = 'LeftArrow', mods = 'CTRL|SHIFT', action = act.ActivateTabRelative(-1) },
-	{ key = 'RightArrow', mods = 'CTRL|SHIFT', action = act.ActivateTabRelative(1) },
-	{
-		key = 'K',
-		mods = 'CTRL|SHIFT',
-		action = act.Multiple {
-			act.ClearScrollback 'ScrollbackAndViewport',
-			act.SendKey { key = 'L', mods = 'CTRL' },
-		},
-	},
-	{ key = 'LeftArrow', mods = 'CTRL', action = act.SendString '\x1b\x5b1;5D' },
-	{ key = 'RightArrow', mods = 'CTRL', action = act.SendString '\x1b\x5b1;5C' },
-	{ key = 'm', mods = 'CTRL|SHIFT', action = act.Nop },
-	{ key = '{', mods = 'ALT|SHIFT', action = act.SplitVertical({ domain = "CurrentPaneDomain" }) },
-	{ key = '}', mods = 'ALT|SHIFT', action = act.SplitHorizontal({ domain = "CurrentPaneDomain" }) },
-	{ key = 'w', mods = 'ALT|SHIFT', action = act.CloseCurrentPane { confirm = true } },
-	{ key = 'UpArrow', mods = 'ALT|SHIFT', action = act.ActivatePaneDirection 'Up' },
-	{ key = 'DownArrow', mods = 'ALT|SHIFT', action = act.ActivatePaneDirection 'Down' },
-	{ key = 'LeftArrow', mods = 'ALT|SHIFT', action = act.ActivatePaneDirection 'Left' },
-	{ key = 'RightArrow', mods = 'ALT|SHIFT', action = act.ActivatePaneDirection 'Right' },
-	{ key = 'X', mods = 'CTRL|SHIFT', action = act.Nop },
-	{ key = '0', mods = 'ALT', action = act.ActivateTab(9), }, -- extended later
+    { key = 'LeftArrow', mods = 'CTRL|SHIFT', action = act.ActivateTabRelative(-1) },
+    { key = 'RightArrow', mods = 'CTRL|SHIFT', action = act.ActivateTabRelative(1) },
+    {
+        key = 'K',
+        mods = 'CTRL|SHIFT',
+        action = act.Multiple {
+            act.ClearScrollback 'ScrollbackAndViewport',
+            act.SendKey { key = 'L', mods = 'CTRL' },
+        },
+    },
+    { key = 'LeftArrow', mods = 'CTRL', action = act.SendString '\x1b\x5b1;5D' },
+    { key = 'RightArrow', mods = 'CTRL', action = act.SendString '\x1b\x5b1;5C' },
+    { key = 'm', mods = 'CTRL|SHIFT', action = act.Nop },
+    { key = '{', mods = 'ALT|SHIFT', action = act.SplitVertical({ domain = "CurrentPaneDomain" }) },
+    { key = '}', mods = 'ALT|SHIFT', action = act.SplitHorizontal({ domain = "CurrentPaneDomain" }) },
+    { key = 'w', mods = 'ALT|SHIFT', action = act.CloseCurrentPane { confirm = true } },
+    { key = 'UpArrow', mods = 'ALT|SHIFT', action = act.ActivatePaneDirection 'Up' },
+    { key = 'DownArrow', mods = 'ALT|SHIFT', action = act.ActivatePaneDirection 'Down' },
+    { key = 'LeftArrow', mods = 'ALT|SHIFT', action = act.ActivatePaneDirection 'Left' },
+    { key = 'RightArrow', mods = 'ALT|SHIFT', action = act.ActivatePaneDirection 'Right' },
+    { key = 'X', mods = 'CTRL|SHIFT', action = act.Nop },
+    { key = '0', mods = 'ALT', action = act.ActivateTab(9), }, -- extended later
+    -- { key = 'F11', mods = '', action = act.ToggleFullScreen }, -- is this necessary?
 }
 
 config.mouse_bindings = {
-	{
-		event = { Up = { streak = 1, button = 'Left' } },
-		mods = 'CTRL',
-		action = act.OpenLinkAtMouseCursor,
-	},
-	{
-		event = { Down = { streak = 1, button = 'Middle' } },
-		action = act.PasteFrom 'Clipboard'
-	},
-	{
-		event = { Down = { streak = 1, button = { WheelUp = 1 } } },
-		alt_screen = false,
-		mods = 'NONE',
-		action = act.ScrollByLine(-3),
-	},
-	{
-		event = { Down = { streak = 1, button = { WheelDown = 1 } } },
-		alt_screen = false,
-		mods = 'NONE',
-		action = act.ScrollByLine(3),
-	},
+    {
+        event = { Up = { streak = 1, button = 'Left' } },
+        mods = 'CTRL',
+        action = act.OpenLinkAtMouseCursor,
+    },
+    {
+        event = { Down = { streak = 1, button = 'Middle' } },
+        action = act.PasteFrom 'Clipboard'
+    },
+    {
+        event = { Down = { streak = 1, button = { WheelUp = 1 } } },
+        alt_screen = false,
+        mods = 'NONE',
+        action = act.ScrollByLine(-3),
+    },
+    {
+        event = { Down = { streak = 1, button = { WheelDown = 1 } } },
+        alt_screen = false,
+        mods = 'NONE',
+        action = act.ScrollByLine(3),
+    },
 }
-config.enable_scroll_bar = true
 
+config.hide_tab_bar_if_only_one_tab = true
 for i = 1, 9 do
-	-- ALT + number to activate that tab
-	table.insert(config.keys, {
-		key = tostring(i),
-				 mods = 'ALT',
-				 action = act.ActivateTab(i - 1),
-	})
--- 	-- F1 through F8 to activate that tab
--- 	table.insert(config.keys, {
--- 		key = 'F' .. tostring(i),
--- 				 action = act.ActivateTab(i - 1),
--- 	})
+    -- ALT + number to activate that tab
+    table.insert(config.keys, {
+        key = tostring(i),
+                 mods = 'ALT',
+                 action = act.ActivateTab(i - 1),
+    })
 end
 
 -- DO NOT USE THIS
@@ -162,52 +160,60 @@ end
 -- Given "/foo/bar" returns "bar"
 -- Given "c:\\foo\\bar" returns "bar"
 function basename(s)
-	return string.gsub(s, '(.*[/])(.*)', '%2')
+    return string.gsub(s, '(.*[/])(.*)', '%2')
 end
 
 local user_name = os.getenv('USER')
 wezterm.on('format-tab-title', function(tab, tabs, panes, config, hover, max_width)
-	local pane = tab.active_pane
-	
-	local process = basename(pane.foreground_process_name)
-	
-	local cwd = pane.current_working_dir
-	
-	local path
-	if cwd == nil then
-		return { { Text = '-|-' } }
-	else
-		path = basename(cwd.file_path)
-	end
-	
-	if path == user_name then
-		path = '~ '
-	end
-	
-	return { { Text = tab.tab_index + 1 .. ': ' .. path .. '> ' .. process } }
+    local pane = tab.active_pane
+    
+    local process = basename(pane.foreground_process_name)
+    
+    local cwd = pane.current_working_dir
+    
+    local path
+    if cwd == nil then
+        return { { Text = '-|-' } }
+    else
+        path = basename(cwd.file_path)
+    end
+    
+    if path == user_name then
+        path = '~ '
+    end
+    
+    return { { Text = tab.tab_index + 1 .. ': ' .. path .. '> ' .. process } }
 end)
 wezterm.on('format-window-title', function(tab, pane, tabs, panes, config)
-	local pane = tab.active_pane
-	
-	local process = basename(pane.foreground_process_name)
-	
-	local cwd = pane.current_working_dir
-	
-	local path
-	if cwd == nil then
-		return { { Text = '-|-' } }
-	else
-		path = basename(cwd.file_path)
-	end
-	
-	if path == user_name then
-		path = '~ '
-	end
-	
-	return path .. '> ' .. process
+    local pane = tab.active_pane
+    
+    local process = basename(pane.foreground_process_name)
+    
+    local cwd = pane.current_working_dir
+    
+    local path
+    if cwd == nil then
+        return { { Text = '-|-' } }
+    else
+        path = basename(cwd.file_path)
+    end
+    
+    if path == user_name then
+        path = '~ '
+    end
+    
+    return path .. '> ' .. process
 end)
--- Note to self
--- pane.current_working_dir returns an URL object
--- everything after # in URL's are ommitted, meaning file paths may be cut off
+
+-- enable scroll bar, but only show if necessary
+-- config.enable_scroll_bar = true
+-- wezterm.on("update-status", function(window, pane)
+-- 	local overrides = window:get_config_overrides() or {}
+-- 	local dimensions = pane:get_dimensions()
+    
+-- 	overrides.enable_scroll_bar = dimensions.scrollback_rows > dimensions.viewport_rows and not pane:is_alt_screen_active()
+    
+-- 	window:set_config_overrides(overrides)
+-- end)
 
 return config
