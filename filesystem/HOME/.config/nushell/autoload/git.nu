@@ -153,10 +153,34 @@ def gitDeltaMode [mode: string@git-delta-variants]: nothing -> nothing {
 		git config delta.hyperlinks-file-link-format "clion://open?file={path}&line={line}"
 	}
 }
+def git-account-variants [] { [ "Callisto", "TU" ] }
+# git switch accounts (user name and email)
+def gitAccount [account: string@git-account-variants]: nothing -> nothing {
+	match $account {
+		"Callisto" => {
+			git config user.name "Callisto95";
+			git config user.email "luluklzde@gmail.com";
+		},
+		"TU" => {
+			git config user.name "Luca Saalfeld";
+			git config user.email "l.saalfeld@tu-braunschweig.de";
+		},
+		_ => {
+			error make {
+				msg: "unknown account specified",
+				label: {
+					text: "account name is not known",
+					span: (metadata $account).span
+				}
+			}
+		}
+	}
+}
 
 hide "git-complete remote";
 hide "git-complete branch";
 hide "git-delta-variants";
+hide "git-account-variants";
 
 hide "get_branch";
 hide "branch_exist";
