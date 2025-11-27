@@ -98,13 +98,17 @@ def gacm [...message: string]: nothing -> nothing {
 	}
 }
 # git add files or current dir
-def ga [...files: string]: nothing -> nothing {
+def ga [...files: string, --force (-f)]: nothing -> nothing {
 	if ($files | is-empty) {
 		git add .;
 		return;
 	}
 	
-	$files | each { git add $in; } | ignore;
+	if $force {
+		$files | each { git -f add $in; } | ignore;
+	} else {
+		$files | each { git add $in; } | ignore;
+	}
 }
 # git restore files or current dir
 def grst [...files: string]: nothing -> nothing {
