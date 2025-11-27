@@ -1,0 +1,21 @@
+{
+    "workbench.editor.enablePreview": false,
+    "files.autoSave": "afterDelay",
+    "editor.trimAutoWhitespace": false,
+    "editor.renderFinalNewline": "on",
+    "editor.scrollBeyondLastLine": false,
+    "files.insertFinalNewline": true,
+    "editor.insertSpaces": false,
+    "workbench.startupEditor": "none",
+    "editor.fontLigatures": true,
+    "editor.fontFamily": "'Fira Code Retina', 'monospace', monospace",
+    "editor.useTabStops": false,
+    "[typst]": {
+        "editor.tabSize": 4,
+        "editor.indentSize": 4
+    },
+    "chat.agent.enabled": false,
+    "chat.commandCenter.enabled": false,
+    "inlineChat.accessibleDiffView": "off",
+    "terminal.integrated.initialHint": false
+}
