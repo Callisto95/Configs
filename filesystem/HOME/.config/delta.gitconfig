@@ -9,3 +9,4 @@
 	line-numbers = true
 	hyperlinks = true
 	side-by-side = true
+	relative-paths = false

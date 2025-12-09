@@ -27,9 +27,16 @@
     "[jsonc]": {
         "editor.defaultFormatter": "vscode.json-language-features"
     },
+    "tinymist.formatterIndentSize": 4,
+    "tinymist.exportPdf": "onSave",
+    "tinymist.lint.enabled": true,
+    "tinymist.lint.when": "onSave",
+    "tinymist.preview.scrollSync": "onSelectionChange",
     "[typst]": {
         "editor.tabSize": 4,
-        "editor.indentSize": 4
+        "editor.indentSize": 4,
+        "editor.formatOnType": true,
+        "editor.formatOnSave": true,
     },
     "github.copilot.enable": { "*": false },
     "github.copilot.editor.enableAutoCompletions": false,
@@ -39,4 +46,8 @@
     "chat.commandCenter.enabled": false,
     "chat.agent.enabled": false,
     "chat.disableAIFeatures": true,
+    "settingsSync.ignoredSettings": [
+        "editor.fontSize"
+    ],
+    "workbench.colorTheme": "Dark Orange Default"
 }

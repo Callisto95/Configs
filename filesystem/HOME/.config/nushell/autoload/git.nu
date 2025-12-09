@@ -28,12 +28,10 @@ alias s = git status
 alias gf = git fetch
 # git diff
 def gdf [a: string = ".", b?: string] {
-	# workaround: force less (delta's pager) to enable alternate screen buffer
-	
 	if $b == null {
-		git diff . | delta;
+		git diff .;
 	} else {
-		git diff $a $b | delta;
+		git diff $a $b;
 	}
 }
 #alias gdf = git diff
@@ -105,7 +103,7 @@ def ga [...files: string, --force (-f)]: nothing -> nothing {
 	}
 	
 	if $force {
-		$files | each { git -f add $in; } | ignore;
+		$files | each { git add --force $in; } | ignore;
 	} else {
 		$files | each { git add $in; } | ignore;
 	}
@@ -120,14 +118,19 @@ def grst [...files: string]: nothing -> nothing {
 	$files | each { git restore --staged $in; } | ignore;
 }
 # git push
-def gpu [remote?: string@"git-complete remote", --force (-f)]: nothing -> nothing {
-	let remote = $remote | default "origin"
-	
-	if $force {
-		git push $remote (get_branch) --force --tags
+def gpu [remote?: string@"git-complete remote", --force (-f), --all (-a)]: nothing -> nothing {
+	let push = if $force {
+		{ git push $in (get_branch) --force --tags }
 	} else {
-		git push $remote (get_branch) --tags
+		{ git push $in (get_branch) --tags }
 	}
+
+	if $all {
+		git-complete remote | each $push
+		return
+	}	
+
+	($remote | default "origin") | do $push
 }
 
 # git pull
