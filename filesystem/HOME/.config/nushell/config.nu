@@ -35,7 +35,9 @@ $env.config.keybindings = [
 		modifier: Control
 		keycode: Char_h
 		mode: emacs
-		event: { edit: BackspaceWord }
+		event: {
+			edit: BackspaceWord
+		}
 	},
 ]
 

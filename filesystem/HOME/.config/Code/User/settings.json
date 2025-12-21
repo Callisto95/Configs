@@ -38,6 +38,10 @@
         "editor.formatOnType": true,
         "editor.formatOnSave": true,
     },
+    "[latex]": {
+        "editor.tabSize": 4,
+        "editor.indentSize": 4
+    },
     "github.copilot.enable": { "*": false },
     "github.copilot.editor.enableAutoCompletions": false,
     "github.copilot.editor.enableCodeActions": false,
