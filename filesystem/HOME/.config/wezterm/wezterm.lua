@@ -84,10 +84,11 @@ config.window_padding = {
     bottom = 0,
 }
 
+config.debug_key_events = true
 local act = wezterm.action
 config.keys = {
-    { key = 'LeftArrow', mods = 'CTRL|SHIFT', action = act.ActivateTabRelative(-1) },
-    { key = 'RightArrow', mods = 'CTRL|SHIFT', action = act.ActivateTabRelative(1) },
+    { key = 'LeftArrow', mods = 'ALT|SHIFT', action = act.ActivateTabRelative(-1) },
+    { key = 'RightArrow', mods = 'ALT|SHIFT', action = act.ActivateTabRelative(1) },
     {
         key = 'K',
         mods = 'CTRL|SHIFT',
@@ -102,10 +103,10 @@ config.keys = {
     { key = '{', mods = 'ALT|SHIFT', action = act.SplitVertical({ domain = "CurrentPaneDomain" }) },
     { key = '}', mods = 'ALT|SHIFT', action = act.SplitHorizontal({ domain = "CurrentPaneDomain" }) },
     { key = 'w', mods = 'ALT|SHIFT', action = act.CloseCurrentPane { confirm = true } },
-    { key = 'UpArrow', mods = 'ALT|SHIFT', action = act.ActivatePaneDirection 'Up' },
-    { key = 'DownArrow', mods = 'ALT|SHIFT', action = act.ActivatePaneDirection 'Down' },
-    { key = 'LeftArrow', mods = 'ALT|SHIFT', action = act.ActivatePaneDirection 'Left' },
-    { key = 'RightArrow', mods = 'ALT|SHIFT', action = act.ActivatePaneDirection 'Right' },
+    { key = 'UpArrow', mods = 'CTRL|SHIFT', action = act.ActivatePaneDirection 'Up' },
+    { key = 'DownArrow', mods = 'CTRL|SHIFT', action = act.ActivatePaneDirection 'Down' },
+    { key = 'LeftArrow', mods = 'CTRL|SHIFT', action = act.ActivatePaneDirection 'Left' },
+    { key = 'RightArrow', mods = 'CTRL|SHIFT', action = act.ActivatePaneDirection 'Right' },
     { key = 'X', mods = 'CTRL|SHIFT', action = act.Nop },
     { key = '0', mods = 'ALT', action = act.ActivateTab(9), }, -- extended later
     -- { key = 'F11', mods = '', action = act.ToggleFullScreen }, -- is this necessary?
