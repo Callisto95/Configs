@@ -10,3 +10,9 @@ GRUB_TOP_LEVEL=/boot/vmlinuz-linux-cachyos
 
 # 10 bit color
 KWIN_DRM_PREFER_COLOR_DEPTH=30
+
+FREETYPE_PROPERTIES="cff:no-stem-darkening=0 type1:no-stem-darkening=0 t1cid:no-stem-darkening=0"
+
+# proton cachyos: enable auto-updates
+PROTON_FSR_UPGRADE=1
+PROTON_XESS_UPGRADE=1
