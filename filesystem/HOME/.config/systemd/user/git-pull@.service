@@ -2,7 +2,7 @@
 Description=Git pull for repository /%I
 After=network-online.target
 Wants=network-online.target
-Before=git-push@%I.service
+Before=git-push@%i.service
 
 [Service]
 Type=oneshot
