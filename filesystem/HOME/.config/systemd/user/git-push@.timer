@@ -1,0 +1,10 @@
+[Unit]
+Description=Periodic git push for /%I
+
+[Timer]
+OnBootSec=5min
+OnUnitActiveSec=15min
+Persistent=true
+
+[Install]
+WantedBy=timers.target

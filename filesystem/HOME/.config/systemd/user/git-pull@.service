@@ -1,0 +1,13 @@
+[Unit]
+Description=Git pull for repository /%I
+After=network-online.target
+Wants=network-online.target
+Before=git-push@%I.service
+
+[Service]
+Type=oneshot
+WorkingDirectory=/%I
+ExecStart=/bin/sh -c '/usr/bin/git pull origin main || /usr/bin/notify-send "Pull failed (%I)" "git pull failed in %I" -u critical'
+
+[Install]
+WantedBy=default.target

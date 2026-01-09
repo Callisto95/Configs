@@ -1,0 +1,9 @@
+[Unit]
+Description=Git push for repository /%I
+After=git-pull@%i.service
+Requires=git-pull@%i.service
+
+[Service]
+Type=oneshot
+WorkingDirectory=/%I
+ExecStart=/bin/sh -c '/usr/bin/git push origin main || /usr/bin/notify-send "Push failed (%I)" "git pull failed in %I" -u critical'
