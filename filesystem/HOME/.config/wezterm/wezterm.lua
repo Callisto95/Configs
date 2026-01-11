@@ -17,7 +17,7 @@ config.font_size = 19
 
 config.colors = {
     foreground = "#FFFFFF",
-    background = "#222222",
+    background = "#111111",
     cursor_bg = "#FFFFFF",
 -- 	selection_fg = "#FFFFFF",
     selection_bg = "#360e00",
@@ -84,7 +84,6 @@ config.window_padding = {
     bottom = 0,
 }
 
-config.debug_key_events = true
 local act = wezterm.action
 config.keys = {
     { key = 'LeftArrow', mods = 'ALT|SHIFT', action = act.ActivateTabRelative(-1) },
