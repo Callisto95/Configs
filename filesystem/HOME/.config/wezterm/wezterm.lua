@@ -17,7 +17,7 @@ config.font_size = 19
 
 config.colors = {
     foreground = "#FFFFFF",
-    background = "#222222",
+    background = "#111111",
     cursor_bg = "#FFFFFF",
     -- 	selection_fg = "#FFFFFF",
     selection_bg = "#360e00",
