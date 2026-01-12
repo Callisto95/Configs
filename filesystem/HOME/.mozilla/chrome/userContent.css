@@ -1,5 +1,5 @@
 /*** Hide Tab Close buttons ***/
-.tab-stack > .tab-content > .tab-close-button {
+.tab-stack>.tab-content>.tab-close-button {
 	/* 	visibility: collapse !important; */
 	display: none !important;
 }
@@ -9,13 +9,13 @@
 	--accent-default: #FF4500;
 	--accent-dark: #CD3700;
 	--accent-light: #FF5F23;
-	
+
 	/* overrides for things themes couldn't do */
 	--color-accent-primary: var(--accent-default) !important;
 	--color-accent-primary-active: var(--accent-dark) !important;
 	--in-content-primary-button-background: var(--accent-default) !important;
 	--in-content-primary-button-background-hover: var(--accent-light) !important;
-	--link-color-hover:var(--accent-light) !important;
+	--link-color-hover: var(--accent-light) !important;
 	--urlbarView-highlight-background: var(--accent-default) !important;
 	--newtab-primary-action-background: var(--accent-default) !important;
 	--toolbar-field-focus-border-color: var(--accent-default) !important;
@@ -23,6 +23,7 @@
 	--color-accent-primary-hover: var(--accent-light) !important;
 	--link-color: var(--accent-default) !important;
 	--focus-outline-color: var(--accent-default) !important;
+	--toolbarbutton-icon-fill-attention: light-dark(var(--accent-default), var(--accent-default)) !important;
 }
 
 .urlbarView-row {
