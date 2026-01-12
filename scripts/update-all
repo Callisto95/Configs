@@ -1,11 +1,9 @@
 #!/usr/bin/nu
 
-const kernel = "/boot/vmlinuz-linux-cachyos"
-const image = "/boot/initramfs-linux-cachyos.img"
-const uki = "/boot/EFI/Linux/arch-linux-cachyos.efi"
+const kernel = "/boot/vmlinuz-linux-cachyos-bore-lto"
+const uki = "/boot/EFI/Linux/arch-linux-cachyos-bore-lto.efi"
 
 let kernel_hash: string = sha512sum $kernel
-let image_hash: string = sha512sum $image
 let uki_hash: string = sha512sum $uki
 
 
@@ -49,10 +47,9 @@ flatpak uninstall --unused
 
 
 let new_kernel_hash: string = sha512sum $kernel
-let new_image_hash: string = sha512sum $image
 let new_uki_hash: string = sha512sum $uki
 
-if ($kernel_hash != $new_kernel_hash or $image_hash != $new_image_hash or $uki_hash != $new_uki_hash) {
+if ($kernel_hash != $new_kernel_hash or $uki_hash != $new_uki_hash) {
 	print ""
 	print "\e[33mKernel has been updated!\e[0m\n"
 }
