@@ -47,11 +47,3 @@
 		justify-content: end !important;
 	}
 }
-
-h1.logo-and-wordmark-wrapper {
-	display: none !important;
-}
-
-main.newtab-main {
-	justify-content: end !important;
-}
