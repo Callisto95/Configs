@@ -19,7 +19,7 @@ config.colors = {
     foreground = "#FFFFFF",
     background = "#111111",
     cursor_bg = "#FFFFFF",
--- 	selection_fg = "#FFFFFF",
+    -- 	selection_fg = "#FFFFFF",
     selection_bg = "#360e00",
     tab_bar = {
         inactive_tab_edge = "#161616",
@@ -86,7 +86,7 @@ config.window_padding = {
 
 local act = wezterm.action
 config.keys = {
-    { key = 'LeftArrow', mods = 'ALT|SHIFT', action = act.ActivateTabRelative(-1) },
+    { key = 'LeftArrow',  mods = 'ALT|SHIFT', action = act.ActivateTabRelative(-1) },
     { key = 'RightArrow', mods = 'ALT|SHIFT', action = act.ActivateTabRelative(1) },
     {
         key = 'K',
@@ -96,18 +96,18 @@ config.keys = {
             act.SendKey { key = 'L', mods = 'CTRL' },
         },
     },
-    { key = 'LeftArrow', mods = 'CTRL', action = act.SendString '\x1b\x5b1;5D' },
-    { key = 'RightArrow', mods = 'CTRL', action = act.SendString '\x1b\x5b1;5C' },
-    { key = 'm', mods = 'CTRL|SHIFT', action = act.Nop },
-    { key = '{', mods = 'ALT|SHIFT', action = act.SplitVertical({ domain = "CurrentPaneDomain" }) },
-    { key = '}', mods = 'ALT|SHIFT', action = act.SplitHorizontal({ domain = "CurrentPaneDomain" }) },
-    { key = 'w', mods = 'ALT|SHIFT', action = act.CloseCurrentPane { confirm = true } },
-    { key = 'UpArrow', mods = 'CTRL|SHIFT', action = act.ActivatePaneDirection 'Up' },
-    { key = 'DownArrow', mods = 'CTRL|SHIFT', action = act.ActivatePaneDirection 'Down' },
-    { key = 'LeftArrow', mods = 'CTRL|SHIFT', action = act.ActivatePaneDirection 'Left' },
+    { key = 'LeftArrow',  mods = 'CTRL',       action = act.SendString '\x1b\x5b1;5D' },
+    { key = 'RightArrow', mods = 'CTRL',       action = act.SendString '\x1b\x5b1;5C' },
+    { key = 'm',          mods = 'CTRL|SHIFT', action = act.Nop },
+    { key = '{',          mods = 'ALT|SHIFT',  action = act.SplitVertical({ domain = "CurrentPaneDomain" }) },
+    { key = '}',          mods = 'ALT|SHIFT',  action = act.SplitHorizontal({ domain = "CurrentPaneDomain" }) },
+    { key = 'w',          mods = 'ALT|SHIFT',  action = act.CloseCurrentPane { confirm = true } },
+    { key = 'UpArrow',    mods = 'CTRL|SHIFT', action = act.ActivatePaneDirection 'Up' },
+    { key = 'DownArrow',  mods = 'CTRL|SHIFT', action = act.ActivatePaneDirection 'Down' },
+    { key = 'LeftArrow',  mods = 'CTRL|SHIFT', action = act.ActivatePaneDirection 'Left' },
     { key = 'RightArrow', mods = 'CTRL|SHIFT', action = act.ActivatePaneDirection 'Right' },
-    { key = 'X', mods = 'CTRL|SHIFT', action = act.Nop },
-    { key = '0', mods = 'ALT', action = act.ActivateTab(9), }, -- extended later
+    { key = 'X',          mods = 'CTRL|SHIFT', action = act.Nop },
+    { key = '0',          mods = 'ALT',        action = act.ActivateTab(9), }, -- extended later
     -- { key = 'F11', mods = '', action = act.ToggleFullScreen }, -- is this necessary?
 }
 
@@ -140,8 +140,8 @@ for i = 1, 9 do
     -- ALT + number to activate that tab
     table.insert(config.keys, {
         key = tostring(i),
-                 mods = 'ALT',
-                 action = act.ActivateTab(i - 1),
+        mods = 'ALT',
+        action = act.ActivateTab(i - 1),
     })
 end
 
@@ -166,42 +166,42 @@ end
 local user_name = os.getenv('USER')
 wezterm.on('format-tab-title', function(tab, tabs, panes, config, hover, max_width)
     local pane = tab.active_pane
-    
+
     local process = basename(pane.foreground_process_name)
-    
+
     local cwd = pane.current_working_dir
-    
+
     local path
     if cwd == nil then
         return { { Text = '-|-' } }
     else
         path = basename(cwd.file_path)
     end
-    
+
     if path == user_name then
         path = '~ '
     end
-    
+
     return { { Text = tab.tab_index + 1 .. ': ' .. path .. '> ' .. process } }
 end)
 wezterm.on('format-window-title', function(tab, pane, tabs, panes, config)
     local pane = tab.active_pane
-    
+
     local process = basename(pane.foreground_process_name)
-    
+
     local cwd = pane.current_working_dir
-    
+
     local path
     if cwd == nil then
-        return { { Text = '-|-' } }
+        return 'wezterm'
     else
         path = basename(cwd.file_path)
     end
-    
+
     if path == user_name then
         path = '~ '
     end
-    
+
     return path .. '> ' .. process
 end)
 
@@ -210,9 +210,9 @@ end)
 -- wezterm.on("update-status", function(window, pane)
 -- 	local overrides = window:get_config_overrides() or {}
 -- 	local dimensions = pane:get_dimensions()
-    
+
 -- 	overrides.enable_scroll_bar = dimensions.scrollback_rows > dimensions.viewport_rows and not pane:is_alt_screen_active()
-    
+
 -- 	window:set_config_overrides(overrides)
 -- end)
 

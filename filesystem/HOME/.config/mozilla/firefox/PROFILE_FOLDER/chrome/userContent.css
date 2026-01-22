@@ -23,6 +23,7 @@
 	--color-accent-primary-hover: var(--accent-light) !important;
 	--link-color: var(--accent-default) !important;
 	--focus-outline-color: var(--accent-default) !important;
+	--toolbarbutton-icon-fill-attention: light-dark(var(--accent-default), var(--accent-default)) !important;
 }
 
 .urlbarView-row {
