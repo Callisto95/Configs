@@ -6,5 +6,6 @@ GenericName=System Monitor
 Comment=Resource monitor that shows usage and stats for processor, memory, disks, network and processes
 Icon=btop
 Exec=wezterm --config font_size=12 start btop
+Terminal=False
 Categories=System;Monitor;ConsoleOnly;
 Keywords=system;process;task
