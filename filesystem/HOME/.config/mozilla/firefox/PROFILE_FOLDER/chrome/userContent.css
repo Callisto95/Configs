@@ -38,7 +38,7 @@
 	}
 }
 
-@-moz-document url("about:newtab") {
+@-moz-document url("about:newtab"), url("about:home") {
 	h1.logo-and-wordmark-wrapper {
 		display: none !important;
 	}
