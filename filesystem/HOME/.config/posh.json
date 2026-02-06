@@ -21,7 +21,7 @@
                     "foreground": "#FF4500",
                     "background": "#333333",
                     "options": {
-                        "style": "full",
+                        "style": "folder",
                         "mapped_locations": {
                             "/run/media/callisto/Data-2TB": "::Data-2TB",
                             "/run/media/callisto/SpeedData": "::SpeedData"
