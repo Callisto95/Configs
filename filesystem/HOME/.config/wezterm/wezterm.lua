@@ -15,68 +15,80 @@ config.font_size = 19
 -- this scrolls tabs *anywhere*
 -- config.mouse_wheel_scrolls_tabs = true
 
+local colours = {
+    accent = "#FF4500",
+    white = "#FFFFFF",
+    black = "#000000",
+    dark_grey = "#111111",
+    dark_grey_highlight = "#360e00",
+    grey = "#222222",
+}
+
 config.colors = {
-    foreground = "#FFFFFF",
-    background = "#111111",
-    cursor_bg = "#FFFFFF",
+    foreground = colours.white,
+    background = colours.dark_grey,
+    cursor_bg = colours.white,
     -- 	selection_fg = "#FFFFFF",
-    selection_bg = "#360e00",
+    selection_bg = colours.dark_grey_highlight,
     tab_bar = {
-        inactive_tab_edge = "#161616",
+        inactive_tab_edge = colours.black, -- just hide it
         -- background = "#FF4500",
         active_tab = {
-            bg_color = "#222222",
-            fg_color = "#FF4500",
+            bg_color = colours.accent,
+            fg_color = colours.black,
         },
         inactive_tab = {
-            bg_color = "#050505",
-            fg_color = "#FFFFFF",
+            bg_color = colours.dark_grey,
+            fg_color = colours.accent,
         },
         inactive_tab_hover = {
-            bg_color = "#161616",
-            fg_color = "#FFFFFF",
+            bg_color = colours.dark_grey,
+            fg_color = colours.accent,
         },
         new_tab = {
-            bg_color = "#444444",
-            fg_color = "#FF4500",
+            bg_color = colours.grey,
+            fg_color = colours.accent,
         },
         new_tab_hover = {
-            bg_color = "#444444",
-            fg_color = "#FFFFFF",
-        }
+            bg_color = colours.grey,
+            fg_color = colours.white,
+        },
     },
     ansi = {
         '#000000',
-        '#b21818',
-        '#18b218',
-        '#cece00',
-        '#0066ff',
-        '#b218b2',
-        '#18b2b2',
-        '#b2b2b2',
+        '#aa0000',
+        '#00aa00',
+        '#aaaa00',
+        '#00aaff',
+        '#aa00aa',
+        '#00aaaa',
+        '#aaaaaa',
     },
     brights = {
         '#686868',
-        '#ff5454',
-        '#54ff54',
-        '#ffff54',
-        '#5454ff',
-        '#ff54ff',
-        '#54ffff',
+        '#ff0000',
+        '#00ff00',
+        '#ffff00',
+        '#0000ff',
+        '#ff00ff',
+        '#00ffff',
         '#ffffff',
     },
     scrollbar_thumb = '#444444',
 }
 
+-- this only uses terminal characters for tabs
+config.use_fancy_tab_bar = false
+config.tab_max_width = 1024 -- just let the tab format be what it needs to be
+config.hide_tab_bar_if_only_one_tab = true
 config.window_frame = {
-    font = wezterm.font "Fira Code Nerd Font Retina",
-    active_titlebar_bg = "#444444",
-    inactive_titlebar_bg = "#444444",
+    -- font = wezterm.font "Fira Code Nerd Font Retina",
+    active_titlebar_bg = colours.grey,
+    inactive_titlebar_bg = colours.grey,
 }
 
 -- would disable in KWin rule anyway
 config.window_decorations = "None"
-
 config.window_padding = {
     left = 0,
     right = 0,
@@ -135,7 +147,6 @@ config.mouse_bindings = {
     },
 }
 
-config.hide_tab_bar_if_only_one_tab = true
 for i = 1, 9 do
     -- ALT + number to activate that tab
     table.insert(config.keys, {
@@ -159,7 +170,8 @@ end
 -- Equivalent to POSIX basename(3)
 -- Given "/foo/bar" returns "bar"
 -- Given "c:\\foo\\bar" returns "bar"
-function basename(s)
+
+local function basename(s)
     return string.gsub(s, '(.*[/])(.*)', '%2')
 end
 
@@ -182,7 +194,7 @@ wezterm.on('format-tab-title', function(tab, tabs, panes, config, hover, max_wid
         path = '~ '
     end
 
-    return { { Text = tab.tab_index + 1 .. ': ' .. path .. '> ' .. process } }
+    return tab.tab_index + 1 .. ': ' .. path .. '> ' .. process .. ' |'
 end)
 wezterm.on('format-window-title', function(tab, pane, tabs, panes, config)
     local pane = tab.active_pane
