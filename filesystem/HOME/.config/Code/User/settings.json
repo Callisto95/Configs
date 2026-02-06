@@ -53,5 +53,11 @@
     "settingsSync.ignoredSettings": [
         "editor.fontSize"
     ],
-    "workbench.colorTheme": "Dark Orange Default"
+    "workbench.colorTheme": "Dark Orange Default",
+    "Lua.codeLens.enable": true,
+    "Lua.completion.keywordSnippet": "Disable",
+    "Lua.completion.maxSuggestCount": 0,
+    "Lua.hint.arrayIndex": "Enable",
+    "Lua.runtime.version": "Lua 5.5",
+    "Lua.completion.showWord": "Disable"
 }
