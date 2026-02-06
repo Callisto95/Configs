@@ -1,5 +1,8 @@
 user_pref("browser.ml.chat.enabled", false)
 user_pref("browser.ml.chat.menu", false)
+user_pref("browser.ml.chat.page", false)
+user_pref("browser.ml.chat.page.footerBadge", false)
+user_pref("browser.ml.chat.page.menuBadge", false)
 user_pref("browser.ml.chat.shortcuts", false)
 user_pref("browser.ml.chat.shortcuts.custom", false)
 user_pref("browser.ml.enable", false)
@@ -9,6 +12,7 @@ user_pref("browser.ml.pageAssist.enabled", false);
 user_pref("browser.ml.smartAssist.enabled", false);
 user_pref("browser.search.visualSearch.featureGate", false);
 user_pref("browser.tabs.groups.smart.enabled", false);
+user_pref("browser.tabs.groups.smart.userEnabled", false)
 user_pref("browser.urlbar.quicksuggest.mlEnabled", false);
 user_pref("extensions.ml.enabled", false);
 user_pref("full-screen-api.transition.timeout", 0)
@@ -22,8 +26,4 @@ user_pref("sidebar.visibility", "hide-sidebar")
 user_pref("toolkit.legacyUserProfileCustomizations.stylesheets", true);
 user_pref("widget.use-xdg-desktop-portal", true)
 user_pref("widget.use-xdg-desktop-portal.file-picker", 1)
-user_pref("widget.use-xdg-desktop-portal.location", 1)
 user_pref("widget.use-xdg-desktop-portal.mime-handler", 1)
-user_pref("widget.use-xdg-desktop-portal.native-messaging", 0)
-user_pref("widget.use-xdg-desktop-portal.open-uri", 1)
-user_pref("widget.use-xdg-desktop-portal.settings", 1)
