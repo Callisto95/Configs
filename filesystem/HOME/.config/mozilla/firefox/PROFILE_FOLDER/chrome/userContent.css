@@ -46,4 +46,8 @@
 	main.newtab-main {
 		justify-content: end !important;
 	}
+
+	span.title-label {
+		color: white;
+	}
 }
