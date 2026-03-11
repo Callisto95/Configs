@@ -1,3 +1,4 @@
+alias npm = pnpm
 # remount based on /etc/fstab
 alias mount-fstab = mount -a
 # clear screen
@@ -10,8 +11,11 @@ alias jpegoptim = jpegoptim --preserve
 alias removeRating = setfattr -x user.baloo.rating
 # kill, then restart PlasmaShell
 def restartPlasma []: nothing -> nothing {
-	killall plasmashell
-	kstart plasmashell
+	if (pidof plasmashell | complete).exit_code == 0 {
+		killall plasmashell;
+	}
+	# bash -c "nohup plasmashell --replace > /dev/null 2>&1 &";
+	setsid plasmashell --replace o+e> /dev/null;
 }
 # only get files within zip
 alias zipList = zipinfo -1
