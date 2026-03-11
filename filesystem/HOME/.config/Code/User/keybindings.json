@@ -1,8 +1,18 @@
 // Place your key bindings in this file to override the defaults
 [
-    {
+    { // enable CTRL+Q to exit - overwrite by keymap
         "key": "ctrl+q",
         "command": "-workbench.action.navigateToLastEditLocation",
+        "when": "editorTextFocus",
+    },
+    { // only use tab to complete suggestion, make typing easier
+        "key": "enter",
+        "command": "-acceptSelectedSuggestion",
+        // "when": "suggestWidgetVisible && textInputFocus", // this breaks the overwrite
+    },
+    {
+        "key": "shift+alt+up",
+        "command": "-editor.action.smartSelect.expand",
         "when": "editorTextFocus"
     }
 ]
