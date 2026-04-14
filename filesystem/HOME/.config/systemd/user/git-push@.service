@@ -7,3 +7,6 @@ Requires=git-pull@%i.service
 Type=oneshot
 WorkingDirectory=/%I
 ExecStart=/bin/sh -c '/usr/bin/git push origin main || /usr/bin/notify-send "Push failed (%I)" "git pull failed in %I" -u critical'
+
+[Install]
+WantedBy=shutdown.target
