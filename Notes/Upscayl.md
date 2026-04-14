@@ -4,9 +4,9 @@ Upscayl upscales images to a higher resolution.
 
 ## Models and Differences
 
-**TL:DR**: Use `upscayl-standard`, `high-fidelity`, or `ultramix-balanced`. If only one isn't good enough, manually create a composite.
+**TL:DR**: Use `upscayl-standard`, `high-fidelity`, `ultramix-balanced`, or `Nomos8kSC`. If only one isn't good enough, manually create a composite.
 
-Note: Custom models do exist, but I don't mention them here. These are just the default models in order.
+Note: Custom models exist, but most are not worth talking about. They're fast, but lossy. Don't use them unless you want it.
 
 ### Upscayl Standard
 
@@ -30,9 +30,9 @@ Sometimes "shimmers" can be created. They're bad hallucinations, which are just 
 
 Unlike `upscayl-standard` or `high-fidelity` it removes noise, meaning the resulting image may look less detailed. However, It tends to have sharper edges than any of the two.
 
-It effectively is `high-fidelity`, but with much less or no noise, but with sharper edges. This doesn't mean that all noise is removed, however it sometimes removes noise.
+It effectively is `high-fidelity`, but with much less or no noise, but with sharper edges. This doesn't mean that all noise is removed, it just dampens the noise overall.
 
-Surisingly effective and consistent, even though it's an older model.
+Surprisingly effective and consistent, even though it's an older model.
 
 ### Ultrasharp (Non Commercial)
 
@@ -51,3 +51,7 @@ Incredibly fast model with little to no noise. Can be used as an alternative to 
 ### 4xLSDIRplusC
 
 Sometimes more effective than Ultramix.
+
+### Nomos8kSC
+
+Surprisingly effective. Keeps the details while preserving colour. From a sample size of 1, it's Upscayl Standard, but better.

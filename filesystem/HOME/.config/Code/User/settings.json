@@ -89,7 +89,7 @@
     "Lua.runtime.version": "Lua 5.5",
     "Lua.completion.showWord": "Disable",
     "editor.wordWrap": "on",
-    "cSpell.userWords": ["anthro", "behaviour", "forall", "gpio", "pagebreak"],
+    "cSpell.userWords": ["forall", "gpio", "pagebreak"],
     "telemetry.editStats.enabled": false,
     "telemetry.feedback.enabled": false,
     "telemetry.telemetryLevel": "off",
@@ -110,4 +110,5 @@
     "prettier.semi": true,
     "prettier.printWidth": 120,
     "window.zoomLevel": 2,
+    "workbench.editor.useModal": "off",
 }
