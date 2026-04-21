@@ -19,6 +19,7 @@ user_pref("full-screen-api.transition.timeout", 0)
 user_pref("full-screen-api.warning.delay", 0)
 user_pref("full-screen-api.warning.timeout", 0)
 user_pref("layout.css.devPixelsPerPx", 1.1)
+user_pref("media.ffmpeg.vaapi.enabled", true)
 user_pref("pdfjs.enableAltText", false);
 user_pref("places.semanticHistory.featureGate", false);
 user_pref("sidebar.revamp", false);
