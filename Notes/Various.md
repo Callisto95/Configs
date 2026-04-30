@@ -30,7 +30,7 @@ I don't like the default way P10K shows the venv version (name *and* version). T
 
 `ulimit -n [amount]` changes the amount of allowed open files within the **current** shell. The values can be seen via `ulimit -Hn` (hard limit) and `ulimit -Sn` (soft limit).
 
-Changing it permanently can be done in `/etc/security/limits.conf`: `* hard nofile [amount]`.
+Changing it permanently can be done in `/etc/security/limits.conf` with `* hard nofile [amount]`.
 
 ## Feral Interactive Gamemode
 
@@ -122,3 +122,10 @@ python -c "print(chr(sum(range(ord(min(str(not())))))))"
 ```
 
 funny symbol :3
+
+## Reload UDev Rules without Rebooting
+
+```bash
+sudo udevadm control --reload-rules
+sudo udevadm trigger
+```
