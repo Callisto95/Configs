@@ -15,7 +15,7 @@ def restartPlasma []: nothing -> nothing {
 		killall plasmashell;
 	}
 	# bash -c "nohup plasmashell --replace > /dev/null 2>&1 &";
-	setsid plasmashell --replace o+e> /dev/null;
+	setsid plasmashell --replace;
 }
 # only get files within zip
 alias zipList = zipinfo -1

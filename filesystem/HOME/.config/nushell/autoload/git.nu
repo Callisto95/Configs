@@ -29,7 +29,7 @@ alias gf = git fetch
 # git diff
 def gdf [a: string = ".", b?: string] {
 	if $b == null {
-		git diff .;
+		git diff $a;
 	} else {
 		git diff $a $b;
 	}
