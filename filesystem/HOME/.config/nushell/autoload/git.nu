@@ -17,15 +17,13 @@ def "git-complete branch" []: nothing -> list<string> {
 	return [];
 }
 
+
+
 # clear, then git status
-def sc [path?: string]: nothing -> nothing {
+def sc [path: string = "."]: nothing -> nothing {
 	clear;
 	
-	if $path == null {
-		git status;
-	} else {
-		git status $path;
-	}
+	git status $path;
 }
 # git status
 alias s = git status
