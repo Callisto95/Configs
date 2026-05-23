@@ -24,6 +24,7 @@
 	--link-color: var(--accent-default) !important;
 	--focus-outline-color: var(--accent-default) !important;
 	--toolbarbutton-icon-fill-attention: light-dark(var(--accent-default), var(--accent-default)) !important;
+	--urlbarview-background-color-selected: var(--accent-default) !important;
 }
 
 .urlbarView-row {
@@ -42,12 +43,18 @@
 	h1.logo-and-wordmark-wrapper {
 		display: none !important;
 	}
-
-	main.newtab-main {
-		justify-content: end !important;
-	}
-
+	
 	span.title-label {
 		color: white;
+	}
+	
+	div.nova-outer-wrapper {
+		display: grid !important;
+		align-items: end !important;
+		grid-template-rows: 90% 10% !important;
+	}
+	
+	div.nova-outer-wrapper > div.container.nova-enabled.logo-in-content {
+		container-type: unset !important;
 	}
 }
