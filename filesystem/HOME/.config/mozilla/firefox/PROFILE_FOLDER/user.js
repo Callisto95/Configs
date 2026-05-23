@@ -10,6 +10,7 @@ user_pref("browser.ml.linkPreview.collapsed", true)
 user_pref("browser.ml.linkPreview.enabled", false)
 user_pref("browser.ml.pageAssist.enabled", false);
 user_pref("browser.ml.smartAssist.enabled", false);
+user_pref("browser.quitShortcut.disabled", true)
 user_pref("browser.search.visualSearch.featureGate", false);
 user_pref("browser.tabs.groups.smart.enabled", false);
 user_pref("browser.tabs.groups.smart.userEnabled", false)
