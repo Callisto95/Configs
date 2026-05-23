@@ -18,9 +18,14 @@ def "git-complete branch" []: nothing -> list<string> {
 }
 
 # clear, then git status
-def sc []: nothing -> nothing {
-	clear
-	git status
+def sc [path?: string]: nothing -> nothing {
+	clear;
+	
+	if $path == null {
+		git status;
+	} else {
+		git status $path;
+	}
 }
 # git status
 alias s = git status
@@ -34,19 +39,14 @@ def gdf [a: string = ".", b?: string] {
 		git diff $a $b;
 	}
 }
-#alias gdf = git diff
 # git word diff
-# git diff
 def gdfw [a: string = ".", b?: string] {
-	# workaround: force less (delta's pager) to enable alternate screen buffer
-	
 	if $b == null {
-		git diff --word-diff --color=always . | delta;
+		git diff --word-diff --color=always $a;
 	} else {
-		git diff --word-diff --color=always $a $b | delta;
+		git diff --word-diff --color=always $a $b;
 	}
 }
-#alias gdfw = git diff --word-diff
 # git reset
 alias gr = git reset
 # git one-line graph
