@@ -20,10 +20,14 @@ def "git-complete branch" []: nothing -> list<string> {
 
 
 # clear, then git status
-def sc [path: string = "."]: nothing -> nothing {
+def sc [path: string = ".", --all]: nothing -> nothing {
 	clear;
 	
-	git status $path;
+	if $all {
+		git status;
+	} else {
+		git status $path;
+	}
 }
 # git status
 alias s = git status
