@@ -15,5 +15,5 @@ def "main add" [key: string, value: any]: nothing -> nothing {
         $value
     }
     
-    open user.js | lines | append $"user_pref\(\"($key)\", ($value)\)" | sort | save -f user.js;
+    open user.js | lines | append $"user_pref\(\"($key)\", ($value)\);" | sort | save -f user.js;
 }
