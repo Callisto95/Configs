@@ -1,0 +1,10 @@
+# Automount requires root priviliges. This cannot be handled in a user unit.
+
+[Unit]
+Description=Automount SSHFS - server
+
+[Automount]
+Where=/home/callisto/server
+
+[Install]
+WantedBy=default.target

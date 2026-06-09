@@ -1,0 +1,11 @@
+[Unit]
+Description=SSHFS - server
+
+[Mount]
+What=fuser:/home/callisto/
+Where=/home/callisto/server
+Type=fuse.sshfs
+Options=reconnect,ServerAliveInterval=15,ServerAliveCountMax=3,follow_symlinks,_netdev
+
+[Install]
+WantedBy=default.target
