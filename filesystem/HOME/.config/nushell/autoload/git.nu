@@ -20,7 +20,7 @@ def "git-complete branch" []: nothing -> list<string> {
 
 
 # clear, then git status
-def sc [path: string = ".", --all]: nothing -> nothing {
+def sc [path: string = ".", -a --all]: nothing -> nothing {
 	clear;
 	
 	if $all {
@@ -100,7 +100,7 @@ def gacm [...message: string]: nothing -> nothing {
 # git add files or current dir
 def ga [...files: string, --force (-f)]: nothing -> nothing {
 	if ($files | is-empty) {
-		git add -A;
+		git add .;
 		return;
 	}
 	
