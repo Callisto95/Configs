@@ -1,0 +1,9 @@
+[Unit]
+Description=Git sync for /%I
+
+Requires=git-pull@%i.service
+Wants=git-push@%i.timer
+Wants=git-shutdown-push@%i.service
+
+[Install]
+WantedBy=default.target

@@ -11,7 +11,7 @@
     "editor.trimAutoWhitespace": false,
     "files.insertFinalNewline": true,
     "editor.renderFinalNewline": "on",
-    "editor.scrollBeyondLastLine": false,
+    "editor.scrollBeyondLastLine": true,
     "workbench.startupEditor": "none",
     "explorer.confirmDelete": false,
     "explorer.confirmDragAndDrop": false,
@@ -22,7 +22,14 @@
     "editor.useTabStops": false,
     "sonarlint.disableTelemetry": true,
     "raspberry-pi-pico.python3Path": "/bin/python",
-    "sonarlint.rules": {},
+    "sonarlint.rules": {
+        "c:S125": {
+            "level": "off",
+        },
+        "c:S1135": {
+            "level": "off",
+        },
+    },
     "editor.tabSize": 4,
     "editor.indentSize": 4,
     "tinymist.formatterIndentSize": 4,
@@ -80,6 +87,7 @@
     },
     "chat.agent.enabled": false,
     "chat.disableAIFeatures": true,
+    "git.addAICoAuthor": "off",
     "settingsSync.ignoredSettings": ["editor.fontSize", "-window.zoomLevel"],
     "workbench.colorTheme": "Dark Orange Default",
     "Lua.codeLens.enable": true,
@@ -111,4 +119,6 @@
     "prettier.printWidth": 120,
     "window.zoomLevel": 2,
     "workbench.editor.useModal": "off",
+    "git.openRepositoryInParentFolders": "never",
+    "auto-scroll.enabled": true,
 }
