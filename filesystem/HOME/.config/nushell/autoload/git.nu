@@ -100,7 +100,7 @@ def gacm [...message: string]: nothing -> nothing {
 # git add files or current dir
 def ga [...files: string, --force (-f)]: nothing -> nothing {
 	if ($files | is-empty) {
-		git add .;
+		git add -A;
 		return;
 	}
 	

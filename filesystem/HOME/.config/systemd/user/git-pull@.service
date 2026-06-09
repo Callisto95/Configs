@@ -1,13 +1,15 @@
 [Unit]
 Description=Git pull for repository /%I
-After=network-online.target
-Wants=network-online.target
+After=graphical-session.target
 Before=git-push@%i.service
 
 [Service]
 Type=oneshot
 WorkingDirectory=/%I
-ExecStart=/bin/sh -c '/usr/bin/git pull origin main || /usr/bin/notify-send "Pull failed (%I)" "git pull failed in %I" -u critical'
+Environment=SSH_ASKPASS_REQUIRE=never
+Environment=GIT_SSH_COMMAND="ssh -o BatchMode=yes"
+ExecStartPre=/usr/bin/env nu --no-config-file --commands 'while (try { http get https://github.com; false } catch { true }) { sleep 5sec; }; for _ in 0..20 { if (ssh-add -l | lines | is-empty) { break; } }; exit (if (ssh-add -l | lines | is-empty) { 1 } else { 0 })'
+ExecStart=/usr/bin/env nu --no-config-file --commands 'let r = git pull origin main | complete; if $$r.exit_code != 0 { notify-send "Pull failed (%I)" $$"git pull failed in %I\nO:($$r.stdout)\nE:($$r.stderr)" -u critical; }'
 
 [Install]
-WantedBy=default.target
+WantedBy=graphical-session.target
