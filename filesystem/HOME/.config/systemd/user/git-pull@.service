@@ -6,7 +6,7 @@ Before=git-push@%i.service
 [Service]
 Type=oneshot
 WorkingDirectory=/%I
-ExecStart=/usr/bin/env nu --no-config-file --commands 'try { git pull origin main; } except { notify-send "Pull failed (%I)" "git pull failed in %I" -u critical; }'
+ExecStart=/usr/bin/env nu --no-config-file --commands 'try { git pull origin main; } catch { notify-send "Pull failed (%I)" "git pull failed in %I" -u critical; }'
 
 [Install]
 WantedBy=default.target

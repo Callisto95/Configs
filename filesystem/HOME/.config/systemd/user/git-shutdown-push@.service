@@ -8,4 +8,4 @@ Type=oneshot
 WorkingDirectory=/%I
 RemainAfterExit=yes
 ExecStart=/bin/true
-ExecStop=/usr/bin/env nu --no-config-file --commands 'git add -A; try { git diff --cached --quiet; } except { git commit -m $$"[sync] (hostnamectl hostname)"; }; try { git push origin main; } except { notify-send "Shutdown push failed (%I)" -u critical; }'
+ExecStop=/usr/bin/env nu --no-config-file --commands 'git add -A; try { git diff --cached --quiet; } catch { git commit -m $$"[sync] (hostnamectl hostname)"; }; try { git push origin main; } catch { notify-send "Shutdown push failed (%I)" -u critical; }'

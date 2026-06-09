@@ -1,7 +1,8 @@
 # Systemd Service Files
 
-## git-pull@ and git-push@
+## git-sync@
 
-These are designed to pull a repository on login and push every 15 minutes.
-
-This is designed to synchronize e.g. notes for Logseq or Obsidian.
+```bash
+systemd-escape --path /FULL/PATH/TO/REPO
+systemctl enable --now git-sync@[ESCAPED_PATH]
+```
