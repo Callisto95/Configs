@@ -121,4 +121,6 @@
     "workbench.editor.useModal": "off",
     "git.openRepositoryInParentFolders": "never",
     "auto-scroll.enabled": true,
+    "terminal.integrated.persistentSessionReviveProcess": "never",
+    "terminal.integrated.enablePersistentSessions": false,
 }
