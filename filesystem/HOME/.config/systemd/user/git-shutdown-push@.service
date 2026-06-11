@@ -2,10 +2,12 @@
 Description=Final git push for /%I
 DefaultDependencies=no
 Before=shutdown.target
+After=ssh-agent.service
 
 [Service]
 Type=oneshot
 WorkingDirectory=/%I
 RemainAfterExit=yes
+TimeoutStopSec=10sec
 ExecStart=/bin/true
 ExecStop=/usr/bin/env nu --no-config-file --commands 'git add -A; try { git diff --cached --quiet; } catch { git commit -m $$"[sync] (hostnamectl hostname)::(date now | format date "%%F@%%T")"; }; try { git push origin main; } catch { notify-send "Shutdown push failed (%I)" -u critical; }'
