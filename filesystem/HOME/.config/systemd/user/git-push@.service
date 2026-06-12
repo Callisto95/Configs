@@ -6,4 +6,5 @@ After=ssh-agent.service
 [Service]
 Type=oneshot
 WorkingDirectory=/%I
-ExecStart=/usr/bin/env nu --no-config-file --commands 'git add -A; try { git diff --cached --quiet; } catch { git commit -m $$"[sync] (sys host | get hostname)::(date now | format date "%%F@%%T")"; }; try { git push origin main; } catch { notify-send "Shutdown push failed (%I)" -u critical; }'
+ExecStartPre=/usr/bin/env nu --no-config-file --commands 'git add -A; try { git diff --cached --quiet; } catch { git commit -m $$"[sync] (sys host | get hostname)::(date now | format date "%%F@%%T")"; }'
+ExecStart=/usr/bin/env nu --no-config-file --commands 'try { git push origin main; } catch { notify-send "Push failed (%I)" -u critical; }'

@@ -7,7 +7,8 @@ Before=git-push@%i.service
 Type=oneshot
 TimeoutStartSec=60
 WorkingDirectory=/%I
-ExecStartPre=/usr/bin/env nu --no-config-file --commands 'while (try { gh auth status; false } catch { true }) { sleep 5sec; }; for _ in 0..20 { if not (ssh-add -l | lines | is-empty) { break; }; sleep 5sec; }; exit (if (ssh-add -l | lines | is-empty) { 1 } else { 0 })'
+ExecStartPre=/usr/bin/env nu --no-config-file --commands 'for _ in 0..12 { try { gh auth status; break; } catch { sleep 5sec; } }; exit (gh auth status | complete).exit_code'
+ExecStartPre=/usr/bin/env nu --no-config-file --commands 'for _ in 0..12 { if not (ssh-add -l | lines | is-empty) { break; }; sleep 5sec; }; exit (if (ssh-add -l | lines | is-empty) { 1 } else { 0 })'
 ExecStart=/usr/bin/env nu --no-config-file --commands 'let r = git pull origin main | complete; if $$r.exit_code != 0 { notify-send "Pull failed (%I)" $$"git pull failed in %I\nO:($$r.stdout)\nE:($$r.stderr)" -u critical; }'
 
 # only credential helpers are allowed
