@@ -2,6 +2,7 @@
 Description=Periodic git push for /%I
 
 [Timer]
+OnBootSec=15min
 OnUnitActiveSec=15min
 
 [Install]
