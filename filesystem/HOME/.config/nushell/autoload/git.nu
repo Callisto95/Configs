@@ -20,7 +20,7 @@ def "git-complete branch" []: nothing -> list<string> {
 
 
 # clear, then git status
-def sc [path: string = ".", -a --all]: nothing -> nothing {
+def sc [path: string = ".", --all (-a)]: nothing -> nothing {
 	clear;
 	
 	if $all {
