@@ -1,22 +1,23 @@
-#!/bin/zsh
+#!/usr/bin/env nu
 
-file=$(echo "$1" | sed -E 's/.*file=([^&]+).*/\1/');
-line=$(echo "$1" | sed -E 's/.*line=([^&]+).*/\1/');
-
-pidof pycharm;
-
-if [[ $? -ne 0 ]]; then
-	notify-send --app-name="pycharm:// handler" --icon="open-link" "PyCharm is not running, opening with default app";
-	xdg-open "$file";
-	exit;
-fi
-
-if [[ -z "file" ]]; then
-	exit;
-fi
-
-if [[ "$line" == "$1" ]]; then
-	line="1";
-fi
-
-$HOME/.local/binaries/pycharm-community/bin/pycharm --line "$line" "$file"
+def main [to_open: string] {
+    mut params = $to_open | url parse | get params | transpose --header-row;
+    
+    let clion_pid = pidof clion | complete;
+    
+    if $clion_pid.exit_code != 0 {
+        notify-send --app-name="pycharm:// handler" --icon="open-link" "PyCharm is not running, opening with default app";
+        start "$file";
+        return;
+    }
+    
+    if not "file" in $params {
+        return;
+    }
+    
+    if not "line" in $params {
+        $params = $params | insert "line" 1;
+    }
+    
+    ~/.local/binaries/pycharm/bin/pycharm --line $params.line $params.file;
+}
