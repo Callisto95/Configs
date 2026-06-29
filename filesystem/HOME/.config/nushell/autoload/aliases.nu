@@ -9,14 +9,6 @@ alias oxipng = oxipng --preserve --fix
 alias jpegoptim = jpegoptim --preserve
 # remove KDE's rating
 alias removeRating = setfattr -x user.baloo.rating
-# kill, then restart PlasmaShell
-def restartPlasma []: nothing -> nothing {
-	if (pidof plasmashell | complete).exit_code == 0 {
-		killall plasmashell;
-	}
-	# bash -c "nohup plasmashell --replace > /dev/null 2>&1 &";
-	setsid plasmashell --replace;
-}
 # only get files within zip
 alias zipList = zipinfo -1
 # dmesg, but colours
@@ -29,7 +21,7 @@ def dmesg []: nothing -> nothing {
 # bat instead of cat
 alias cat = bat
 # RipGrep instead of grep
-alias grep = rg
+# alias grep = rg # way too annoying
 
 #alias ls = eza # Nu's ls is a lot different
 #alias find = fd # fd is very different

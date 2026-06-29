@@ -9,6 +9,8 @@ local config = {}
 -- https://wezterm.org/config/lua/config/hyperlink_rules.html
 config.hyperlink_rules = wezterm.default_hyperlink_rules()
 
+config.warn_about_missing_glyphs = false
+
 config.font = wezterm.font("Fira Code Nerd Font")
 config.font_size = 19
 

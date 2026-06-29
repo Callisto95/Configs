@@ -12,7 +12,18 @@ My variant of using code. Since it's not a Microsoft branded release, the market
 `code-features` should run with every update of VSCode, but sometimes it's not enough.
 
 ```bash
-# code-features-update -s
+sudo code-features-update -s
 ```
 
 to manually refresh.
+
+## XDG Open With System
+
+```bash
+cd ~/.vscode/extensions/
+git clone https://github.com/ottomated/vs-code-open-from-explorer.git
+```
+
+This adds a "Open with System" to the right click menu of every file. With this, you can open e.g. PDF's in Okular without opening the folder, then opening the file.
+
+For some reason this extensions got pulled from the marketplace.

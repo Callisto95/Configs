@@ -1,0 +1,12 @@
+[Trigger]
+Operation = Install
+Operation = Upgrade
+Type = Path
+Target = usr/lib/systemd/boot/efi/systemd-boot*.efi
+
+[Action]
+Description = Signing systemd-boot EFI binary for Secure Boot
+When = PostTransaction
+Exec = /bin/sh -c 'while read -r f; do /usr/bin/sbctl sign -s -o "${f}.signed" "${f}"; done && /usr/bin/systemctl restart systemd-boot-update.service'
+Depends = sh
+NeedsTargets
